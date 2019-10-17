@@ -39,6 +39,9 @@ const toast = swal.mixin({
 window.toast = toast;
 window.Fire =  new Vue();
 
+import PulseLoader from 'vue-spinner/src/PulseLoader.vue';
+window.PulseLoader = PulseLoader;
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
