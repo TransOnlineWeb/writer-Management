@@ -57076,7 +57076,7 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.
 
 Vue.component(vform__WEBPACK_IMPORTED_MODULE_0__["HasError"].name, vform__WEBPACK_IMPORTED_MODULE_0__["HasError"]);
 Vue.component(vform__WEBPACK_IMPORTED_MODULE_0__["AlertError"].name, vform__WEBPACK_IMPORTED_MODULE_0__["AlertError"]);
-windows.form = vform__WEBPACK_IMPORTED_MODULE_0__["Form"];
+window.form = vform__WEBPACK_IMPORTED_MODULE_0__["Form"];
 
 Vue.use(vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]);
 var routes = [{
@@ -57259,8 +57259,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /opt/lampp/htdocs/Transonline/writer-Management/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /opt/lampp/htdocs/Transonline/writer-Management/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\xampp\htdocs\Writing-Management\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\Writing-Management\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
