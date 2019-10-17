@@ -18,7 +18,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 </head>
 <body class="hold-transition sidebar-mini">
-<div class="wrapper">
+<div class="wrapper" id="app">
 
     <!-- Navbar -->
     <nav class="main-header navbar navbar-expand navbar-white navbar-light">
@@ -200,6 +200,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             </p>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <router-link to="/order" class="nav-link">
+                            <i class="nav-icon fas fa-th"></i>
+                            <p>
+                                Orders
+                            </p>
+                        </router-link>
+                    </li>
                 </ul>
             </nav>
             <!-- /.sidebar-menu -->
@@ -230,9 +238,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- Main content -->
         <div class="content">
             <div class="container-fluid">
-                <main class="py-4">
-                    @yield('content')
-                </main>
+                <router-view></router-view>
             </div><!-- /.container-fluid -->
         </div>
         <!-- /.content -->
@@ -264,12 +270,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <!-- REQUIRED SCRIPTS -->
 
 <!-- jQuery -->
-<script src="plugins/jquery/jquery.min.js"></script>
-<!-- Bootstrap 4 -->
-<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- AdminLTE App -->
-<script src="dist/js/adminlte.min.js"></script>
-
+<script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
 <script src="{{ asset('js/app.js') }}" defer></script>
 </body>
 </html>
