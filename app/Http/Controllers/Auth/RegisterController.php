@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Redirect;
+use Session;
 
 class RegisterController extends Controller
 {
@@ -28,7 +32,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/login';
 
     /**
      * Create a new controller instance.
@@ -52,6 +56,8 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'phone' => ['required', 'integer', 'min:10'],
+            'role' => ['required', 'string'],
         ]);
     }
 
@@ -67,6 +73,17 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'phone_number'  => $data['phone'],
+            'role' => $data['role'],
         ]);
+    }
+
+    public function register(Request $request)
+    {
+        $this->validator($request->all())->validate();
+
+        event(new Registered($user = $this->create($request->all())));
+
+        return redirect($this->redirectTo)->with('message', 'Your account has been registered awaiting admin approval, login later');
     }
 }
