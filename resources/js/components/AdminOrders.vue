@@ -302,7 +302,7 @@
                 this.formf.append('discipline', this.form.discipline);
                 this.formf.append('level', this.form.level);
                 this.formf.append('pages', this.form.pages);
-                this.formf.append('deadline', this.form.deadline);
+                this.formf.append('deadline', moment(this.form.deadline).format('YYYY-MM-DD HH:mm:ss'));
                 this.formf.append('spacing', this.form.spacing);
                 this.formf.append('paper_format', this.form.paper_format);
                 this.formf.append('description', this.form.description);
