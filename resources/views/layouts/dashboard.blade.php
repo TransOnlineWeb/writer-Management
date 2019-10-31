@@ -99,12 +99,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <!-- Sidebar user panel (optional) -->
             <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                 <div class="image">
-                    <img src="{{ asset('/img/user.jpg') }}" class="img-circle elevation-2" alt="User Image">
+                    <img src="/img/profile/{{ Auth::user()->photo}}" class="img-circle elevation-2" alt="User Image">
                 </div>
                 <div class="info">
                     <a href="#" class="d-block">{{ Auth::user()->name }}</a>
                     <p>
-                        <a href="#" class="d-block">{{ Auth::user()->type }}</a>
+                        <a href="#" class="d-block">{{ Auth::user()->role }}</a>
                     </p>
                 </div>
             </div>
@@ -124,7 +124,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 </p>
             </router-link>
             </li>
-
+            <li class="nav-item">
+                <router-link to="/chat" class="nav-link">
+                    <i class="nav-icon fas fa-comments yellow"></i>
+                    <p>
+                        Chat
+                    </p>
+                </router-link>
+            </li>
             @can('isAdmin')
           <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
@@ -145,14 +152,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </ul>
           </li>
 
-          <li class="nav-item">
-                <router-link to="/developer" class="nav-link">
-                    <i class="nav-icon fas fa-cogs"></i>
-                    <p>
-                        Developer
-                    </p>
-                </router-link>
-         </li>
          @endcan
           <li class="nav-item">
                 <router-link to="/profile" class="nav-link">

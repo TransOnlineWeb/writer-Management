@@ -29,6 +29,8 @@ let routes = [
     { path: '/order', component: require('./components/AdminOrders.vue').default },
     { path: '/writer', component: require('./components/Writers.vue').default },
     { path: '/profile', component: require('./components/profile.vue').default },
+    { path: '/dashboard', component: require('./components/Dashboard.vue').default },
+    { path: '/chat', component: require('./components/Chat.vue').default },
 ];
 
 const router = new VueRouter({

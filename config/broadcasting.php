@@ -53,7 +53,10 @@ return [
         'null' => [
             'driver' => 'null',
         ],
-
+        'options' => [
+            'cluster' => 'ap2',
+            'useTLS' => true
+        ],
     ],
 
 ];
