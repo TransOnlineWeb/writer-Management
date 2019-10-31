@@ -16,11 +16,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
-    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+          integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.9/sweetalert2.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.9/sweetalert2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/momentjs/2.13.0/moment.min.js"></script>
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper" id="app">
@@ -36,24 +38,23 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
         <!-- SEARCH FORM -->
 
-            <div class="input-group input-group-sm col-md-4">
-                <input class="form-control form-control-navbar"  type="search" placeholder="Search" aria-label="Search">
-                <div class="input-group-append">
-                    <button class="btn btn-navbar">
-                        <i class="fa fa-search"></i>
-                    </button>
-                </div>
+        <div class="input-group input-group-sm col-md-4">
+            <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
+            <div class="input-group-append">
+                <button class="btn btn-navbar">
+                    <i class="fa fa-search"></i>
+                </button>
             </div>
-
+        </div>
 
 
         <!-- Right navbar links -->
         <ul class="navbar-nav ml-auto">
 
 
-
             <li class="nav-item dropdown">
-                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false" v-pre>
                     {{ Auth::user()->name }} <span class="caret"></span>
                 </a>
 
@@ -109,113 +110,122 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 </div>
             </div>
 
-      <!-- Sidebar Menu -->
-      <nav class="mt-2">
-        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-          <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
+            <!-- Sidebar Menu -->
+            <nav class="mt-2">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                    data-accordion="false">
+                    <!-- Add icons to the links using the .nav-icon class
+                         with font-awesome or any other icon font library -->
 
-            <li class="nav-item">
-            <router-link to="/dashboard" class="nav-link">
-                <i class="nav-icon fas fa-tachometer-alt blue"></i>
-                <p>
-                Dashboard
+                    <li class="nav-item">
+                        <router-link to="/dashboard" class="nav-link">
+                            <i class="nav-icon fas fa-tachometer-alt blue"></i>
+                            <p>
+                                Dashboard
 
-                </p>
-            </router-link>
-            </li>
+                            </p>
+                        </router-link>
+                    </li>
 
-            @can('isAdmin')
-          <li class="nav-item has-treeview">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fa fa-cog green"></i>
-              <p>
-                Management
-                <i class="right fa fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <router-link to="/users" class="nav-link">
-                  <i class="fas fa-users nav-icon"></i>
-                  <p>Users</p>
-                </router-link>
-              </li>
+                    @can('isAdmin')
+                        <li class="nav-item has-treeview">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fa fa-cog green"></i>
+                                <p>
+                                    Management
+                                    <i class="right fa fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <router-link to="/users" class="nav-link">
+                                        <i class="fas fa-users nav-icon"></i>
+                                        <p>Users</p>
+                                    </router-link>
+                                </li>
 
-            </ul>
-          </li>
+                            </ul>
+                        </li>
 
-          <li class="nav-item">
-                <router-link to="/developer" class="nav-link">
-                    <i class="nav-icon fas fa-cogs"></i>
-                    <p>
-                        Developer
-                    </p>
-                </router-link>
-         </li>
-         @endcan
-          <li class="nav-item">
-                <router-link to="/profile" class="nav-link">
-                    <i class="nav-icon fas fa-user orange"></i>
-                    <p>
-                        Profile
-                    </p>
-                </router-link>
-         </li>
+                        <li class="nav-item">
+                            <router-link to="/developer" class="nav-link">
+                                <i class="nav-icon fas fa-cogs"></i>
+                                <p>
+                                    Developer
+                                </p>
+                            </router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link to="/order" class="nav-link">
+                                <i class="nav-icon fas fa-cogs"></i>
+                                <p>
+                                    Order
+                                </p>
+                            </router-link>
+                        </li>
+                    @endcan
+                    <li class="nav-item">
+                        <router-link to="/profile" class="nav-link">
+                            <i class="nav-icon fas fa-user orange"></i>
+                            <p>
+                                Profile
+                            </p>
+                        </router-link>
+                    </li>
 
-          <li class="nav-item">
-                <a class="nav-link" href="{{ route('logout') }}"
-                onclick="event.preventDefault();
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('logout') }}"
+                           onclick="event.preventDefault();
                               document.getElementById('logout-form').submit();">
-                    <i class="nav-icon fa fa-power-off red"></i>
-                    <p>
-                        {{ __('Logout') }}
-                    </p>
-                 </a>
+                            <i class="nav-icon fa fa-power-off red"></i>
+                            <p>
+                                {{ __('Logout') }}
+                            </p>
+                        </a>
 
-             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                 @csrf
-             </form>
-        </li>
-        </ul>
-      </nav>
-      <!-- /.sidebar-menu -->
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            @csrf
+                        </form>
+                    </li>
+                </ul>
+            </nav>
+            <!-- /.sidebar-menu -->
+        </div>
+        <!-- /.sidebar -->
+    </aside>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+
+        <!-- Main content -->
+        <div class="content">
+            <div class="container-fluid">
+                <router-view></router-view>
+
+                <vue-progress-bar></vue-progress-bar>
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.content -->
     </div>
-    <!-- /.sidebar -->
-  </aside>
-
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-
-    <!-- Main content -->
-    <div class="content">
-      <div class="container-fluid">
-        <router-view></router-view>
-
-        <vue-progress-bar></vue-progress-bar>
-      </div><!-- /.container-fluid -->
-    </div>
-    <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
+    <!-- /.content-wrapper -->
 
 
-  <!-- Main Footer -->
-  <footer class="main-footer">
-    <!-- To the right -->
-    <div class="float-right d-none d-sm-inline">
-      Anything you want
-    </div>
-    <!-- Default to the left -->
-    <strong>Copyright &copy; 2014-2018 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
-  </footer>
+    <!-- Main Footer -->
+    <footer class="main-footer">
+        <!-- To the right -->
+        <div class="float-right d-none d-sm-inline">
+            Anything you want
+        </div>
+        <!-- Default to the left -->
+        <strong>Copyright &copy; 2014-2018 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
+    </footer>
 </div>
 <!-- ./wrapper -->
 
 @auth
-<script>
-    window.user = @json(auth()->user())
-</script>
+    <script>
+        window.user = @json(auth()->user())
+    </script>
 @endauth
 
 <script src="/js/app.js"></script>

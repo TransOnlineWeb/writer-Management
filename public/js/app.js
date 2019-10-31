@@ -1855,10 +1855,9 @@ module.exports = {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vue2_editor__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue2-editor */ "./node_modules/vue2-editor/dist/vue2-editor.esm.js");
-/* harmony import */ var vue_datetime_dist_vue_datetime_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-datetime/dist/vue-datetime.css */ "./node_modules/vue-datetime/dist/vue-datetime.css");
-/* harmony import */ var vue_datetime_dist_vue_datetime_css__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue_datetime_dist_vue_datetime_css__WEBPACK_IMPORTED_MODULE_2__);
-//
+/* harmony import */ var vue2_editor__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue2-editor */ "./node_modules/vue2-editor/dist/vue2-editor.esm.js");
+/* harmony import */ var vue_datetime_dist_vue_datetime_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-datetime/dist/vue-datetime.css */ "./node_modules/vue-datetime/dist/vue-datetime.css");
+/* harmony import */ var vue_datetime_dist_vue_datetime_css__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue_datetime_dist_vue_datetime_css__WEBPACK_IMPORTED_MODULE_1__);
 //
 //
 //
@@ -2060,11 +2059,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "AdminOrders",
   components: {
-    VueEditor: vue2_editor__WEBPACK_IMPORTED_MODULE_1__["VueEditor"]
+    VueEditor: vue2_editor__WEBPACK_IMPORTED_MODULE_0__["VueEditor"]
   },
   data: function data() {
     return {
       now: moment().format(),
+      e_deadline: '',
+      e_spacing: '',
+      e_description: '',
+      e_viewers: '',
       urgent: false,
       attachments: [],
       formf: new FormData(),
@@ -2086,6 +2089,68 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
+    validateForm: function validateForm() {
+      if (!this.form.title) {
+        // set(type, 'required');
+        this.form.errors.set({
+          title: 'This field is required'
+        });
+        return false;
+      } else if (!this.form.order_number) {
+        this.form.errors.set({
+          order_number: 'This field is required'
+        });
+        return false;
+      } else if (!this.form.discipline) {
+        this.form.errors.set({
+          discipline: 'This field is required'
+        });
+        return false;
+      } else if (!this.form.level) {
+        this.form.errors.set({
+          level: 'This field is required'
+        });
+        return false;
+      } else if (!this.form.pages) {
+        this.form.errors.set({
+          pages: 'This field is required'
+        });
+        return false;
+      } else if (!this.form.deadline) {
+        this.e_deadline = 'This field is required';
+        return false;
+      } else if (!this.form.spacing) {
+        this.e_deadline = '';
+        this.e_spacing = 'This field is required';
+        return false;
+      } else if (!this.form.paper_format) {
+        this.e_spacing = '';
+        this.form.errors.set({
+          paper_format: 'This field is required'
+        });
+        return false;
+      } else if (!this.form.description) {
+        this.e_description = 'This field is required';
+        return false;
+      } else if (this.form.viewers.length == 0) {
+        this.e_description = '';
+        this.e_viewers = 'This field is required';
+        return false;
+      } else {
+        if (this.form.urgent == 1) {
+          if (!this.form.amount) {
+            this.form.errors.set({
+              amount: 'This field is required'
+            });
+            return false;
+          } else {
+            this.submitOrder();
+          }
+        } else {
+          this.submitOrder();
+        }
+      }
+    },
     submitOrder: function submitOrder() {
       var _this = this;
 
@@ -2146,6 +2211,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     newModal: function newModal() {
       this.form.reset();
+      this.attachments = [];
       $('#addnew').modal('show');
     }
   }
@@ -66530,8 +66596,6 @@ var render = function() {
                             ]),
                             _vm._v(" "),
                             _c("datetime", {
-                              staticClass:
-                                "{ 'is-invalid': form.errors.has('deadline') }",
                               attrs: {
                                 type: "datetime",
                                 auto: true,
@@ -66549,9 +66613,11 @@ var render = function() {
                               }
                             }),
                             _vm._v(" "),
-                            _c("has-error", {
-                              attrs: { form: _vm.form, field: "deadline" }
-                            })
+                            this.e_deadline
+                              ? _c("p", { staticStyle: { color: "red" } }, [
+                                  _vm._v(_vm._s(this.e_deadline))
+                                ])
+                              : _vm._e()
                           ],
                           1
                         )
@@ -66614,9 +66680,9 @@ var render = function() {
                             ]
                           ),
                           _vm._v(" "),
-                          _c("has-error", {
-                            attrs: { form: _vm.form, field: "spacing" }
-                          })
+                          _c("p", { staticStyle: { color: "red" } }, [
+                            _vm._v(_vm._s(this.e_spacing))
+                          ])
                         ],
                         1
                       ),
@@ -66641,7 +66707,9 @@ var render = function() {
                               ],
                               staticClass: "form-control",
                               class: {
-                                "is-invalid": _vm.form.errors.has("format")
+                                "is-invalid": _vm.form.errors.has(
+                                  "paper_format"
+                                )
                               },
                               attrs: {
                                 type: "text",
@@ -66665,7 +66733,7 @@ var render = function() {
                             }),
                             _vm._v(" "),
                             _c("has-error", {
-                              attrs: { form: _vm.form, field: "format" }
+                              attrs: { form: _vm.form, field: "paper_format" }
                             })
                           ],
                           1
@@ -66696,9 +66764,9 @@ var render = function() {
                             }
                           }),
                           _vm._v(" "),
-                          _c("has-error", {
-                            attrs: { form: _vm.form, field: "description" }
-                          })
+                          _c("p", { staticStyle: { color: "red" } }, [
+                            _vm._v(_vm._s(this.e_description))
+                          ])
                         ],
                         1
                       )
@@ -66810,198 +66878,193 @@ var render = function() {
                       ]),
                       _vm._v(" "),
                       _c("div", { staticClass: "col" }, [
-                        _c(
-                          "div",
-                          { staticClass: "form-group" },
-                          [
-                            _c("label", [_vm._v("Select Category of Viewers")]),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "form-check" }, [
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.form.viewers,
-                                    expression: "form.viewers"
-                                  }
-                                ],
-                                staticClass: "form-check-input",
-                                attrs: {
-                                  name: "viewers[]",
-                                  type: "checkbox",
-                                  value: "starter"
-                                },
-                                domProps: {
-                                  checked: Array.isArray(_vm.form.viewers)
-                                    ? _vm._i(_vm.form.viewers, "starter") > -1
-                                    : _vm.form.viewers
-                                },
-                                on: {
-                                  change: function($event) {
-                                    var $$a = _vm.form.viewers,
-                                      $$el = $event.target,
-                                      $$c = $$el.checked ? true : false
-                                    if (Array.isArray($$a)) {
-                                      var $$v = "starter",
-                                        $$i = _vm._i($$a, $$v)
-                                      if ($$el.checked) {
-                                        $$i < 0 &&
-                                          _vm.$set(
-                                            _vm.form,
-                                            "viewers",
-                                            $$a.concat([$$v])
-                                          )
-                                      } else {
-                                        $$i > -1 &&
-                                          _vm.$set(
-                                            _vm.form,
-                                            "viewers",
-                                            $$a
-                                              .slice(0, $$i)
-                                              .concat($$a.slice($$i + 1))
-                                          )
-                                      }
+                        _c("div", { staticClass: "form-group" }, [
+                          _c("label", [_vm._v("Select Category of Viewers")]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "form-check" }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.viewers,
+                                  expression: "form.viewers"
+                                }
+                              ],
+                              staticClass: "form-check-input",
+                              attrs: {
+                                name: "viewers[]",
+                                type: "checkbox",
+                                value: "starter"
+                              },
+                              domProps: {
+                                checked: Array.isArray(_vm.form.viewers)
+                                  ? _vm._i(_vm.form.viewers, "starter") > -1
+                                  : _vm.form.viewers
+                              },
+                              on: {
+                                change: function($event) {
+                                  var $$a = _vm.form.viewers,
+                                    $$el = $event.target,
+                                    $$c = $$el.checked ? true : false
+                                  if (Array.isArray($$a)) {
+                                    var $$v = "starter",
+                                      $$i = _vm._i($$a, $$v)
+                                    if ($$el.checked) {
+                                      $$i < 0 &&
+                                        _vm.$set(
+                                          _vm.form,
+                                          "viewers",
+                                          $$a.concat([$$v])
+                                        )
                                     } else {
-                                      _vm.$set(_vm.form, "viewers", $$c)
+                                      $$i > -1 &&
+                                        _vm.$set(
+                                          _vm.form,
+                                          "viewers",
+                                          $$a
+                                            .slice(0, $$i)
+                                            .concat($$a.slice($$i + 1))
+                                        )
                                     }
+                                  } else {
+                                    _vm.$set(_vm.form, "viewers", $$c)
                                   }
                                 }
-                              }),
-                              _vm._v(" "),
-                              _c("label", { staticClass: "form-check-label" }, [
-                                _vm._v(
-                                  "\n                                            Starter\n                                        "
-                                )
-                              ])
-                            ]),
+                              }
+                            }),
                             _vm._v(" "),
-                            _c("div", { staticClass: "form-check" }, [
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.form.viewers,
-                                    expression: "form.viewers"
-                                  }
-                                ],
-                                staticClass: "form-check-input",
-                                attrs: {
-                                  name: "viewers[]",
-                                  type: "checkbox",
-                                  value: "junior"
-                                },
-                                domProps: {
-                                  checked: Array.isArray(_vm.form.viewers)
-                                    ? _vm._i(_vm.form.viewers, "junior") > -1
-                                    : _vm.form.viewers
-                                },
-                                on: {
-                                  change: function($event) {
-                                    var $$a = _vm.form.viewers,
-                                      $$el = $event.target,
-                                      $$c = $$el.checked ? true : false
-                                    if (Array.isArray($$a)) {
-                                      var $$v = "junior",
-                                        $$i = _vm._i($$a, $$v)
-                                      if ($$el.checked) {
-                                        $$i < 0 &&
-                                          _vm.$set(
-                                            _vm.form,
-                                            "viewers",
-                                            $$a.concat([$$v])
-                                          )
-                                      } else {
-                                        $$i > -1 &&
-                                          _vm.$set(
-                                            _vm.form,
-                                            "viewers",
-                                            $$a
-                                              .slice(0, $$i)
-                                              .concat($$a.slice($$i + 1))
-                                          )
-                                      }
+                            _c("label", { staticClass: "form-check-label" }, [
+                              _vm._v(
+                                "\n                                            Starter\n                                        "
+                              )
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "form-check" }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.viewers,
+                                  expression: "form.viewers"
+                                }
+                              ],
+                              staticClass: "form-check-input",
+                              attrs: {
+                                name: "viewers[]",
+                                type: "checkbox",
+                                value: "junior"
+                              },
+                              domProps: {
+                                checked: Array.isArray(_vm.form.viewers)
+                                  ? _vm._i(_vm.form.viewers, "junior") > -1
+                                  : _vm.form.viewers
+                              },
+                              on: {
+                                change: function($event) {
+                                  var $$a = _vm.form.viewers,
+                                    $$el = $event.target,
+                                    $$c = $$el.checked ? true : false
+                                  if (Array.isArray($$a)) {
+                                    var $$v = "junior",
+                                      $$i = _vm._i($$a, $$v)
+                                    if ($$el.checked) {
+                                      $$i < 0 &&
+                                        _vm.$set(
+                                          _vm.form,
+                                          "viewers",
+                                          $$a.concat([$$v])
+                                        )
                                     } else {
-                                      _vm.$set(_vm.form, "viewers", $$c)
+                                      $$i > -1 &&
+                                        _vm.$set(
+                                          _vm.form,
+                                          "viewers",
+                                          $$a
+                                            .slice(0, $$i)
+                                            .concat($$a.slice($$i + 1))
+                                        )
                                     }
+                                  } else {
+                                    _vm.$set(_vm.form, "viewers", $$c)
                                   }
                                 }
-                              }),
-                              _vm._v(" "),
-                              _c("label", { staticClass: "form-check-label" }, [
-                                _vm._v(
-                                  "\n                                            Junior\n                                        "
-                                )
-                              ])
-                            ]),
+                              }
+                            }),
                             _vm._v(" "),
-                            _c("div", { staticClass: "form-check" }, [
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.form.viewers,
-                                    expression: "form.viewers"
-                                  }
-                                ],
-                                staticClass: "form-check-input",
-                                attrs: {
-                                  name: "viewers[]",
-                                  type: "checkbox",
-                                  value: "senior"
-                                },
-                                domProps: {
-                                  checked: Array.isArray(_vm.form.viewers)
-                                    ? _vm._i(_vm.form.viewers, "senior") > -1
-                                    : _vm.form.viewers
-                                },
-                                on: {
-                                  change: function($event) {
-                                    var $$a = _vm.form.viewers,
-                                      $$el = $event.target,
-                                      $$c = $$el.checked ? true : false
-                                    if (Array.isArray($$a)) {
-                                      var $$v = "senior",
-                                        $$i = _vm._i($$a, $$v)
-                                      if ($$el.checked) {
-                                        $$i < 0 &&
-                                          _vm.$set(
-                                            _vm.form,
-                                            "viewers",
-                                            $$a.concat([$$v])
-                                          )
-                                      } else {
-                                        $$i > -1 &&
-                                          _vm.$set(
-                                            _vm.form,
-                                            "viewers",
-                                            $$a
-                                              .slice(0, $$i)
-                                              .concat($$a.slice($$i + 1))
-                                          )
-                                      }
+                            _c("label", { staticClass: "form-check-label" }, [
+                              _vm._v(
+                                "\n                                            Junior\n                                        "
+                              )
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "form-check" }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.viewers,
+                                  expression: "form.viewers"
+                                }
+                              ],
+                              staticClass: "form-check-input",
+                              attrs: {
+                                name: "viewers[]",
+                                type: "checkbox",
+                                value: "senior"
+                              },
+                              domProps: {
+                                checked: Array.isArray(_vm.form.viewers)
+                                  ? _vm._i(_vm.form.viewers, "senior") > -1
+                                  : _vm.form.viewers
+                              },
+                              on: {
+                                change: function($event) {
+                                  var $$a = _vm.form.viewers,
+                                    $$el = $event.target,
+                                    $$c = $$el.checked ? true : false
+                                  if (Array.isArray($$a)) {
+                                    var $$v = "senior",
+                                      $$i = _vm._i($$a, $$v)
+                                    if ($$el.checked) {
+                                      $$i < 0 &&
+                                        _vm.$set(
+                                          _vm.form,
+                                          "viewers",
+                                          $$a.concat([$$v])
+                                        )
                                     } else {
-                                      _vm.$set(_vm.form, "viewers", $$c)
+                                      $$i > -1 &&
+                                        _vm.$set(
+                                          _vm.form,
+                                          "viewers",
+                                          $$a
+                                            .slice(0, $$i)
+                                            .concat($$a.slice($$i + 1))
+                                        )
                                     }
+                                  } else {
+                                    _vm.$set(_vm.form, "viewers", $$c)
                                   }
                                 }
-                              }),
-                              _vm._v(" "),
-                              _c("label", { staticClass: "form-check-label" }, [
-                                _vm._v(
-                                  "\n                                            Senior\n                                        "
-                                )
-                              ])
-                            ]),
+                              }
+                            }),
                             _vm._v(" "),
-                            _c("has-error", {
-                              attrs: { form: _vm.form, field: "viewers" }
-                            })
-                          ],
-                          1
-                        )
+                            _c("label", { staticClass: "form-check-label" }, [
+                              _vm._v(
+                                "\n                                            Senior\n                                        "
+                              )
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("p", { staticStyle: { color: "red" } }, [
+                            _vm._v(_vm._s(this.e_viewers))
+                          ])
+                        ])
                       ])
                     ]),
                     _vm._v(" "),
@@ -67020,7 +67083,7 @@ var render = function() {
                         {
                           staticClass: "btn btn-success",
                           attrs: { type: "button" },
-                          on: { click: _vm.submitOrder }
+                          on: { click: _vm.validateForm }
                         },
                         [_vm._v("Create")]
                       )
@@ -84102,8 +84165,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vform__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vform */ "./node_modules/vform/dist/vform.common.js");
 /* harmony import */ var vform__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vform__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
-/* harmony import */ var vue_progressbar__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-progressbar */ "./node_modules/vue-progressbar/dist/vue-progressbar.js");
-/* harmony import */ var vue_progressbar__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue_progressbar__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var vue_progressbar__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! vue-progressbar */ "./node_modules/vue-progressbar/dist/vue-progressbar.js");
+/* harmony import */ var vue_progressbar__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(vue_progressbar__WEBPACK_IMPORTED_MODULE_9__);
 /* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
 /* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(sweetalert2__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var vue_spinner_src_PulseLoader_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vue-spinner/src/PulseLoader.vue */ "./node_modules/vue-spinner/src/PulseLoader.vue");
@@ -84130,7 +84193,7 @@ window.Form = vform__WEBPACK_IMPORTED_MODULE_0__["Form"];
 
 Vue.use(vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]);
 
-Vue.use(vue_progressbar__WEBPACK_IMPORTED_MODULE_2___default.a, {
+Vue.use(vue_progressbar__WEBPACK_IMPORTED_MODULE_9___default.a, {
   color: 'rgb(143, 255, 199)',
   failedColor: 'red',
   height: '3px'
@@ -84569,8 +84632,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\xampp\htdocs\Writing-Management\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\xampp\htdocs\Writing-Management\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /opt/lampp/htdocs/Transonline/writer-Management/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /opt/lampp/htdocs/Transonline/writer-Management/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

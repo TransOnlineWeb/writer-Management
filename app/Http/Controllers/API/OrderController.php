@@ -38,6 +38,8 @@ class OrderController extends Controller
             'urgent' => 'required',
             'viewers' => 'required',
         ]);
+
+        return 'success';
     }
 
     /**
