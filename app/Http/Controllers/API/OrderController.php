@@ -57,21 +57,23 @@ class OrderController extends Controller
             $order->paper_format = $request->paper_format;
             $order->spacing = $request->spacing;
             $order->save();
-
             $order_id = $order->id;
+
+
             if ($request->files) {
                 $uploadedFiles = $request->files;
-                foreach ($uploadedFiles as $file) {
-                    $filename = $file->store('uploads');
+                foreach ($uploadedFiles as $uploadedFile) {
+                    $filename = $uploadedFile->store('uploads');
                     // echo $filename;
                     $file = new File();
-                    $file->task_id = $order_id;
+                    $file->order_id = $order_id;
                     $file->path = $filename;
-                    $file->user_id = auth()->user()->id;
+                    $file->order_number = $request->order_number;
                     $file->save();
                 }
             }
             return response(['status' => 'success'], 200);
+
         } elseif ($request->urgent == 1) {
 
         }
