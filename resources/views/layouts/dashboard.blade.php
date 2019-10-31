@@ -37,9 +37,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- SEARCH FORM -->
 
             <div class="input-group input-group-sm col-md-4">
-                <input class="form-control form-control-navbar"  @keyup="searchit" v-model="search" type="search" placeholder="Search" aria-label="Search">
+                <input class="form-control form-control-navbar"  type="search" placeholder="Search" aria-label="Search">
                 <div class="input-group-append">
-                    <button class="btn btn-navbar" @click="searchit">
+                    <button class="btn btn-navbar">
                         <i class="fa fa-search"></i>
                     </button>
                 </div>
@@ -51,23 +51,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <ul class="navbar-nav ml-auto">
 
 
-            <li class="nav-item dropdown">
-                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                    {{ Auth::user()->name }} <span class="caret"></span>
-                </a>
 
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="{{ route('logout') }}"
-                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                        {{ __('Logout') }}
-                    </a>
-
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                        @csrf
-                    </form>
-                </div>
-            </li>
             <li class="nav-item dropdown">
                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                     {{ Auth::user()->name }} <span class="caret"></span>

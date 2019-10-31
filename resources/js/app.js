@@ -16,9 +16,14 @@ Vue.component(AlertError.name, AlertError);
 window.Form = Form;
 
 import VueRouter from 'vue-router';
-
 Vue.use(VueRouter);
 
+import VueProgressBar from 'vue-progressbar'
+Vue.use(VueProgressBar, {
+    color: 'rgb(143, 255, 199)',
+    failedColor: 'red',
+    height: '3px'
+})
 let routes = [
     { path: '/foo', component: require('./components/ExampleComponent.vue').default },
     { path: '/order', component: require('./components/AdminOrders.vue').default },
@@ -62,7 +67,14 @@ Vue.use(CheckboxRadio);
 //ToggleButton
 import ToggleButton from 'vue-js-toggle-button';
 Vue.use(ToggleButton);
-
+//filter for Uppercase
+Vue.filter('upText', function(text){
+    return text.charAt(0).toUpperCase() + text.slice(1)
+});
+//filter for date
+Vue.filter('myDate',function(created){
+    return moment(created).format('MMMM Do YYYY');
+});
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
