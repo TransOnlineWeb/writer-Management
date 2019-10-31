@@ -16,16 +16,20 @@ Vue.component(AlertError.name, AlertError);
 window.form = Form;
 
 import VueRouter from 'vue-router';
+
 Vue.use(VueRouter);
 
 let routes = [
     { path: '/foo', component: require('./components/ExampleComponent.vue').default },
+    { path: '/order', component: require('./components/AdminOrders.vue').default },
+    { path: '/writer', component: require('./components/Writers.vue').default },
+    { path: '/profile', component: require('./components/profile.vue').default },
 ];
 
 const router = new VueRouter({
     mode: 'history',
     routes // short for `routes: routes`
-});
+})
 
 //sweetalert
 import swal from 'sweetalert2';
@@ -63,5 +67,5 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 
 const app = new Vue({
     el: '#app',
-    router
+    router,
 });
