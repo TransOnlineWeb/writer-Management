@@ -2067,6 +2067,7 @@ __webpack_require__.r(__webpack_exports__);
       now: moment().format(),
       urgent: false,
       attachments: [],
+      formf: new FormData(),
       form: new Form({
         urgent: 0,
         amount: '',
@@ -2085,7 +2086,43 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
-    submitOrder: function submitOrder() {},
+    submitOrder: function submitOrder() {
+      var _this = this;
+
+      for (var i = 0; i < this.attachments.length; i++) {
+        this.formf.append('files[]', this.attachments[i]);
+      }
+
+      this.formf.append('title', this.form.title);
+      this.formf.append('order_number', this.form.order_number);
+      this.formf.append('discipline', this.form.discipline);
+      this.formf.append('level', this.form.level);
+      this.formf.append('pages', this.form.pages);
+      this.formf.append('deadline', this.form.deadline);
+      this.formf.append('spacing', this.form.spacing);
+      this.formf.append('paper_format', this.form.paper_format);
+      this.formf.append('description', this.form.description);
+      this.formf.append('urgent', this.form.urgent);
+      this.formf.append('amount', this.form.amount);
+      this.formf.append('viewers[]', this.form.viewers);
+      var config = {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      };
+      axios.post('/api/order', this.formf, config).then(function (response) {
+        $('#addnew').modal('hide');
+
+        _this.form.reset();
+
+        swal.fire({
+          type: 'success',
+          title: 'Submited!!',
+          text: 'Successfully'
+        });
+      })["catch"](function (response) {//error
+      });
+    },
     fieldChange: function fieldChange(e) {
       var selectedFiles = e.target.files;
 
@@ -65904,7 +65941,7 @@ var render = function() {
                   on: {
                     submit: function($event) {
                       $event.preventDefault()
-                      return _vm.addLevel()
+                      return _vm.submitOrder()
                     }
                   }
                 },
@@ -66674,7 +66711,26 @@ var render = function() {
                       ])
                     ]),
                     _vm._v(" "),
-                    _vm._m(1)
+                    _c("div", { staticClass: "modal-footer" }, [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-danger",
+                          attrs: { type: "button", "data-dismiss": "modal" }
+                        },
+                        [_vm._v("Close")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-success",
+                          attrs: { type: "button" },
+                          on: { click: _vm.submitOrder }
+                        },
+                        [_vm._v("Create")]
+                      )
+                    ])
                   ])
                 ]
               )
@@ -66706,27 +66762,6 @@ var staticRenderFns = [
           }
         },
         [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-footer" }, [
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-danger",
-          attrs: { type: "button", "data-dismiss": "modal" }
-        },
-        [_vm._v("Close")]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        { staticClass: "btn btn-success", attrs: { type: "submit" } },
-        [_vm._v("Create")]
       )
     ])
   }
