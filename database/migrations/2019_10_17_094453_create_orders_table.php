@@ -15,7 +15,7 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('order_id');
+            $table->unsignedBigInteger('order_number');
             $table->string('title');
             $table->text('description');
             $table->dateTime('deadline');
@@ -27,6 +27,7 @@ class CreateOrdersTable extends Migration
             $table->string('paper_format');
             $table->string('spacing');
             $table->decimal('amount',8,2)->nullable();
+            $table->decimal('total_amount',8,2)->nullable();
             $table->integer('urgency')->default(0)->unsigned();
             $table->unsignedBigInteger('assigned_user_id')->nullable();
             $table->timestamps();
