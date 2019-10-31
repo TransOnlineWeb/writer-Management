@@ -1,12 +1,259 @@
 <template>
-    <div class="container-fluid">
+    <div class="container-fluid pl-0 pr-0 ml-0 mr-0">
+        <div class="row justify-content-center pl-0 pr-0 ml-0 mr-0">
+            <div class="col-md-12 mt-4 pl-0 pr-0 ml-0 mr-0">
+                <div class="card pl-0 pr-0 ml-0 mr-0">
+                    <div class="card-header">
+                        <h3 class="card-title">Orders</h3>
 
+                        <div class="card-tools">
+                            <button class="btn btn-sm btn-primary" @click="newModal">New Order</button>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        I'm an example component.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="addnew" tabindex="-1" role="dialog" aria-labelledby="addnewLabel"
+             aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addnewLabel">Post Order</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form @submit.prevent="addLevel()">
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="title">Title</label>
+                                        <input v-model="form.title" type="text" class="form-control" name="title"
+                                               id="title"
+                                               placeholder="Title"
+                                               :class="{ 'is-invalid': form.errors.has('title') }">
+                                        <has-error :form="form" field="title"></has-error>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="title">Order Number</label>
+                                        <input v-model="form.order_number" type="number" min="1" class="form-control"
+                                               name="order_number"
+                                               id="order_number"
+                                               placeholder="Order Number"
+                                               :class="{ 'is-invalid': form.errors.has('order_number') }">
+                                        <has-error :form="form" field="order_number"></has-error>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="title">Discipline</label>
+                                        <input v-model="form.discipline" type="text" class="form-control"
+                                               name="discipline"
+                                               id="discipline"
+                                               placeholder="Discipline"
+                                               :class="{ 'is-invalid': form.errors.has('discipline') }">
+                                        <has-error :form="form" field="discipline"></has-error>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="level">Level</label>
+                                        <select v-model="form.level" class="form-control" name="level" id="level"
+                                                :class="{ 'is-invalid': form.errors.has('level') }">
+                                            <option selected value="">--Select Level--</option>
+                                            <option value="College">College</option>
+                                            <option value="High School">High School</option>
+                                            <option value="Masters">Masters</option>
+                                            <option value="PhD">PhD</option>
+                                        </select>
+                                        <has-error :form="form" field="level"></has-error>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="pages">No. of Pages</label><br>
+                                        <vue-numeric-input v-model="form.pages" :min="1" :step="1"
+                                                           :class="{ 'is-invalid': form.errors.has('pages') }"
+                                                           name="pages" id="pages"></vue-numeric-input>
+                                        <has-error :form="form" field="pages"></has-error>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="deadline">Deadline Date & Time</label>
+                                        <datetime type="datetime" :auto="true" :min-datetime="this.now" zone="local"
+                                                  value-zone="UTC+3" v-model="form.deadline"
+                                                  class="{ 'is-invalid': form.errors.has('deadline') }"
+                                                  id="deadline"></datetime>
+                                        <has-error :form="form" field="deadline"></has-error>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <label for="spacing">Spacing</label><br>
+                                    <radio name="spacing" value="single" id="spacing" v-model="form.spacing">
+                                        Single
+                                    </radio>
+                                    <radio name="spacing" value="double" id="spacing" v-model="form.spacing">
+                                        Double
+                                    </radio>
+                                    <has-error :form="form" field="spacing"></has-error>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="format">Paper Format</label>
+                                        <input v-model="form.paper_format" type="text" class="form-control"
+                                               name="format"
+                                               id="format"
+                                               placeholder="Format"
+                                               :class="{ 'is-invalid': form.errors.has('format') }">
+                                        <has-error :form="form" field="format"></has-error>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group" style="padding: 20px">
+                                    <label for="description">Description</label>
+                                    <vue-editor v-model="form.description" id="description"></vue-editor>
+                                    <has-error :form="form" field="description"></has-error>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <label for="description">Toggle if Urgent</label><br>
+                                    <toggle-button :value="this.urgent" @change="isUrgent()"/>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group" v-if="this.urgent">
+                                        <label for="title">Amount Per Page</label>
+                                        <input v-model="form.amount" type="number" min="1" class="form-control"
+                                               name="amount" id="amount"
+                                               placeholder="Amount"
+                                               :class="{ 'is-invalid': form.errors.has('amount') }">
+                                        <has-error :form="form" field="amount"></has-error>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-group justify-content-center">
+                                        <label for="files">Upload Files</label>
+                                        <input type="file" multiple class="form-control-file" @change="fieldChange"
+                                               id="files">
+                                        <has-error :form="form" field="files"></has-error>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label>Select Category of Viewers</label>
+                                        <div class="form-check">
+                                            <input class="form-check-input" name="viewers[]" type="checkbox"
+                                                   value="starter" v-model="form.viewers">
+                                            <label class="form-check-label">
+                                                Starter
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" name="viewers[]" type="checkbox"
+                                                   value="junior" v-model="form.viewers">
+                                            <label class="form-check-label">
+                                                Junior
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" name="viewers[]" type="checkbox"
+                                                   value="senior" v-model="form.viewers">
+                                            <label class="form-check-label">
+                                                Senior
+                                            </label>
+                                        </div>
+                                        <has-error :form="form" field="viewers"></has-error>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-success">Create</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
+    import {VueEditor} from "vue2-editor";
+    import 'vue-datetime/dist/vue-datetime.css';
+
     export default {
-        name: "AdminOrders"
+        name: "AdminOrders",
+        components: {
+            VueEditor
+        },
+        data() {
+            return {
+                now: moment().format(),
+                urgent: false,
+                attachments: [],
+                form: new Form({
+                    urgent: 0,
+                    amount: '',
+                    pages: 1,
+                    viewers: [],
+                    title: '',
+                    order_number: '',
+                    discipline: '',
+                    level: '',
+                    deadline: '',
+                    files: '',
+                    spacing: '',
+                    paper_format: '',
+                    description: '',
+                })
+            }
+        },
+        methods: {
+            submitOrder(){
+
+            },
+            fieldChange(e) {
+                let selectedFiles = e.target.files;
+                if (!selectedFiles.length) {
+                    return false;
+                }
+                for (let i = 0; i < selectedFiles.length; i++) {
+                    this.attachments.push(selectedFiles[i]);
+                }
+                // console.log(this.attachments);
+            },
+            isUrgent() {
+                if (!this.urgent) {
+                    this.urgent = true;
+                    this.form.urgent = 1;
+                } else {
+                    this.urgent = false;
+                    this.form.urgent = 0;
+                }
+            },
+            newModal() {
+                this.form.reset();
+                $('#addnew').modal('show');
+            },
+        }
     }
 </script>
 

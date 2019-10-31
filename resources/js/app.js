@@ -13,7 +13,7 @@ import { Form, HasError, AlertError } from 'vform';
 Vue.component(HasError.name, HasError);
 Vue.component(AlertError.name, AlertError);
 
-window.form = Form;
+window.Form = Form;
 
 import VueRouter from 'vue-router';
 
@@ -45,6 +45,23 @@ window.Fire =  new Vue();
 
 import PulseLoader from 'vue-spinner/src/PulseLoader.vue';
 window.PulseLoader = PulseLoader;
+
+
+// Numeric input
+import VueNumericInput from 'vue-numeric-input';
+Vue.use(VueNumericInput);
+
+// Datetime
+import { Datetime } from 'vue-datetime';
+Vue.component('datetime', Datetime);
+
+// Checkbox
+import CheckboxRadio from 'vue-checkbox-radio';
+Vue.use(CheckboxRadio);
+
+//ToggleButton
+import ToggleButton from 'vue-js-toggle-button';
+Vue.use(ToggleButton);
 
 /**
  * The following block of code may be used to automatically register your
