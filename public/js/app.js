@@ -2067,6 +2067,7 @@ __webpack_require__.r(__webpack_exports__);
       now: moment().format(),
       urgent: false,
       attachments: [],
+      formf: new FormData(),
       form: new Form({
         urgent: 0,
         amount: '',
@@ -2085,7 +2086,44 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
-    submitOrder: function submitOrder() {},
+    validateForm: function validateForm() {},
+    submitOrder: function submitOrder() {
+      var _this = this;
+
+      for (var i = 0; i < this.attachments.length; i++) {
+        this.formf.append('files[]', this.attachments[i]);
+      }
+
+      this.formf.append('title', this.form.title);
+      this.formf.append('order_number', this.form.order_number);
+      this.formf.append('discipline', this.form.discipline);
+      this.formf.append('level', this.form.level);
+      this.formf.append('pages', this.form.pages);
+      this.formf.append('deadline', this.form.deadline);
+      this.formf.append('spacing', this.form.spacing);
+      this.formf.append('paper_format', this.form.paper_format);
+      this.formf.append('description', this.form.description);
+      this.formf.append('urgent', this.form.urgent);
+      this.formf.append('amount', this.form.amount);
+      this.formf.append('viewers[]', this.form.viewers);
+      var config = {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      };
+      axios.post('/api/order', this.formf, config).then(function (response) {
+        $('#addnew').modal('hide');
+
+        _this.form.reset();
+
+        swal.fire({
+          type: 'success',
+          title: 'Submited!!',
+          text: 'Successfully'
+        });
+      })["catch"](function (response) {//error
+      });
+    },
     fieldChange: function fieldChange(e) {
       var selectedFiles = e.target.files;
 
@@ -2332,7 +2370,7 @@ __webpack_require__.r(__webpack_exports__);
         id: '',
         name: '',
         email: '',
-        phone: '',
+        phone_number: '',
         password: '',
         photo: ''
       })
@@ -66204,7 +66242,7 @@ var render = function() {
                   on: {
                     submit: function($event) {
                       $event.preventDefault()
-                      return _vm.addLevel()
+                      return _vm.submitOrder()
                     }
                   }
                 },
@@ -66974,7 +67012,26 @@ var render = function() {
                       ])
                     ]),
                     _vm._v(" "),
-                    _vm._m(1)
+                    _c("div", { staticClass: "modal-footer" }, [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-danger",
+                          attrs: { type: "button", "data-dismiss": "modal" }
+                        },
+                        [_vm._v("Close")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-success",
+                          attrs: { type: "button" },
+                          on: { click: _vm.submitOrder }
+                        },
+                        [_vm._v("Create")]
+                      )
+                    ])
                   ])
                 ]
               )
@@ -67006,27 +67063,6 @@ var staticRenderFns = [
           }
         },
         [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-footer" }, [
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-danger",
-          attrs: { type: "button", "data-dismiss": "modal" }
-        },
-        [_vm._v("Close")]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        { staticClass: "btn btn-success", attrs: { type: "submit" } },
-        [_vm._v("Create")]
       )
     ])
   }
@@ -67193,7 +67229,7 @@ var render = function() {
               _c("div", { staticClass: "col-sm-4 border-right" }, [
                 _c("div", { staticClass: "description-block" }, [
                   _c("h5", { staticClass: "description-header" }, [
-                    _vm._v(_vm._s(this.form.phone))
+                    _vm._v(_vm._s(this.form.phone_number))
                   ]),
                   _vm._v(" "),
                   _c("span", { staticClass: "description-text" }, [
@@ -67202,24 +67238,14 @@ var render = function() {
                 ])
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "col-sm-4" }, [
-                _c("div", { staticClass: "description-block" }, [
-                  _c("h5", { staticClass: "description-header" }, [
-                    _vm._v(_vm._s(this.form.bio))
-                  ]),
-                  _vm._v(" "),
-                  _c("span", { staticClass: "description-text" }, [
-                    _vm._v("Biography")
-                  ])
-                ])
-              ])
+              _vm._m(0)
             ])
           ])
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "col-md-12" }, [
           _c("div", { staticClass: "card" }, [
-            _vm._m(0),
+            _vm._m(1),
             _vm._v(" "),
             _c("div", { staticClass: "card-body" }, [
               _c("div", { staticClass: "tab-content" }, [
@@ -67362,8 +67388,8 @@ var render = function() {
                                 {
                                   name: "model",
                                   rawName: "v-model",
-                                  value: _vm.form.phone,
-                                  expression: "form.phone"
+                                  value: _vm.form.phone_number,
+                                  expression: "form.phone_number"
                                 }
                               ],
                               staticClass: "form-control",
@@ -67375,7 +67401,7 @@ var render = function() {
                                 id: "inputPhone",
                                 placeholder: "Phone"
                               },
-                              domProps: { value: _vm.form.phone },
+                              domProps: { value: _vm.form.phone_number },
                               on: {
                                 input: function($event) {
                                   if ($event.target.composing) {
@@ -67383,7 +67409,7 @@ var render = function() {
                                   }
                                   _vm.$set(
                                     _vm.form,
-                                    "phone",
+                                    "phone_number",
                                     $event.target.value
                                   )
                                 }
@@ -67510,19 +67536,20 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-sm-4" }, [
+      _c("div", { staticClass: "description-block" }, [
+        _c("h5", { staticClass: "description-header" }, [_vm._v("Starter")]),
+        _vm._v(" "),
+        _c("span", { staticClass: "description-text" }, [_vm._v("Level")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
     return _c("div", { staticClass: "card-header p-2" }, [
       _c("ul", { staticClass: "nav nav-pills" }, [
-        _c("li", { staticClass: "nav-item" }, [
-          _c(
-            "a",
-            {
-              staticClass: "nav-link",
-              attrs: { href: "#timeline", "data-toggle": "tab" }
-            },
-            [_vm._v("My Rating")]
-          )
-        ]),
-        _vm._v(" "),
         _c("li", { staticClass: "active" }, [
           _c(
             "a",
@@ -67531,6 +67558,17 @@ var staticRenderFns = [
               attrs: { href: "#settings", "data-toggle": "tab" }
             },
             [_vm._v("Settings")]
+          )
+        ]),
+        _vm._v(" "),
+        _c("li", { staticClass: "nav-item" }, [
+          _c(
+            "a",
+            {
+              staticClass: "nav-link",
+              attrs: { href: "#timeline", "data-toggle": "tab" }
+            },
+            [_vm._v("My Ratings")]
           )
         ])
       ])

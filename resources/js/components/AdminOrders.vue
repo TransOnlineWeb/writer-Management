@@ -27,7 +27,7 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form @submit.prevent="addLevel()">
+                    <form @submit.prevent="submitOrder()">
                         <div class="modal-body">
                             <div class="row">
                                 <div class="col">
@@ -185,7 +185,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-success">Create</button>
+                                <button type="button" class="btn btn-success" @click="submitOrder">Create</button>
                             </div>
                         </div>
                     </form>
@@ -209,6 +209,7 @@
                 now: moment().format(),
                 urgent: false,
                 attachments: [],
+                formf: new FormData(),
                 form: new Form({
                     urgent: 0,
                     amount: '',
@@ -227,8 +228,42 @@
             }
         },
         methods: {
-            submitOrder(){
+            validateForm(){
 
+            },
+            submitOrder() {
+                for (let i = 0; i < this.attachments.length; i++) {
+                    this.formf.append('files[]', this.attachments[i]);
+                }
+                this.formf.append('title', this.form.title);
+                this.formf.append('order_number', this.form.order_number);
+                this.formf.append('discipline', this.form.discipline);
+                this.formf.append('level', this.form.level);
+                this.formf.append('pages', this.form.pages);
+                this.formf.append('deadline', this.form.deadline);
+                this.formf.append('spacing', this.form.spacing);
+                this.formf.append('paper_format', this.form.paper_format);
+                this.formf.append('description', this.form.description);
+                this.formf.append('urgent', this.form.urgent);
+                this.formf.append('amount', this.form.amount);
+                this.formf.append('viewers[]', this.form.viewers);
+
+                const config = {headers: {'Content-Type': 'multipart/form-data'}};
+
+                axios.post('/api/order', this.formf, config).then(response => {
+                    $('#addnew').modal('hide');
+                    this.form.reset();
+                    swal.fire({
+                        type: 'success',
+                        title: 'Submited!!',
+                        text: 'Successfully',
+
+                    })
+
+                })
+                    .catch(response => {
+                        //error
+                    });
             },
             fieldChange(e) {
                 let selectedFiles = e.target.files;

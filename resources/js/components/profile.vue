@@ -33,7 +33,7 @@
                             <!-- /.col -->
                             <div class="col-sm-4 border-right">
                                 <div class="description-block">
-                                    <h5 class="description-header">{{this.form.phone}}</h5>
+                                    <h5 class="description-header">{{this.form.phone_number}}</h5>
                                     <span class="description-text">Contact</span>
                                 </div>
                                 <!-- /.description-block -->
@@ -41,8 +41,8 @@
                             <!-- /.col -->
                             <div class="col-sm-4">
                                 <div class="description-block">
-                                    <h5 class="description-header">{{this.form.bio}}</h5>
-                                    <span class="description-text">Biography</span>
+                                    <h5 class="description-header">Starter</h5>
+                                    <span class="description-text">Level</span>
                                 </div>
                                 <!-- /.description-block -->
                             </div>
@@ -55,8 +55,8 @@
                     <div class="card">
                         <div class="card-header p-2">
                             <ul class="nav nav-pills">
-                                <li class="nav-item"><a class="nav-link" href="#timeline" data-toggle="tab" >My Rating</a></li>
                                 <li class="active"><a  class="nav-link active show" href="#settings" data-toggle="tab" >Settings</a></li>
+                                <li class="nav-item"><a class="nav-link" href="#timeline" data-toggle="tab" >My Ratings</a></li>
                             </ul>
                         </div><!-- /.card-header -->
                         <div class="card-body">
@@ -91,7 +91,7 @@
                                             <label for="inputPhone" class="col-sm-2 control-label">Phone</label>
 
                                             <div class="col-sm-10">
-                                                <input type="tel" v-model="form.phone" class="form-control" id="inputPhone" placeholder="Phone"  :class="{ 'is-invalid': form.errors.has('phone') }">
+                                                <input type="tel" v-model="form.phone_number" class="form-control" id="inputPhone" placeholder="Phone"  :class="{ 'is-invalid': form.errors.has('phone') }">
                                                 <has-error :form="form" field="phone"></has-error>
                                             </div>
                                         </div>
@@ -140,7 +140,7 @@
                     id:'',
                     name:'',
                     email: '',
-                    phone: '',
+                    phone_number: '',
                     password:'',
                     photo:''
                 })
