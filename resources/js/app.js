@@ -18,6 +18,9 @@ window.Form = Form;
 import VueRouter from 'vue-router';
 Vue.use(VueRouter);
 
+import  Gate from "./Gate";
+Vue.prototype.$gate =  new Gate(window.user);
+
 import VueProgressBar from 'vue-progressbar'
 Vue.use(VueProgressBar, {
     color: 'rgb(143, 255, 199)',
