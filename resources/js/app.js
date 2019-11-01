@@ -30,6 +30,8 @@ let routes = [
     { path: '/writer', component: require('./components/Writers.vue').default },
     { path: '/users', component: require('./components/Users.vue').default },
     { path: '/profile', component: require('./components/profile.vue').default },
+    { path: '/dashboard', component: require('./components/Dashboard.vue').default },
+    { path: '/chat', component: require('./components/Chat.vue').default },
 ];
 
 const router = new VueRouter({

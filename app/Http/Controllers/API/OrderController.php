@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Order;
+use App\File;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class OrderController extends Controller
 {
@@ -20,7 +23,7 @@ class OrderController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -38,12 +41,48 @@ class OrderController extends Controller
             'urgent' => 'required',
             'viewers' => 'required',
         ]);
+
+        if ($request->urgent == 0) {
+            $order = new Order();
+            $order->order_number = $request->order_number;
+            $order->title = $request->title;
+            $order->description = $request->description;
+            $order->deadline = $request->deadline;
+            $order->pages = $request->pages;
+            $order->status = 0;
+            $viewers = $request->viewers;
+            $order->viewers = implode(',', $viewers);
+            $order->academic_level = $request->level;
+            $order->discipline = $request->discipline;
+            $order->paper_format = $request->paper_format;
+            $order->spacing = $request->spacing;
+            $order->save();
+            $order_id = $order->id;
+
+
+            if ($request->files) {
+                $uploadedFiles = $request->files;
+                foreach ($uploadedFiles as $uploadedFile) {
+                    $filename = $uploadedFile->store('uploads');
+                    // echo $filename;
+                    $file = new File();
+                    $file->order_id = $order_id;
+                    $file->path = $filename;
+                    $file->order_number = $request->order_number;
+                    $file->save();
+                }
+            }
+            return response(['status' => 'success'], 200);
+
+        } elseif ($request->urgent == 1) {
+
+        }
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -54,8 +93,8 @@ class OrderController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -66,7 +105,7 @@ class OrderController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

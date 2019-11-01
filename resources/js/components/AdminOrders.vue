@@ -94,9 +94,8 @@
                                         <label for="deadline">Deadline Date & Time</label>
                                         <datetime type="datetime" :auto="true" :min-datetime="this.now" zone="local"
                                                   value-zone="UTC+3" v-model="form.deadline"
-                                                  class="{ 'is-invalid': form.errors.has('deadline') }"
                                                   id="deadline"></datetime>
-                                        <has-error :form="form" field="deadline"></has-error>
+                                        <p style="color: red;" v-if="this.e_deadline">{{this.e_deadline}}</p>
                                     </div>
                                 </div>
                             </div>
@@ -109,7 +108,7 @@
                                     <radio name="spacing" value="double" id="spacing" v-model="form.spacing">
                                         Double
                                     </radio>
-                                    <has-error :form="form" field="spacing"></has-error>
+                                    <p style="color: red;">{{this.e_spacing}}</p>
                                 </div>
                                 <div class="col">
                                     <div class="form-group">
@@ -118,8 +117,8 @@
                                                name="format"
                                                id="format"
                                                placeholder="Format"
-                                               :class="{ 'is-invalid': form.errors.has('format') }">
-                                        <has-error :form="form" field="format"></has-error>
+                                               :class="{ 'is-invalid': form.errors.has('paper_format') }">
+                                        <has-error :form="form" field="paper_format"></has-error>
                                     </div>
                                 </div>
                             </div>
@@ -127,7 +126,7 @@
                                 <div class="form-group" style="padding: 20px">
                                     <label for="description">Description</label>
                                     <vue-editor v-model="form.description" id="description"></vue-editor>
-                                    <has-error :form="form" field="description"></has-error>
+                                    <p style="color: red;">{{this.e_description}}</p>
                                 </div>
                             </div>
                             <div class="row">
@@ -179,13 +178,13 @@
                                                 Senior
                                             </label>
                                         </div>
-                                        <has-error :form="form" field="viewers"></has-error>
+                                        <p style="color: red;">{{this.e_viewers}}</p>
                                     </div>
                                 </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-success" @click="submitOrder">Create</button>
+                                <button type="button" class="btn btn-success" @click="validateForm">Create</button>
                             </div>
                         </div>
                     </form>
@@ -207,6 +206,10 @@
         data() {
             return {
                 now: moment().format(),
+                e_deadline: '',
+                e_spacing: '',
+                e_description: '',
+                e_viewers: '',
                 urgent: false,
                 attachments: [],
                 formf: new FormData(),
@@ -228,8 +231,67 @@
             }
         },
         methods: {
-            validateForm(){
-
+            validateForm() {
+                if (!this.form.title) {
+                    // set(type, 'required');
+                    this.form.errors.set({
+                        title: 'This field is required'
+                    })
+                    return false;
+                } else if (!this.form.order_number) {
+                    this.form.errors.set({
+                        order_number: 'This field is required'
+                    })
+                    return false;
+                } else if (!this.form.discipline) {
+                    this.form.errors.set({
+                        discipline: 'This field is required'
+                    })
+                    return false;
+                } else if (!this.form.level) {
+                    this.form.errors.set({
+                        level: 'This field is required'
+                    })
+                    return false;
+                } else if (!this.form.pages) {
+                    this.form.errors.set({
+                        pages: 'This field is required'
+                    })
+                    return false;
+                } else if (!this.form.deadline) {
+                    this.e_deadline = 'This field is required';
+                    return false;
+                } else if (!this.form.spacing) {
+                    this.e_deadline = '';
+                    this.e_spacing = 'This field is required';
+                    return false;
+                } else if (!this.form.paper_format) {
+                    this.e_spacing = '';
+                    this.form.errors.set({
+                        paper_format: 'This field is required'
+                    })
+                    return false;
+                } else if (!this.form.description) {
+                    this.e_description = 'This field is required';
+                    return false;
+                } else if (this.form.viewers.length == 0) {
+                    this.e_description = '';
+                    this.e_viewers = 'This field is required';
+                    return false;
+                } else {
+                    if (this.form.urgent == 1) {
+                        if (!this.form.amount) {
+                            this.form.errors.set({
+                                amount: 'This field is required'
+                            })
+                            return false;
+                        } else {
+                            this.submitOrder();
+                        }
+                    } else {
+                        this.submitOrder();
+                    }
+                }
             },
             submitOrder() {
                 for (let i = 0; i < this.attachments.length; i++) {
@@ -240,7 +302,7 @@
                 this.formf.append('discipline', this.form.discipline);
                 this.formf.append('level', this.form.level);
                 this.formf.append('pages', this.form.pages);
-                this.formf.append('deadline', this.form.deadline);
+                this.formf.append('deadline', moment(this.form.deadline).format('YYYY-MM-DD HH:mm:ss'));
                 this.formf.append('spacing', this.form.spacing);
                 this.formf.append('paper_format', this.form.paper_format);
                 this.formf.append('description', this.form.description);
@@ -286,6 +348,7 @@
             },
             newModal() {
                 this.form.reset();
+                this.attachments = [];
                 $('#addnew').modal('show');
             },
         }
