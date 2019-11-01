@@ -1,7 +1,7 @@
 <template>
     <div class="card mt-4">
         <div class="card-header">
-            <h3 class="card-title">Start a Converstion</h3>
+            <h3 class="card-title">Chat Room</h3>
         </div>
         <div class=" container card-body chat-app">
             <Conversation :contact="selectedContact" :messages="messages" @new="saveNewMessage"/>

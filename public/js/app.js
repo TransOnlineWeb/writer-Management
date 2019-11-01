@@ -2697,6 +2697,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2707,9 +2720,9 @@ __webpack_require__.r(__webpack_exports__);
     getUsers: function getUsers() {
       var _this = this;
 
-      axios.get("api/user").then(function (_ref) {
+      window.axios.get('api/user').then(function (_ref) {
         var data = _ref.data;
-        return _this.users = data;
+        return _this.users = data.data;
       });
     }
   },
@@ -75643,7 +75656,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "card-header" }, [
-      _c("h3", { staticClass: "card-title" }, [_vm._v("Start a Converstion")])
+      _c("h3", { staticClass: "card-title" }, [_vm._v("Chat Room")])
     ])
   }
 ]
@@ -76059,70 +76072,116 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", { staticClass: "container" }, [
+    _c("div", { staticClass: "row mt-4" }, [
+      _c("div", { staticClass: "col-md-12" }, [
+        _c("div", { staticClass: "box" }, [
+          _vm._m(0),
+          _vm._v(" "),
+          _c("div", { staticClass: "box-body table-responsive no-padding" }, [
+            _c("table", { staticClass: "table table-hover" }, [
+              _c(
+                "tbody",
+                [
+                  _vm._m(1),
+                  _vm._v(" "),
+                  _vm._l(_vm.users, function(user) {
+                    return _c("tr", { key: user.id }, [
+                      _c("td", [_vm._v(_vm._s(user.id))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(user.name))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(user.email))]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _c("span", { staticClass: "label label-success" }, [
+                          _vm._v(_vm._s(user.role))
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("td", [
+                        user.status_id == 1
+                          ? _c("span", [_vm._v("Active")])
+                          : _vm._e(),
+                        _vm._v(" "),
+                        user.status_id == 0
+                          ? _c("span", [_vm._v("Pending")])
+                          : _vm._e(),
+                        _vm._v(" "),
+                        user.status_id == 2
+                          ? _c("span", [_vm._v("Suspended")])
+                          : _vm._e()
+                      ]),
+                      _vm._v(" "),
+                      _c("td", [
+                        user.level_id == 1
+                          ? _c("span", [_vm._v("Active")])
+                          : _vm._e(),
+                        _vm._v(" "),
+                        user.level_id == 0
+                          ? _c("span", [_vm._v("Pending")])
+                          : _vm._e(),
+                        _vm._v(" "),
+                        user.level_id == 2
+                          ? _c("span", [_vm._v("Suspended")])
+                          : _c("span", [_vm._v("Not Rated")])
+                      ]),
+                      _vm._v(" "),
+                      _vm._m(2, true)
+                    ])
+                  })
+                ],
+                2
+              )
+            ])
+          ])
+        ])
+      ])
+    ])
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "container" }, [
-      _c("div", { staticClass: "row mt-4" }, [
-        _c("div", { staticClass: "col-md-12" }, [
-          _c("div", { staticClass: "box" }, [
-            _c("div", { staticClass: "box-header" }, [
-              _c("h3", { staticClass: "box-title" }, [_vm._v("Users")]),
-              _vm._v(" "),
-              _c("div", { staticClass: "box-tools" })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "box-body table-responsive no-padding" }, [
-              _c("table", { staticClass: "table table-hover" }, [
-                _c("tbody", [
-                  _c("tr", [
-                    _c("th", [_vm._v("ID")]),
-                    _vm._v(" "),
-                    _c("th", [_vm._v("Name")]),
-                    _vm._v(" "),
-                    _c("th", [_vm._v("Email")]),
-                    _vm._v(" "),
-                    _c("th", [_vm._v("Role")]),
-                    _vm._v(" "),
-                    _c("th", [_vm._v("Status")]),
-                    _vm._v(" "),
-                    _c("th", [_vm._v("Modify")])
-                  ]),
-                  _vm._v(" "),
-                  _c("tr", [
-                    _c("td", [_vm._v("183")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("John Doe")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("11-7-2014")]),
-                    _vm._v(" "),
-                    _c("td", [
-                      _c("span", { staticClass: "label label-success" }, [
-                        _vm._v("Approved")
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("11-7-2014")]),
-                    _vm._v(" "),
-                    _c("td", [
-                      _c("a", { attrs: { href: "" } }, [
-                        _c("i", { staticClass: "fa fa-edit blue" })
-                      ]),
-                      _vm._v("\n                   \n                  "),
-                      _c("a", { attrs: { href: "" } }, [
-                        _c("i", { staticClass: "fa fa-trash red" })
-                      ])
-                    ])
-                  ])
-                ])
-              ])
-            ])
-          ])
-        ])
+    return _c("div", { staticClass: "box-header" }, [
+      _c("h3", { staticClass: "box-title" }, [_vm._v("Users")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "box-tools" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("th", [_vm._v("ID")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Name")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Email")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Role")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Status")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Level")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Modify")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", [
+      _c("a", { attrs: { href: "" } }, [
+        _c("i", { staticClass: "fa fa-edit blue" })
+      ]),
+      _vm._v("\n                   \n                  "),
+      _c("a", { attrs: { href: "" } }, [
+        _c("i", { staticClass: "fa fa-trash red" })
       ])
     ])
   }
