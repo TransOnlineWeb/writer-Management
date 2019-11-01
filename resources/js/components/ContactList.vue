@@ -3,7 +3,7 @@
         <ul>
             <li v-for="contact in sortedContacts" :key="contact.id"  @click="selectContact(contact)" :class="{ 'selected': contact == selected}" >
                 <div class="avatar">
-                    <img src="img/user.png" width="50px" height="50px" :alt="contact.name">
+                    <img v-bind:src="'img/profile/'+ contact.photo" width="50px" height="50px" :alt="contact.name">
                 </div>
                 <div class="contact">
                     <p class="featurette name">{{contact.name}}</p>
@@ -25,7 +25,7 @@
         },
         data(){
             return {
-                selected: this.contacts.length ? this.contacts[0] : null
+                selected: this.contacts.length ? this.contacts[0] : null,
             };
         },
         methods:{

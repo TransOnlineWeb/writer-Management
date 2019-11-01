@@ -75700,7 +75700,7 @@ var render = function() {
             _c("div", { staticClass: "avatar" }, [
               _c("img", {
                 attrs: {
-                  src: "img/user.png",
+                  src: "img/profile/" + contact.photo,
                   width: "50px",
                   height: "50px",
                   alt: contact.name
