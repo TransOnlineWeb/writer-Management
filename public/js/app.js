@@ -93171,6 +93171,55 @@ var regionDayMap = {
 
 /***/ }),
 
+/***/ "./resources/js/Gate.js":
+/*!******************************!*\
+  !*** ./resources/js/Gate.js ***!
+  \******************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Gate; });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Gate =
+/*#__PURE__*/
+function () {
+  function Gate(user) {
+    _classCallCheck(this, Gate);
+
+    this.user = user;
+  }
+
+  _createClass(Gate, [{
+    key: "isAdmin",
+    value: function isAdmin() {
+      return this.user.role === 'admin';
+    }
+  }, {
+    key: "isEditor",
+    value: function isEditor() {
+      return this.user.role === 'editor';
+    }
+  }, {
+    key: "isWriter",
+    value: function isWriter() {
+      return this.user.role === 'writer';
+    }
+  }]);
+
+  return Gate;
+}();
+
+
+
+/***/ }),
+
 /***/ "./resources/js/app.js":
 /*!*****************************!*\
   !*** ./resources/js/app.js ***!
@@ -93183,19 +93232,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vform__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vform */ "./node_modules/vform/dist/vform.common.js");
 /* harmony import */ var vform__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vform__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
-/* harmony import */ var vue_progressbar__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-progressbar */ "./node_modules/vue-progressbar/dist/vue-progressbar.js");
-/* harmony import */ var vue_progressbar__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue_progressbar__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
-/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(sweetalert2__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var vue_spinner_src_PulseLoader_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vue-spinner/src/PulseLoader.vue */ "./node_modules/vue-spinner/src/PulseLoader.vue");
-/* harmony import */ var vue_numeric_input__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vue-numeric-input */ "./node_modules/vue-numeric-input/dist/vue-numeric-input.min.js");
-/* harmony import */ var vue_numeric_input__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(vue_numeric_input__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var vue_datetime__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vue-datetime */ "./node_modules/vue-datetime/dist/vue-datetime.js");
-/* harmony import */ var vue_datetime__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(vue_datetime__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var vue_checkbox_radio__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vue-checkbox-radio */ "./node_modules/vue-checkbox-radio/dist/index.js");
-/* harmony import */ var vue_checkbox_radio__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(vue_checkbox_radio__WEBPACK_IMPORTED_MODULE_7__);
-/* harmony import */ var vue_js_toggle_button__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! vue-js-toggle-button */ "./node_modules/vue-js-toggle-button/dist/index.js");
-/* harmony import */ var vue_js_toggle_button__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(vue_js_toggle_button__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var _Gate__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./Gate */ "./resources/js/Gate.js");
+/* harmony import */ var vue_progressbar__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue-progressbar */ "./node_modules/vue-progressbar/dist/vue-progressbar.js");
+/* harmony import */ var vue_progressbar__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(vue_progressbar__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
+/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(sweetalert2__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var vue_spinner_src_PulseLoader_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vue-spinner/src/PulseLoader.vue */ "./node_modules/vue-spinner/src/PulseLoader.vue");
+/* harmony import */ var vue_numeric_input__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vue-numeric-input */ "./node_modules/vue-numeric-input/dist/vue-numeric-input.min.js");
+/* harmony import */ var vue_numeric_input__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(vue_numeric_input__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var vue_datetime__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vue-datetime */ "./node_modules/vue-datetime/dist/vue-datetime.js");
+/* harmony import */ var vue_datetime__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(vue_datetime__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var vue_checkbox_radio__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! vue-checkbox-radio */ "./node_modules/vue-checkbox-radio/dist/index.js");
+/* harmony import */ var vue_checkbox_radio__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(vue_checkbox_radio__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var vue_js_toggle_button__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! vue-js-toggle-button */ "./node_modules/vue-js-toggle-button/dist/index.js");
+/* harmony import */ var vue_js_toggle_button__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(vue_js_toggle_button__WEBPACK_IMPORTED_MODULE_9__);
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -93211,7 +93261,9 @@ window.Form = vform__WEBPACK_IMPORTED_MODULE_0__["Form"];
 
 Vue.use(vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]);
 
-Vue.use(vue_progressbar__WEBPACK_IMPORTED_MODULE_2___default.a, {
+Vue.prototype.$gate = new _Gate__WEBPACK_IMPORTED_MODULE_10__["default"](window.user);
+
+Vue.use(vue_progressbar__WEBPACK_IMPORTED_MODULE_3___default.a, {
   color: 'rgb(143, 255, 199)',
   failedColor: 'red',
   height: '3px'
@@ -93245,8 +93297,8 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
 }); //sweetalert
 
 
-window.swal = sweetalert2__WEBPACK_IMPORTED_MODULE_3___default.a;
-var toast = sweetalert2__WEBPACK_IMPORTED_MODULE_3___default.a.mixin({
+window.swal = sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a;
+var toast = sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.mixin({
   toast: true,
   position: 'top-end',
   showConfirmButton: false,
@@ -93255,19 +93307,19 @@ var toast = sweetalert2__WEBPACK_IMPORTED_MODULE_3___default.a.mixin({
 window.toast = toast;
 window.Fire = new Vue();
 
-window.PulseLoader = vue_spinner_src_PulseLoader_vue__WEBPACK_IMPORTED_MODULE_4__["default"]; // Numeric input
+window.PulseLoader = vue_spinner_src_PulseLoader_vue__WEBPACK_IMPORTED_MODULE_5__["default"]; // Numeric input
 
 
-Vue.use(vue_numeric_input__WEBPACK_IMPORTED_MODULE_5___default.a); // Datetime
+Vue.use(vue_numeric_input__WEBPACK_IMPORTED_MODULE_6___default.a); // Datetime
 
 
-Vue.component('datetime', vue_datetime__WEBPACK_IMPORTED_MODULE_6__["Datetime"]); // Checkbox
+Vue.component('datetime', vue_datetime__WEBPACK_IMPORTED_MODULE_7__["Datetime"]); // Checkbox
 
 
-Vue.use(vue_checkbox_radio__WEBPACK_IMPORTED_MODULE_7___default.a); //ToggleButton
+Vue.use(vue_checkbox_radio__WEBPACK_IMPORTED_MODULE_8___default.a); //ToggleButton
 
 
-Vue.use(vue_js_toggle_button__WEBPACK_IMPORTED_MODULE_8___default.a); //filter for Uppercase
+Vue.use(vue_js_toggle_button__WEBPACK_IMPORTED_MODULE_9___default.a); //filter for Uppercase
 
 Vue.filter('upText', function (text) {
   return text.charAt(0).toUpperCase() + text.slice(1);
