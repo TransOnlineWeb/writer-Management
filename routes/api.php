@@ -22,3 +22,8 @@ Route::get('profile','API\UserController@profile');
 Route::put('profile','API\UserController@updateProfile');
 
 Route::apiResources(['user' => 'API\UserController']);
+Route::get('contacts','API\ContactsController@index');
+Route::get('student','API\ContactsController@student');
+Route::get('conversation/{id}','API\ContactsController@getMessagesFor');
+Route::post('conversation/send','API\ContactsController@send');
+Route::get('unread','API\ContactsController@index');
