@@ -21,9 +21,10 @@
                   <th>Status</th>
                   <th>Modify</th>
                 </tr>
-                <tr>
-                  <td>183</td>
-                  <td>John Doe</td>
+                 <!-- v-for="user in users" :key="user.id" -->
+                <tr v-for="user in users.data" :key="user.id">
+                  <td>{{user.id}}</td>
+                  <td>ctuyjhk</td>
                   <td>11-7-2014</td>
                   <td><span class="label label-success">Approved</span></td>
                   <td>11-7-2014</td>
@@ -47,22 +48,23 @@
     </div>
 </template>
 
+
 <script>
     export default {
-      data(){
-
-        return {
-          users : {},
-        }
-      },
-
-      methods: {
-        getUsers(){
-          axios.get("api/user").then(({ data })=>(this.users = data));
-        }
-      },
+        data(){
+            return{
+                users: []
+            }
+        },
+        methods: {
+            getUsers(){
+              window.axios.get('/api/user').then(({ data }) => {
+                console.log(data)
+              });
+            }
+        },
         mounted() {
-            this.getUsers();
+          this.getUsers();
         }
     }
 </script>
