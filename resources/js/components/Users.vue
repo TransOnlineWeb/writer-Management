@@ -19,15 +19,26 @@
                   <th>Email</th>
                   <th>Role</th>
                   <th>Status</th>
+                  <th>Level</th>
                   <th>Modify</th>
                 </tr>
                  <!-- v-for="user in users" :key="user.id" -->
-                <tr v-for="user in users.data" :key="user.id">
+                <tr v-for="user in users" :key="user.id">
                   <td>{{user.id}}</td>
-                  <td>ctuyjhk</td>
-                  <td>11-7-2014</td>
-                  <td><span class="label label-success">Approved</span></td>
-                  <td>11-7-2014</td>
+                  <td>{{user.name}}</td>
+                  <td>{{user.email}}</td>
+                  <td><span class="label label-success">{{user.role}}</span></td>
+                  <td>
+                    <span v-if="user.status_id == 1">Active</span>
+                    <span v-if="user.status_id == 0">Pending</span>
+                    <span v-if="user.status_id == 2">Suspended</span>
+                  </td>
+                  <td>
+                    <span v-if="user.level_id == 1">Active</span>
+                    <span v-if="user.level_id == 0">Pending</span>
+                    <span v-if="user.level_id == 2">Suspended</span>
+                    <span v-else>Not Rated</span>
+                  </td>
                   <td>
                       <a href="">
                           <i class="fa fa-edit blue"></i>
@@ -53,14 +64,12 @@
     export default {
         data(){
             return{
-                users: []
+                users: {},
             }
         },
         methods: {
             getUsers(){
-              window.axios.get('/api/user').then(({ data }) => {
-                console.log(data)
-              });
+              window.axios.get('api/user').then(({ data }) => (this.users = data.data));
             }
         },
         mounted() {

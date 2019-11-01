@@ -126,6 +126,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
                              </p>
                          </router-link>
                      </li>
+                     <li class="nav-item">
+                        <router-link to="/users" class="nav-link">
+                            <i class="nav-icon fas fa-users yellow"></i>
+                        <p>
+                            Users
+                        </p>
+                        </router-link>
+                     </li>
                     <li class="nav-item">
                         <router-link to="/chat" class="nav-link">
                             <i class="nav-icon fas fa-comments yellow"></i>
