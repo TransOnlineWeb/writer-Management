@@ -35,6 +35,7 @@ let routes = [
     { path: '/profile', component: require('./components/profile.vue').default },
     { path: '/dashboard', component: require('./components/Dashboard.vue').default },
     { path: '/chat', component: require('./components/Chat.vue').default },
+    {path: '/orderdetails/:orderId', component: require('./components/OrderDetails.vue').default},
 ];
 
 const router = new VueRouter({
@@ -80,6 +81,10 @@ Vue.filter('upText', function(text){
 //filter for date
 Vue.filter('myDate',function(created){
     return moment(created).format('MMMM Do YYYY');
+});
+
+Vue.filter('myDatetime',function(created){
+    return moment(created).format('MMMM Do YYYY, h:mm a');
 });
 /**
  * The following block of code may be used to automatically register your
