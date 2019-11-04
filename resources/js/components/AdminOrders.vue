@@ -11,8 +11,40 @@
                         </div>
                     </div>
 
-                    <div class="card-body">
-                        I'm an example component.
+                    <div class="card-body table-responsive p-0">
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th>Order#</th>
+                                <th>Title</th>
+                                <th>Deadline</th>
+                                <th>Level</th>
+                                <th>Status</th>
+                                <th>Urgency</th>
+                                <th>More</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="order in orders.data" :key="order.id">
+                                <td>{{order.order_number}}</td>
+                                <td>{{order.title}}</td>
+                                <td>{{order.deadline}}</td>
+                                <td>{{order.academic_level}}</td>
+                                <td>
+                                    <span class="badge badge-pill badge-warning" v-if="order.status == 0">Pending..</span>
+                                    <span class="badge badge-pill badge-info" v-if="order.status == 1">Assigned</span>
+                                    <span class="badge badge-pill badge-dark" v-if="order.status == 'Working'">Working</span>
+                                    <span class="badge badge-pill badge-success" v-if="order.status == 'Completed'">Completed</span>
+                                </td>
+                                <td>
+                                    <span class="badge badge-dark" v-if="order.urgency == 1">Urgent</span>
+                                </td>
+                                <td>
+                                    <router-link :to="{path:'/orderdetails/'+ order.id}" type="button" class="btn btn-primary btn-sm">More</router-link>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -210,6 +242,7 @@
                 e_spacing: '',
                 e_description: '',
                 e_viewers: '',
+                orders: {},
                 urgent: false,
                 attachments: [],
                 formf: new FormData(),
@@ -231,6 +264,9 @@
             }
         },
         methods: {
+            getOrders(){
+                axios.get("/api/order").then(({ data }) => ([this.orders = data]));
+            },
             validateForm() {
                 if (!this.form.title) {
                     // set(type, 'required');
@@ -352,6 +388,9 @@
                 this.form.viewers = [];
                 $('#addnew').modal('show');
             },
+        },
+        created() {
+            this.getOrders();
         }
     }
 </script>

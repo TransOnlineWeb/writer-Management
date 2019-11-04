@@ -17,7 +17,7 @@ class OrderController extends Controller
      */
     public function index()
     {
-        //
+        return Order::latest()->paginate(10);
     }
 
     /**
@@ -82,7 +82,7 @@ class OrderController extends Controller
             $order->description = $request->description;
             $order->deadline = $request->deadline;
             $order->pages = $request->pages;
-            $order->status = 1;
+            $order->status = 0;
             $order->amount = $request->amount;
             $order->total_amount = $request->amount * $request->pages;
             $viewers = $request->viewers;
@@ -91,6 +91,7 @@ class OrderController extends Controller
             $order->discipline = $request->discipline;
             $order->paper_format = $request->paper_format;
             $order->spacing = $request->spacing;
+            $order->urgency = $request->urgency;
             $order->save();
             $order_id = $order->id;
 
@@ -117,7 +118,7 @@ class OrderController extends Controller
      */
     public function show($id)
     {
-        //
+
     }
 
     /**
