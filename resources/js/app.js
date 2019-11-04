@@ -67,6 +67,10 @@ Vue.use(VueNumericInput);
 import { Datetime } from 'vue-datetime';
 Vue.component('datetime', Datetime);
 
+// Vue Select
+import vSelect from 'vue-select';
+Vue.component('v-select', vSelect);
+
 // Checkbox
 import CheckboxRadio from 'vue-checkbox-radio';
 Vue.use(CheckboxRadio);

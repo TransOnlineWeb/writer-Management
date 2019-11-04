@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\File;
 use App\Http\Controllers\Controller;
 use App\Order;
+use App\User;
 use Illuminate\Http\Request;
 
 class MoreOrdersController extends Controller
@@ -46,5 +47,9 @@ class MoreOrdersController extends Controller
             }
         }
         return response(['status' => 'success'], 200);
+    }
+
+    public function getWriters(){
+        return (object) User::where('role', 'writer')->where('status_id', 1)->get();
     }
 }

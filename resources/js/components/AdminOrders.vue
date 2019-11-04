@@ -28,19 +28,25 @@
                             <tr v-for="order in orders.data" :key="order.id">
                                 <td>{{order.order_number}}</td>
                                 <td>{{order.title}}</td>
-                                <td><small style="color: red;">{{order.deadline|myDatetime}}</small></td>
+                                <td>
+                                    <small style="color: red;">{{order.deadline|myDatetime}}</small>
+                                </td>
                                 <td>{{order.academic_level}}</td>
                                 <td>
-                                    <span class="badge badge-pill badge-warning" v-if="order.status == 0">Pending..</span>
+                                    <span class="badge badge-pill badge-warning"
+                                          v-if="order.status == 0">Pending..</span>
                                     <span class="badge badge-pill badge-info" v-if="order.status == 1">Assigned</span>
-                                    <span class="badge badge-pill badge-dark" v-if="order.status == 'Working'">Working</span>
+                                    <span class="badge badge-pill badge-dark"
+                                          v-if="order.status == 'Working'">Working</span>
                                     <span class="badge badge-pill badge-success" v-if="order.status == 'Completed'">Completed</span>
                                 </td>
                                 <td>
                                     <span class="badge badge-dark" v-if="order.urgency == 1">Urgent</span>
                                 </td>
                                 <td>
-                                    <router-link :to="{path:'/orderdetails/'+ order.id}" type="button" class="btn btn-primary btn-sm">More</router-link>
+                                    <router-link :to="{path:'/orderdetails/'+ order.id}" type="button"
+                                                 class="btn btn-primary btn-sm">More
+                                    </router-link>
                                 </td>
                             </tr>
                             </tbody>
@@ -214,6 +220,14 @@
                                     </div>
                                 </div>
                             </div>
+                            <hr>
+                            <div class="row justify-content-center">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <v-select v-model="form.writer" label="email" :options="writers" placeholder="Assign Writer"></v-select>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                                 <button type="button" class="btn btn-success" @click="validateForm">Create</button>
@@ -229,6 +243,8 @@
 <script>
     import {VueEditor} from "vue2-editor";
     import 'vue-datetime/dist/vue-datetime.css';
+    import 'vue-select/dist/vue-select.css';
+
 
     export default {
         name: "AdminOrders",
@@ -242,6 +258,7 @@
                 e_spacing: '',
                 e_description: '',
                 e_viewers: '',
+                writers: '',
                 orders: {},
                 urgent: false,
                 attachments: [],
@@ -260,12 +277,16 @@
                     spacing: '',
                     paper_format: '',
                     description: '',
+                    writer: ''
                 })
             }
         },
         methods: {
-            getOrders(){
-                axios.get("/api/order").then(({ data }) => ([this.orders = data]));
+            getWriters(){
+                axios.get("/api/getwriters").then(({data}) => ([this.writers = data]));
+            },
+            getOrders() {
+                axios.get("/api/order").then(({data}) => ([this.orders = data]));
             },
             validateForm() {
                 if (!this.form.title) {
@@ -345,6 +366,7 @@
                 this.formf.append('urgent', this.form.urgent);
                 this.formf.append('amount', this.form.amount);
                 this.formf.append('viewers[]', this.form.viewers);
+                this.formf.append('writer', this.form.writer);
 
                 const config = {headers: {'Content-Type': 'multipart/form-data'}};
 
@@ -391,6 +413,7 @@
         },
         created() {
             this.getOrders();
+            this.getWriters();
         }
     }
 </script>
