@@ -16,7 +16,7 @@
               <h3 class="box-title">Users</h3>
 
               <div class="box-tools ml-auto">
-                <button class="btn btn-success" data-toggle="modal" data-target="#AddNew">Add New User</button>
+                <button class="btn btn-success" @click="newUser">Add New User</button>
               </div>
             </div>
             <!-- /.box-header -->
@@ -26,6 +26,7 @@
                   <th>ID</th>
                   <th>Name</th>
                   <th>Email</th>
+                  <th>Phone No.</th>
                   <th>Role</th>
                   <th>Status</th>
                   <th>Level</th>
@@ -36,6 +37,7 @@
                   <td>{{user.id}}</td>
                   <td>{{user.name}}</td>
                   <td>{{user.email}}</td>
+                  <td>{{user.phone_number}}</td>
                   <td><span class="label label-success">{{user.role | upText}}</span></td>
                   <td>
                     <span v-if="user.status_id == 1">Active</span>
@@ -43,15 +45,14 @@
                     <span v-if="user.status_id == 2">Suspended</span>
                   </td>
                   <td>
-                    <span v-if="user.level_id == 1">Active</span>
-                    <span v-if="user.level_id == 0">Pending</span>
-                    <span v-if="user.level_id == 2">Suspended</span>
-                    <span v-else>Not Rated</span>
+                    <span v-if="user.level_id == 1">Junior</span>
+                    <span v-if="user.level_id == 2">Mid</span>
+                    <span v-if="user.level_id == 3">Senior</span>
                   </td>
                   <td>
-                      <a href="" data-toggle="modal" data-target="#Edit">
+                      <button @click="editUser(user)">
                           <i class="fa fa-edit blue"></i>
-                      </a>
+                      </button>
                       &nbsp;
                       <button @click="deleteUser(user.id)">
                           <i class="fa fa-trash red"></i>
@@ -70,12 +71,13 @@
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="AddNewLabel">Add New User</h5>
+              <h5 class="modal-title" v-show="!editmode" id="AddNewUser">Add New User</h5>
+              <h5 class="modal-title" v-show="editmode" id="AddNewUser">Update User Information</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <form @submit.prevent="addUser()">
+            <form @submit.prevent="editmode ? updateUserInfo() : addUser()">
               <div class="modal-body">
                 <div class="form-group">
                   <input v-model="form.name" type="text" class="form-control" name="name"id="name" placeholder="Name" :class="{ 'is-invalid': form.errors.has('name') }">
@@ -86,8 +88,8 @@
                   <has-error :form="form" field="email"></has-error>
                 </div>
                 <div class="form-group">
-                  <input v-model="form.phone" type="number" class="form-control" name="phone"id="phone" placeholder="Phone Number" :class="{ 'is-invalid': form.errors.has('phone') }">
-                  <has-error :form="form" field="phone"></has-error>
+                  <input v-model="form.phone_number" type="number" class="form-control" name="phone_number"id="phone_number" placeholder="Phone Number" :class="{ 'is-invalid': form.errors.has('phone_number') }">
+                  <has-error :form="form" field="phone_number"></has-error>
                 </div>
                 <div class="form-group">
                   <select v-model="form.role" class="form-control" name="role" id="role"
@@ -107,24 +109,24 @@
                   </div>
                 </div>
                 <div class="form-group">
-                  <select v-model="form.level" class="form-control" name="level" id="level"
-                          :class="{ 'is-invalid': form.errors.has('level') }">
+                  <select v-model="form.level_id" class="form-control" name="level_id" id="level_id"
+                          :class="{ 'is-invalid': form.errors.has('level_id') }">
                       <option selected value="">--Select Level--</option>
                       <option value="1">Starter</option>
                       <option value="2">Mid</option>
                       <option value="3">Senior</option>
                   </select>
-                  <has-error :form="form" field="level"></has-error>
+                  <has-error :form="form" field="level_id"></has-error>
                 </div>
                 <div class="form-group">
-                  <select v-model="form.status" class="form-control" name="status" id="status"
-                          :class="{ 'is-invalid': form.errors.has('status') }">
+                  <select v-model="form.status_id" class="form-control" name="status_id" id="status_id"
+                          :class="{ 'is-invalid': form.errors.has('status_id') }">
                       <option selected value="">--Select Account Status--</option>
                       <option value="1">Active</option>
                       <option value="0">Pending</option>
                       <option value="2">Suspended</option>
                   </select>
-                  <has-error :form="form" field="status"></has-error>
+                  <has-error :form="form" field="status_id"></has-error>
                 </div>
                 <div class="form-group">
                   <input v-model="form.password" type="password" class="form-control" name="password"id="password" placeholder="Password" :class="{ 'is-invalid': form.errors.has('password') }">
@@ -133,33 +135,13 @@
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">AddUser</button>
+                <button type="submit" v-show="!editmode" class="btn btn-primary">AddUser</button>
+                <button type="submit" v-show="editmode" class="btn btn-primary">UpdateUser</button>
               </div>
             </form>
           </div>
         </div>
       </div>
-
-      <div class="modal fade" id="Edit" tabindex="-1" role="dialog" aria-labelledby="EditLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="EditLabel">Edit User Details</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              ...
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Save Changes</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
     </div>
 </template>
 
@@ -168,13 +150,15 @@
     export default {
         data(){
             return{
+                editmode: false,
                 users: {},
                 form: new Form ({
+                  id: '',
                   name: '',
-                  phone: '',
+                  phone_number: '',
                   role: '',
-                  level: '',
-                  status: '',
+                  level_id: '',
+                  status_id: '',
                   photo: '',
                   email: '',
                   password: '',
@@ -182,6 +166,33 @@
             }
         },
         methods: {
+            updateUserInfo() {
+              this.$Progress.start();
+              this.form.put('api/user/'+this.form.id)
+              .then(() => {
+                Fire.$emit('AfterCreate');
+                  $('#AddNew').modal('hide');
+                      this.form.reset();
+                      Swal.fire({
+                          type: 'success',
+                          title: 'User Information Updated',
+                      })
+                this.$Progress.finish();
+              }).catch(() => {
+                this.$Progress.fail();
+              });
+            },
+            editUser(user) {
+              this.editmode = true;
+              this.form.reset();
+              $('#AddNew').modal('show');
+              this.form.fill(user);
+            },
+            newUser() {
+              this.editmode = false;
+              this.form.reset();
+              $('#AddNew').modal('show');
+            },
             deleteUser(id) {
               Swal.fire({
                 title: 'Are you sure?',

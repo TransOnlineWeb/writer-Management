@@ -22,7 +22,7 @@ class UserController extends Controller
     public function index()
     {
         //
-        return User::latest()->paginate(10);
+        return User::latest()->paginate(30);
         // return response(User::all()->jsonSerialize(), Response::HTTP_OK);
     }
 
@@ -38,20 +38,20 @@ class UserController extends Controller
             'name' => 'required|string|max:191',
             'email' => 'required|string|email|max:191|unique:users',
             'password' => 'sometimes|required|min:6',
-            'phone' => 'required|string|min:10',
+            'phone_number' => 'required|string|min:10',
             'role' => 'required|string',
-            'level' => 'required|string',
-            'status' => 'required|string',
+            'level_id' => 'required|string',
+            'status_id' => 'required|string',
         ]);
 
         return User::create([
             'name' => $request['name'],
             'email' => $request['email'],
             'password' => Hash::make($request['password']),
-            'phone_number'  => $request['phone'],
+            'phone_number'  => $request['phone_number'],
             'role' => $request['role'],
-            'level_id' => $request['level'],
-            'status_id' => $request['status'],
+            'level_id' => $request['level_id'],
+            'status_id' => $request['status_id'],
             'photo' => $request['photo'],
         ]);
     }
@@ -104,7 +104,20 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $user = User::FindOrFail($id);
+
+        $this->validate($request,[
+            'name' => 'required|string|max:191',
+            'email' => 'required|string|email|max:191|unique:users,email,'.$user->id,
+            'password' => 'sometimes|min:6',
+            'phone_number' => 'required|string|min:10',
+            'role' => 'required|string',
+            'level_id' => 'required',
+            'status_id' => 'required',
+        ]);
+
+        $user->update($request->all());
+        return ['message' => 'Text'];
     }
 
     /**
