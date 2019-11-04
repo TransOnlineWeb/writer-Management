@@ -24,4 +24,10 @@ class MoreOrdersController extends Controller
 
         return response()->download($pathToFile);
     }
+
+    public function addFiles(Request $request){
+        $request->validate([
+            'files' => 'required',
+        ]);
+    }
 }
