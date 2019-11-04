@@ -183,16 +183,17 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="addnewLabel">Upload File</h5>
+                        <h5 class="modal-title" id="addnewLabel">Add File(s)</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form @submit.prevent="submit()">
+                    <form @submit.prevent="validate()">
                         <div class="modal-body">
                             <div class="form-group">
                                 <label for="files">Select File</label>
                                 <input type="file" multiple class="form-control-file" @change="fieldChange" id="files">
+                                <p style="color: red">{{this.e_files}}</p>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -222,6 +223,7 @@
                 message: '',
                 typing: '',
                 users : {},
+                e_files: '',
                 messages:[],
                 orderId: this.$route.params.orderId,
                 details: {},
@@ -247,21 +249,29 @@
                 });
         },
         methods:{
+            validate(){
+              if (this.attachments.length == 0){
+                  this.e_files = 'This field is required';
+                  return false;
+              }else {
+                  this.submit();
+              }
+            },
             downloadAll(){
                 axios.post('/api/downloadAll/' + this.orderId);
             },
             submit(){
                 for(let i=0; i<this.attachments.length;i++){
-                    this.formf.append('pics[]',this.attachments[i]);
+                    this.formf.append('files[]',this.attachments[i]);
                 }
 
                 const config = { headers: { 'Content-Type': 'multipart/form-data' } };
 
-                axios.post('/api/completed/' + this.orderId,this.formf,config).then(response=>{
+                axios.post('/api/addfiles/' + this.orderId,this.formf,config).then(response=>{
                     Fire.$emit('entry');
                     $('#addnew').modal('hide');
                     this.form.reset();
-                    swal.fire({
+                    Swal.fire({
                         type: 'success',
                         title: 'Submited!!',
                         text: 'Files added successfully',
@@ -285,6 +295,7 @@
             },
             newModal(){
                 this.form.reset();
+                this.attachments = [];
                 $('#addnew').modal('show');
             },
             handleIncoming(message) {
@@ -347,6 +358,10 @@
             this.getMessages();
             this.getUser();
             this.getFiles();
+            Fire.$on('entry', () =>{
+                this.getFiles();
+                this.getFilesCount();
+            })
         }
     }
 </script>

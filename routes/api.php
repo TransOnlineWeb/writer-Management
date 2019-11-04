@@ -32,3 +32,4 @@ Route::apiResources(['/user' => 'API\UserController']);
 Route::get('filescount/{orderId}', 'API\MoreOrdersController@filesCount');
 Route::get('getfiles/{orderId}', 'API\MoreOrdersController@getFiles');
 Route::get('download/{orderId}', 'API\MoreOrdersController@downloadFile');
+Route::post('addfiles/{orderId}', 'API\MoreOrdersController@addFiles');

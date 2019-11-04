@@ -2904,6 +2904,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     user: {
@@ -2916,6 +2917,7 @@ __webpack_require__.r(__webpack_exports__);
       message: '',
       typing: '',
       users: {},
+      e_files: '',
       messages: [],
       orderId: this.$route.params.orderId,
       details: {},
@@ -2940,6 +2942,14 @@ __webpack_require__.r(__webpack_exports__);
     });
   },
   methods: {
+    validate: function validate() {
+      if (this.attachments.length == 0) {
+        this.e_files = 'This field is required';
+        return false;
+      } else {
+        this.submit();
+      }
+    },
     downloadAll: function downloadAll() {
       axios.post('/api/downloadAll/' + this.orderId);
     },
@@ -2947,7 +2957,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       for (var i = 0; i < this.attachments.length; i++) {
-        this.formf.append('pics[]', this.attachments[i]);
+        this.formf.append('files[]', this.attachments[i]);
       }
 
       var config = {
@@ -2955,13 +2965,13 @@ __webpack_require__.r(__webpack_exports__);
           'Content-Type': 'multipart/form-data'
         }
       };
-      axios.post('/api/completed/' + this.orderId, this.formf, config).then(function (response) {
+      axios.post('/api/addfiles/' + this.orderId, this.formf, config).then(function (response) {
         Fire.$emit('entry');
         $('#addnew').modal('hide');
 
         _this2.form.reset();
 
-        swal.fire({
+        Swal.fire({
           type: 'success',
           title: 'Submited!!',
           text: 'Files added successfully'
@@ -2984,6 +2994,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     newModal: function newModal() {
       this.form.reset();
+      this.attachments = [];
       $('#addnew').modal('show');
     },
     handleIncoming: function handleIncoming(message) {
@@ -3058,11 +3069,18 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   created: function created() {
+    var _this8 = this;
+
     this.getDetails();
     this.getFilesCount();
     this.getMessages();
     this.getUser();
     this.getFiles();
+    Fire.$on('entry', function () {
+      _this8.getFiles();
+
+      _this8.getFilesCount();
+    });
   }
 });
 
@@ -77269,7 +77287,7 @@ var render = function() {
                   on: {
                     submit: function($event) {
                       $event.preventDefault()
-                      return _vm.submit()
+                      return _vm.validate()
                     }
                   }
                 },
@@ -77284,7 +77302,11 @@ var render = function() {
                         staticClass: "form-control-file",
                         attrs: { type: "file", multiple: "", id: "files" },
                         on: { change: _vm.fieldChange }
-                      })
+                      }),
+                      _vm._v(" "),
+                      _c("p", { staticStyle: { color: "red" } }, [
+                        _vm._v(_vm._s(this.e_files))
+                      ])
                     ])
                   ]),
                   _vm._v(" "),
@@ -77416,7 +77438,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "modal-header" }, [
       _c("h5", { staticClass: "modal-title", attrs: { id: "addnewLabel" } }, [
-        _vm._v("Upload File")
+        _vm._v("Add File(s)")
       ]),
       _vm._v(" "),
       _c(
