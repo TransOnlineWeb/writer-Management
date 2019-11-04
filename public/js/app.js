@@ -2904,10 +2904,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     user: {
@@ -2923,7 +2919,7 @@ __webpack_require__.r(__webpack_exports__);
       messages: [],
       orderId: this.$route.params.orderId,
       details: {},
-      filesCount: {},
+      filesCount: '',
       files: {},
       attachments: [],
       formf: new FormData(),
@@ -3030,9 +3026,21 @@ __webpack_require__.r(__webpack_exports__);
         return [_this5.details = data];
       });
     },
-    getFilesCount: function getFilesCount() {// axios.get("/api/ifFiles/" + this.orderId).then(({ data }) => ([this.filesCount = data]));
+    getFilesCount: function getFilesCount() {
+      var _this6 = this;
+
+      axios.get("/api/filescount/" + this.orderId).then(function (_ref2) {
+        var data = _ref2.data;
+        return [_this6.filesCount = data];
+      });
     },
-    getFiles: function getFiles() {// axios.get("/api/getFiles/" + this.orderId).then(({ data }) => ([this.files = data]));
+    getFiles: function getFiles() {
+      var _this7 = this;
+
+      axios.get("/api/getfiles/" + this.orderId).then(function (_ref3) {
+        var data = _ref3.data;
+        return [_this7.files = data];
+      });
     },
     getUser: function getUser() {// axios.get("/api/getUser/" + this.orderId).then(({ data }) => ([this.users = data]));
     },
@@ -77026,6 +77034,31 @@ var render = function() {
                 _c("div", { staticClass: "box" }, [
                   _vm._m(4),
                   _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass: "box",
+                      staticStyle: { "margin-bottom": "10px" }
+                    },
+                    [
+                      _c("div", { staticClass: "box-body" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-success btn-sm",
+                            attrs: { type: "button" },
+                            on: { click: _vm.newModal }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                                Add more files\n                                            "
+                            )
+                          ]
+                        )
+                      ])
+                    ]
+                  ),
+                  _vm._v(" "),
                   this.filesCount > 0
                     ? _c("div", { staticClass: "box-body" }, [
                         _c(
@@ -77108,27 +77141,6 @@ var render = function() {
                             }
                           })
                         ])
-                      ]
-                    )
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "box" }, [
-                  _vm._m(9),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "box-body" }, [
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-success btn-sm",
-                        attrs: { type: "button" },
-                        on: { click: _vm.newModal }
-                      },
-                      [
-                        _c("i", { staticClass: "fas fa-cloud-upload-alt" }),
-                        _vm._v(
-                          "\n                                            Upload Completed Task\n                                        "
-                        )
                       ]
                     )
                   ])
@@ -77249,7 +77261,7 @@ var render = function() {
           { staticClass: "modal-dialog", attrs: { role: "document" } },
           [
             _c("div", { staticClass: "modal-content" }, [
-              _vm._m(10),
+              _vm._m(9),
               _vm._v(" "),
               _c(
                 "form",
@@ -77276,7 +77288,7 @@ var render = function() {
                     ])
                   ]),
                   _vm._v(" "),
-                  _vm._m(11)
+                  _vm._m(10)
                 ]
               )
             ])
@@ -77396,14 +77408,6 @@ var staticRenderFns = [
           )
         ]
       )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "box-header" }, [
-      _c("h5", { staticClass: "box-title" }, [_vm._v("Upload")])
     ])
   },
   function() {

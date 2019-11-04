@@ -98,6 +98,13 @@
                                     <div class="box-header">
                                         <h4 class="box-title">Files</h4>
                                     </div>
+                                    <div class="box" style="margin-bottom: 10px;">
+                                        <div class="box-body">
+                                            <button type="button" class="btn btn-success btn-sm" @click="newModal">
+                                                Add more files
+                                            </button>
+                                        </div>
+                                    </div>
                                     <div class="box-body" v-if="this.filesCount > 0">
                                         <div class="row">
                                             <div class="col-md-6 col-sm-6 col-xs-12" v-for="file in files" :key="file.id">
@@ -138,17 +145,6 @@
                                                 <div v-html="details.description"></div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="box">
-                                    <div class="box-header">
-                                        <h5 class="box-title">Upload</h5>
-                                    </div>
-                                    <div class="box-body">
-                                        <button type="button" class="btn btn-success btn-sm" @click="newModal">
-                                            <i class="fas fa-cloud-upload-alt"></i>
-                                            Upload Completed Task
-                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -229,7 +225,7 @@
                 messages:[],
                 orderId: this.$route.params.orderId,
                 details: {},
-                filesCount: {},
+                filesCount: '',
                 files: {},
                 attachments:[],
                 formf: new FormData(),
@@ -321,11 +317,11 @@
             },
 
             getFilesCount(){
-                // axios.get("/api/ifFiles/" + this.orderId).then(({ data }) => ([this.filesCount = data]));
+                axios.get("/api/filescount/" + this.orderId).then(({ data }) => ([this.filesCount = data]));
             },
 
             getFiles(){
-                // axios.get("/api/getFiles/" + this.orderId).then(({ data }) => ([this.files = data]));
+                axios.get("/api/getfiles/" + this.orderId).then(({ data }) => ([this.files = data]));
             },
             getUser(){
                 // axios.get("/api/getUser/" + this.orderId).then(({ data }) => ([this.users = data]));

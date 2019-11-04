@@ -28,3 +28,7 @@ Route::get('conversation/{id}','API\ContactsController@getMessagesFor');
 Route::post('conversation/send','API\ContactsController@send');
 Route::get('unread','API\ContactsController@index');
 Route::apiResources(['/user' => 'API\UserController']);
+
+Route::get('filescount/{orderId}', 'API\MoreOrdersController@filesCount');
+Route::get('getfiles/{orderId}', 'API\MoreOrdersController@getFiles');
+Route::get('download/{orderId}', 'API\MoreOrdersController@downloadFile');
