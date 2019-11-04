@@ -2841,6 +2841,128 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+<<<<<<< HEAD
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      editmode: false,
+      users: {},
+      form: new Form({
+        id: '',
+        name: '',
+        phone_number: '',
+        role: '',
+        level_id: '',
+        status_id: '',
+        photo: '',
+        email: '',
+        password: ''
+      })
+    };
+  },
+  methods: {
+    updateUserInfo: function updateUserInfo() {
+      var _this = this;
+
+      this.$Progress.start();
+      this.form.put('api/user/' + this.form.id).then(function () {
+        Fire.$emit('AfterCreate');
+        $('#AddNew').modal('hide');
+
+        _this.form.reset();
+
+        Swal.fire({
+          type: 'success',
+          title: 'User Information Updated'
+        });
+
+        _this.$Progress.finish();
+      })["catch"](function () {
+        _this.$Progress.fail();
+      });
+    },
+    editUser: function editUser(user) {
+      this.editmode = true;
+      this.form.reset();
+      $('#AddNew').modal('show');
+      this.form.fill(user);
+    },
+    newUser: function newUser() {
+      this.editmode = false;
+      this.form.reset();
+      $('#AddNew').modal('show');
+    },
+    deleteUser: function deleteUser(id) {
+      var _this2 = this;
+
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then(function (result) {
+        if (result.value) {
+          _this2.form["delete"]('api/user/' + id).then(function () {
+            Swal.fire('Deleted!', 'User has been deleted.', 'success');
+            Fire.$emit('AfterCreate');
+          })["catch"](function () {
+            Swal.fire('Failed!', 'We were unable to deleted.', 'warning');
+          });
+        }
+      });
+    },
+    addUser: function addUser() {
+      var _this3 = this;
+
+      this.$Progress.start();
+      this.form.post('api/user').then(function () {
+        Fire.$emit('AfterCreate');
+        $('#AddNew').modal('hide');
+
+        _this3.form.reset();
+
+        Swal.fire({
+          type: 'success',
+          title: 'User Successfully Created'
+        });
+
+        _this3.$Progress.finish();
+      })["catch"](function () {});
+    },
+    getUsers: function getUsers() {
+      var _this4 = this;
+
+      window.axios.get('api/user').then(function (_ref) {
+        var data = _ref.data;
+        return _this4.users = data.data;
+      });
+    }
+  },
+  mounted: function mounted() {
+    var _this5 = this;
+
+    this.getUsers();
+    Fire.$on('AfterCreate', function () {
+      _this5.getUsers();
+    });
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Writers.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Writers.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+=======
 //
 //
 //
@@ -2859,6 +2981,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+>>>>>>> 21b1858c51e91d42c77e7ca7d4754552556a97b8
 //
 //
 //
@@ -9844,7 +9967,7 @@ Buffer.prototype.fill = function fill (val, start, end, encoding) {
 }
 
 // HELPER FUNCTIONS
-// ================
+
 
 var INVALID_BASE64_RE = /[^+\/0-9A-Za-z-_]/g
 
@@ -77507,14 +77630,24 @@ var render = function() {
     _c("div", { staticClass: "row mt-4" }, [
       _c("div", { staticClass: "col-md-12" }, [
         _c("div", { staticClass: "box" }, [
-          _vm._m(0),
+          _c("div", { staticClass: "box-header" }, [
+            _c("h3", { staticClass: "box-title" }, [_vm._v("Users")]),
+            _vm._v(" "),
+            _c("div", { staticClass: "box-tools ml-auto" }, [
+              _c(
+                "button",
+                { staticClass: "btn btn-success", on: { click: _vm.newUser } },
+                [_vm._v("Add New User")]
+              )
+            ])
+          ]),
           _vm._v(" "),
           _c("div", { staticClass: "box-body table-responsive no-padding" }, [
             _c("table", { staticClass: "table table-hover" }, [
               _c(
                 "tbody",
                 [
-                  _vm._m(1),
+                  _vm._m(0),
                   _vm._v(" "),
                   _vm._l(_vm.users, function(user) {
                     return _c("tr", { key: user.id }, [
@@ -77523,6 +77656,8 @@ var render = function() {
                       _c("td", [_vm._v(_vm._s(user.name))]),
                       _vm._v(" "),
                       _c("td", [_vm._v(_vm._s(user.email))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(user.phone_number))]),
                       _vm._v(" "),
                       _c("td", [
                         _c("span", { staticClass: "label label-success" }, [
@@ -77546,20 +77681,30 @@ var render = function() {
                       _vm._v(" "),
                       _c("td", [
                         user.level_id == 1
-                          ? _c("span", [_vm._v("Active")])
-                          : _vm._e(),
-                        _vm._v(" "),
-                        user.level_id == 0
-                          ? _c("span", [_vm._v("Pending")])
+                          ? _c("span", [_vm._v("Junior")])
                           : _vm._e(),
                         _vm._v(" "),
                         user.level_id == 2
-                          ? _c("span", [_vm._v("Suspended")])
-                          : _c("span", [_vm._v("Not Rated")])
+                          ? _c("span", [_vm._v("Mid")])
+                          : _vm._e(),
+                        _vm._v(" "),
+                        user.level_id == 3
+                          ? _c("span", [_vm._v("Senior")])
+                          : _vm._e()
                       ]),
                       _vm._v(" "),
                       _c("td", [
-                        _vm._m(2, true),
+                        _c(
+                          "button",
+                          {
+                            on: {
+                              click: function($event) {
+                                return _vm.editUser(user)
+                              }
+                            }
+                          },
+                          [_c("i", { staticClass: "fa fa-edit blue" })]
+                        ),
                         _vm._v("\n                   \n                  "),
                         _c(
                           "button",
@@ -77602,7 +77747,43 @@ var render = function() {
           { staticClass: "modal-dialog", attrs: { role: "document" } },
           [
             _c("div", { staticClass: "modal-content" }, [
-              _vm._m(3),
+              _c("div", { staticClass: "modal-header" }, [
+                _c(
+                  "h5",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: !_vm.editmode,
+                        expression: "!editmode"
+                      }
+                    ],
+                    staticClass: "modal-title",
+                    attrs: { id: "AddNewUser" }
+                  },
+                  [_vm._v("Add New User")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "h5",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.editmode,
+                        expression: "editmode"
+                      }
+                    ],
+                    staticClass: "modal-title",
+                    attrs: { id: "AddNewUser" }
+                  },
+                  [_vm._v("Update User Information")]
+                ),
+                _vm._v(" "),
+                _vm._m(1)
+              ]),
               _vm._v(" "),
               _c(
                 "form",
@@ -77610,7 +77791,7 @@ var render = function() {
                   on: {
                     submit: function($event) {
                       $event.preventDefault()
-                      return _vm.addUser()
+                      _vm.editmode ? _vm.updateUserInfo() : _vm.addUser()
                     }
                   }
                 },
@@ -77703,31 +77884,37 @@ var render = function() {
                             {
                               name: "model",
                               rawName: "v-model",
-                              value: _vm.form.phone,
-                              expression: "form.phone"
+                              value: _vm.form.phone_number,
+                              expression: "form.phone_number"
                             }
                           ],
                           staticClass: "form-control",
-                          class: { "is-invalid": _vm.form.errors.has("phone") },
+                          class: {
+                            "is-invalid": _vm.form.errors.has("phone_number")
+                          },
                           attrs: {
                             type: "number",
-                            name: "phone",
-                            id: "phone",
+                            name: "phone_number",
+                            id: "phone_number",
                             placeholder: "Phone Number"
                           },
-                          domProps: { value: _vm.form.phone },
+                          domProps: { value: _vm.form.phone_number },
                           on: {
                             input: function($event) {
                               if ($event.target.composing) {
                                 return
                               }
-                              _vm.$set(_vm.form, "phone", $event.target.value)
+                              _vm.$set(
+                                _vm.form,
+                                "phone_number",
+                                $event.target.value
+                              )
                             }
                           }
                         }),
                         _vm._v(" "),
                         _c("has-error", {
-                          attrs: { form: _vm.form, field: "phone" }
+                          attrs: { form: _vm.form, field: "phone_number" }
                         })
                       ],
                       1
@@ -77837,15 +78024,15 @@ var render = function() {
                               {
                                 name: "model",
                                 rawName: "v-model",
-                                value: _vm.form.level,
-                                expression: "form.level"
+                                value: _vm.form.level_id,
+                                expression: "form.level_id"
                               }
                             ],
                             staticClass: "form-control",
                             class: {
-                              "is-invalid": _vm.form.errors.has("level")
+                              "is-invalid": _vm.form.errors.has("level_id")
                             },
-                            attrs: { name: "level", id: "level" },
+                            attrs: { name: "level_id", id: "level_id" },
                             on: {
                               change: function($event) {
                                 var $$selectedVal = Array.prototype.filter
@@ -77858,7 +78045,7 @@ var render = function() {
                                   })
                                 _vm.$set(
                                   _vm.form,
-                                  "level",
+                                  "level_id",
                                   $event.target.multiple
                                     ? $$selectedVal
                                     : $$selectedVal[0]
@@ -77888,7 +78075,7 @@ var render = function() {
                         ),
                         _vm._v(" "),
                         _c("has-error", {
-                          attrs: { form: _vm.form, field: "level" }
+                          attrs: { form: _vm.form, field: "level_id" }
                         })
                       ],
                       1
@@ -77905,15 +78092,15 @@ var render = function() {
                               {
                                 name: "model",
                                 rawName: "v-model",
-                                value: _vm.form.status,
-                                expression: "form.status"
+                                value: _vm.form.status_id,
+                                expression: "form.status_id"
                               }
                             ],
                             staticClass: "form-control",
                             class: {
-                              "is-invalid": _vm.form.errors.has("status")
+                              "is-invalid": _vm.form.errors.has("status_id")
                             },
-                            attrs: { name: "status", id: "status" },
+                            attrs: { name: "status_id", id: "status_id" },
                             on: {
                               change: function($event) {
                                 var $$selectedVal = Array.prototype.filter
@@ -77926,7 +78113,7 @@ var render = function() {
                                   })
                                 _vm.$set(
                                   _vm.form,
-                                  "status",
+                                  "status_id",
                                   $event.target.multiple
                                     ? $$selectedVal
                                     : $$selectedVal[0]
@@ -77956,7 +78143,7 @@ var render = function() {
                         ),
                         _vm._v(" "),
                         _c("has-error", {
-                          attrs: { form: _vm.form, field: "status" }
+                          attrs: { form: _vm.form, field: "status_id" }
                         })
                       ],
                       1
@@ -78008,38 +78195,60 @@ var render = function() {
                     )
                   ]),
                   _vm._v(" "),
-                  _vm._m(4)
+                  _c("div", { staticClass: "modal-footer" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-secondary",
+                        attrs: { type: "button", "data-dismiss": "modal" }
+                      },
+                      [_vm._v("Close")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        directives: [
+                          {
+                            name: "show",
+                            rawName: "v-show",
+                            value: !_vm.editmode,
+                            expression: "!editmode"
+                          }
+                        ],
+                        staticClass: "btn btn-primary",
+                        attrs: { type: "submit" }
+                      },
+                      [_vm._v("AddUser")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        directives: [
+                          {
+                            name: "show",
+                            rawName: "v-show",
+                            value: _vm.editmode,
+                            expression: "editmode"
+                          }
+                        ],
+                        staticClass: "btn btn-primary",
+                        attrs: { type: "submit" }
+                      },
+                      [_vm._v("UpdateUser")]
+                    )
+                  ])
                 ]
               )
             ])
           ]
         )
       ]
-    ),
-    _vm._v(" "),
-    _vm._m(5)
+    )
   ])
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "box-header" }, [
-      _c("h3", { staticClass: "box-title" }, [_vm._v("Users")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "box-tools ml-auto" }, [
-        _c(
-          "button",
-          {
-            staticClass: "btn btn-success",
-            attrs: { "data-toggle": "modal", "data-target": "#AddNew" }
-          },
-          [_vm._v("Add New User")]
-        )
-      ])
-    ])
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -78050,6 +78259,8 @@ var staticRenderFns = [
       _c("th", [_vm._v("Name")]),
       _vm._v(" "),
       _c("th", [_vm._v("Email")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Phone No.")]),
       _vm._v(" "),
       _c("th", [_vm._v("Role")]),
       _vm._v(" "),
@@ -78065,129 +78276,16 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c(
-      "a",
-      { attrs: { href: "", "data-toggle": "modal", "data-target": "#Edit" } },
-      [_c("i", { staticClass: "fa fa-edit blue" })]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-header" }, [
-      _c("h5", { staticClass: "modal-title", attrs: { id: "AddNewLabel" } }, [
-        _vm._v("Add New User")
-      ]),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "close",
-          attrs: {
-            type: "button",
-            "data-dismiss": "modal",
-            "aria-label": "Close"
-          }
-        },
-        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-footer" }, [
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-secondary",
-          attrs: { type: "button", "data-dismiss": "modal" }
-        },
-        [_vm._v("Close")]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        { staticClass: "btn btn-primary", attrs: { type: "submit" } },
-        [_vm._v("AddUser")]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
+      "button",
       {
-        staticClass: "modal fade",
+        staticClass: "close",
         attrs: {
-          id: "Edit",
-          tabindex: "-1",
-          role: "dialog",
-          "aria-labelledby": "EditLabel",
-          "aria-hidden": "true"
+          type: "button",
+          "data-dismiss": "modal",
+          "aria-label": "Close"
         }
       },
-      [
-        _c(
-          "div",
-          {
-            staticClass: "modal-dialog modal-dialog-centered",
-            attrs: { role: "document" }
-          },
-          [
-            _c("div", { staticClass: "modal-content" }, [
-              _c("div", { staticClass: "modal-header" }, [
-                _c(
-                  "h5",
-                  { staticClass: "modal-title", attrs: { id: "EditLabel" } },
-                  [_vm._v("Edit User Details")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass: "close",
-                    attrs: {
-                      type: "button",
-                      "data-dismiss": "modal",
-                      "aria-label": "Close"
-                    }
-                  },
-                  [
-                    _c("span", { attrs: { "aria-hidden": "true" } }, [
-                      _vm._v("×")
-                    ])
-                  ]
-                )
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "modal-body" }, [
-                _vm._v("\n          ...\n        ")
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "modal-footer" }, [
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-secondary",
-                    attrs: { type: "button", "data-dismiss": "modal" }
-                  },
-                  [_vm._v("Close")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  { staticClass: "btn btn-primary", attrs: { type: "button" } },
-                  [_vm._v("Save Changes")]
-                )
-              ])
-            ])
-          ]
-        )
-      ]
+      [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
     )
   }
 ]
