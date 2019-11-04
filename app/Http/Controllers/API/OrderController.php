@@ -118,7 +118,7 @@ class OrderController extends Controller
      */
     public function show($id)
     {
-
+         return Order::where('id', $id)->first();
     }
 
     /**

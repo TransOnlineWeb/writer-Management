@@ -28,7 +28,7 @@
                             <tr v-for="order in orders.data" :key="order.id">
                                 <td>{{order.order_number}}</td>
                                 <td>{{order.title}}</td>
-                                <td>{{order.deadline}}</td>
+                                <td><small style="color: red;">{{order.deadline|myDatetime}}</small></td>
                                 <td>{{order.academic_level}}</td>
                                 <td>
                                     <span class="badge badge-pill badge-warning" v-if="order.status == 0">Pending..</span>
