@@ -2212,6 +2212,7 @@ __webpack_require__.r(__webpack_exports__);
     newModal: function newModal() {
       this.form.reset();
       this.attachments = [];
+      this.form.viewers = [];
       $('#addnew').modal('show');
     }
   }

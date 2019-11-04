@@ -60,9 +60,9 @@ class OrderController extends Controller
             $order_id = $order->id;
 
 
-            if ($request->files) {
-                $uploadedFiles = $request->files;
-                foreach ($uploadedFiles as $uploadedFile) {
+            if ($request->hasFile('files')) {
+//                $uploadedFiles = $request->files;
+                foreach ($request->file('files') as $uploadedFile) {
                     $filename = $uploadedFile->store('uploads');
                     // echo $filename;
                     $file = new File();

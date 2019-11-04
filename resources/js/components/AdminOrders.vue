@@ -349,6 +349,7 @@
             newModal() {
                 this.form.reset();
                 this.attachments = [];
+                this.form.viewers = [];
                 $('#addnew').modal('show');
             },
         }
