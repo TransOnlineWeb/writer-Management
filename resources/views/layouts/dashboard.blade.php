@@ -48,6 +48,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         </div>
 
 
+
         <!-- Right navbar links -->
         <ul class="navbar-nav ml-auto">
 
@@ -100,12 +101,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <!-- Sidebar user panel (optional) -->
             <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                 <div class="image">
-                    <img src="{{ asset('/img/user.jpg') }}" class="img-circle elevation-2" alt="User Image">
+                    <img src="/img/profile/{{ Auth::user()->photo}}" class="img-circle elevation-2" alt="User Image">
                 </div>
                 <div class="info">
                     <a href="#" class="d-block">{{ Auth::user()->name }}</a>
                     <p>
-                        <a href="#" class="d-block">{{ Auth::user()->type }}</a>
+                        <a href="#" class="d-block">{{ Auth::user()->role }}</a>
                     </p>
                 </div>
             </div>
@@ -122,39 +123,33 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             <i class="nav-icon fas fa-tachometer-alt blue"></i>
                             <p>
                                 Dashboard
-
-                            </p>
+                             </p>
+                         </router-link>
+                     </li>
+                     <li class="nav-item">
+                        <router-link to="/users" class="nav-link">
+                            <i class="nav-icon fas fa-users yellow"></i>
+                        <p>
+                            Users
+                        </p>
                         </router-link>
-                    </li>
-
-                    @can('isAdmin')
-                        <li class="nav-item has-treeview">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fa fa-cog green"></i>
-                                <p>
-                                    Management
-                                    <i class="right fa fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <router-link to="/users" class="nav-link">
-                                        <i class="fas fa-users nav-icon"></i>
-                                        <p>Users</p>
-                                    </router-link>
-                                </li>
-
-                            </ul>
-                        </li>
-
-                        <li class="nav-item">
-                            <router-link to="/developer" class="nav-link">
-                                <i class="nav-icon fas fa-cogs"></i>
-                                <p>
-                                    Developer
-                                </p>
-                            </router-link>
-                        </li>
+                     </li>
+                    <li class="nav-item">
+                        <router-link to="/chat" class="nav-link">
+                            <i class="nav-icon fas fa-comments green"></i>
+                        <p>
+                            Chat
+                        </p>
+                        </router-link>
+                     </li>
+                     <li class="nav-item">
+                         <router-link to="/profile" class="nav-link">
+                         <i class="nav-icon fas fa-user orange"></i>
+                         <p>
+                            Profile
+                        </p>
+                         </router-link>
+                      </li>
                         <li class="nav-item">
                             <router-link to="/order" class="nav-link">
                                 <i class="nav-icon fas fa-cogs"></i>
@@ -163,17 +158,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 </p>
                             </router-link>
                         </li>
-                    @endcan
-                    <li class="nav-item">
-                        <router-link to="/profile" class="nav-link">
-                            <i class="nav-icon fas fa-user orange"></i>
-                            <p>
-                                Profile
-                            </p>
-                        </router-link>
-                    </li>
-
-                    <li class="nav-item">
+                         <li class="nav-item">
                         <a class="nav-link" href="{{ route('logout') }}"
                            onclick="event.preventDefault();
                               document.getElementById('logout-form').submit();">
@@ -200,9 +185,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- Main content -->
         <div class="content">
             <div class="container-fluid">
-                <router-view></router-view>
-
-                <vue-progress-bar></vue-progress-bar>
+                <router-view :user="{{auth()->user()}}"></router-view>
             </div><!-- /.container-fluid -->
         </div>
         <!-- /.content -->
@@ -227,6 +210,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         window.user = @json(auth()->user())
     </script>
 @endauth
+
 
 <script src="/js/app.js"></script>
 <!-- jQuery -->

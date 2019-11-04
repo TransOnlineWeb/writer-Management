@@ -18,6 +18,9 @@ window.Form = Form;
 import VueRouter from 'vue-router';
 Vue.use(VueRouter);
 
+import  Gate from "./Gate";
+Vue.prototype.$gate =  new Gate(window.user);
+
 import VueProgressBar from 'vue-progressbar'
 Vue.use(VueProgressBar, {
     color: 'rgb(143, 255, 199)',
@@ -30,6 +33,8 @@ let routes = [
     { path: '/writer', component: require('./components/Writers.vue').default },
     { path: '/users', component: require('./components/Users.vue').default },
     { path: '/profile', component: require('./components/profile.vue').default },
+    { path: '/dashboard', component: require('./components/Dashboard.vue').default },
+    { path: '/chat', component: require('./components/Chat.vue').default },
 ];
 
 const router = new VueRouter({
@@ -38,9 +43,9 @@ const router = new VueRouter({
 })
 
 //sweetalert
-import swal from 'sweetalert2';
-window.swal = swal;
-const toast = swal.mixin({
+import Swal from 'sweetalert2';
+window.Swal = Swal;
+const toast = Swal.mixin({
     toast: true,
     position: 'top-end',
     showConfirmButton: false,

@@ -4,7 +4,9 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+// use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\Hash;
+use App\User;
 
 class UserController extends Controller
 {
@@ -21,6 +23,7 @@ class UserController extends Controller
     {
         //
         return User::latest()->paginate(10);
+        // return response(User::all()->jsonSerialize(), Response::HTTP_OK);
     }
 
     /**
@@ -31,7 +34,26 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request,[
+            'name' => 'required|string|max:191',
+            'email' => 'required|string|email|max:191|unique:users',
+            'password' => 'sometimes|required|min:6',
+            'phone' => 'required|string|min:10',
+            'role' => 'required|string',
+            'level' => 'required|string',
+            'status' => 'required|string',
+        ]);
+
+        return User::create([
+            'name' => $request['name'],
+            'email' => $request['email'],
+            'password' => Hash::make($request['password']),
+            'phone_number'  => $request['phone'],
+            'role' => $request['role'],
+            'level_id' => $request['level'],
+            'status_id' => $request['status'],
+            'photo' => $request['photo'],
+        ]);
     }
 
     /**
@@ -93,6 +115,10 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = User::FindOrFail($id);
+
+        $user->delete();
+
+        return ['message' => 'User Deleted'];
     }
 }
