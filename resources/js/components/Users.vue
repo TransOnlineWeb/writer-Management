@@ -1,3 +1,12 @@
+<style>
+  .box-header {
+    display: flex;
+    padding: 4px;
+  }
+  .swal2-icon.swal2-warning {
+    font-size: 20px;
+  }
+</style>
 <template>
     <div class="container">
         <div class="row mt-4">
@@ -6,8 +15,8 @@
             <div class="box-header">
               <h3 class="box-title">Users</h3>
 
-              <div class="box-tools">
-
+              <div class="box-tools ml-auto">
+                <button class="btn btn-success" @click="newUser">Add New User</button>
               </div>
             </div>
             <!-- /.box-header -->
@@ -17,6 +26,7 @@
                   <th>ID</th>
                   <th>Name</th>
                   <th>Email</th>
+                  <th>Phone No.</th>
                   <th>Role</th>
                   <th>Status</th>
                   <th>Level</th>
@@ -27,26 +37,26 @@
                   <td>{{user.id}}</td>
                   <td>{{user.name}}</td>
                   <td>{{user.email}}</td>
-                  <td><span class="label label-success">{{user.role}}</span></td>
+                  <td>{{user.phone_number}}</td>
+                  <td><span class="label label-success">{{user.role | upText}}</span></td>
                   <td>
                     <span v-if="user.status_id == 1">Active</span>
                     <span v-if="user.status_id == 0">Pending</span>
                     <span v-if="user.status_id == 2">Suspended</span>
                   </td>
                   <td>
-                    <span v-if="user.level_id == 1">Active</span>
-                    <span v-if="user.level_id == 0">Pending</span>
-                    <span v-if="user.level_id == 2">Suspended</span>
-                    <span v-else>Not Rated</span>
+                    <span v-if="user.level_id == 1">Junior</span>
+                    <span v-if="user.level_id == 2">Mid</span>
+                    <span v-if="user.level_id == 3">Senior</span>
                   </td>
                   <td>
-                      <a href="">
+                      <button @click="editUser(user)">
                           <i class="fa fa-edit blue"></i>
-                      </a>
+                      </button>
                       &nbsp;
-                      <a href="">
+                      <button @click="deleteUser(user.id)">
                           <i class="fa fa-trash red"></i>
-                      </a>
+                      </button>
                   </td>
                 </tr>
               </tbody></table>
@@ -54,6 +64,82 @@
             <!-- /.box-body -->
           </div>
           <!-- /.box -->
+        </div>
+      </div>
+      <!-- Modal -->
+      <div class="modal fade" id="AddNew" tabindex="-1" role="dialog" aria-labelledby="AddNewLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" v-show="!editmode" id="AddNewUser">Add New User</h5>
+              <h5 class="modal-title" v-show="editmode" id="AddNewUser">Update User Information</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <form @submit.prevent="editmode ? updateUserInfo() : addUser()">
+              <div class="modal-body">
+                <div class="form-group">
+                  <input v-model="form.name" type="text" class="form-control" name="name"id="name" placeholder="Name" :class="{ 'is-invalid': form.errors.has('name') }">
+                  <has-error :form="form" field="name"></has-error>
+                </div>
+                <div class="form-group">
+                  <input v-model="form.email" type="email" class="form-control" name="email"id="email" placeholder="Email" :class="{ 'is-invalid': form.errors.has('email') }">
+                  <has-error :form="form" field="email"></has-error>
+                </div>
+                <div class="form-group">
+                  <input v-model="form.phone_number" type="number" class="form-control" name="phone_number"id="phone_number" placeholder="Phone Number" :class="{ 'is-invalid': form.errors.has('phone_number') }">
+                  <has-error :form="form" field="phone_number"></has-error>
+                </div>
+                <div class="form-group">
+                  <select v-model="form.role" class="form-control" name="role" id="role"
+                          :class="{ 'is-invalid': form.errors.has('role') }">
+                      <option selected value="">--Select Level--</option>
+                      <option value="writer">Writer</option>
+                      <option value="editor">Editor</option>
+                      <option value="admin">Admin</option>
+                  </select>
+                  <has-error :form="form" field="role"></has-error>
+                </div>
+                <div class="col">
+                  <div class="form-group d-flex">
+                      <label>Profile-Photo</label>
+                      <input type="file" multiple class="form-control-file" id="photo" name="photo">
+                      <has-error :form="form" field="photo"></has-error>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <select v-model="form.level_id" class="form-control" name="level_id" id="level_id"
+                          :class="{ 'is-invalid': form.errors.has('level_id') }">
+                      <option selected value="">--Select Level--</option>
+                      <option value="1">Starter</option>
+                      <option value="2">Mid</option>
+                      <option value="3">Senior</option>
+                  </select>
+                  <has-error :form="form" field="level_id"></has-error>
+                </div>
+                <div class="form-group">
+                  <select v-model="form.status_id" class="form-control" name="status_id" id="status_id"
+                          :class="{ 'is-invalid': form.errors.has('status_id') }">
+                      <option selected value="">--Select Account Status--</option>
+                      <option value="1">Active</option>
+                      <option value="0">Pending</option>
+                      <option value="2">Suspended</option>
+                  </select>
+                  <has-error :form="form" field="status_id"></has-error>
+                </div>
+                <div class="form-group">
+                  <input v-model="form.password" type="password" class="form-control" name="password"id="password" placeholder="Password" :class="{ 'is-invalid': form.errors.has('password') }">
+                  <has-error :form="form" field="password"></has-error>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" v-show="!editmode" class="btn btn-primary">AddUser</button>
+                <button type="submit" v-show="editmode" class="btn btn-primary">UpdateUser</button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </div>
@@ -64,16 +150,104 @@
     export default {
         data(){
             return{
+                editmode: false,
                 users: {},
+                form: new Form ({
+                  id: '',
+                  name: '',
+                  phone_number: '',
+                  role: '',
+                  level_id: '',
+                  status_id: '',
+                  photo: '',
+                  email: '',
+                  password: '',
+                })
             }
         },
         methods: {
+            updateUserInfo() {
+              this.$Progress.start();
+              this.form.put('api/user/'+this.form.id)
+              .then(() => {
+                Fire.$emit('AfterCreate');
+                  $('#AddNew').modal('hide');
+                      this.form.reset();
+                      Swal.fire({
+                          type: 'success',
+                          title: 'User Information Updated',
+                      })
+                this.$Progress.finish();
+              }).catch(() => {
+                this.$Progress.fail();
+              });
+            },
+            editUser(user) {
+              this.editmode = true;
+              this.form.reset();
+              $('#AddNew').modal('show');
+              this.form.fill(user);
+            },
+            newUser() {
+              this.editmode = false;
+              this.form.reset();
+              $('#AddNew').modal('show');
+            },
+            deleteUser(id) {
+              Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+              }).then((result) => {
+                  if (result.value) {
+                    this.form.delete('api/user/'+id).then(() => {
+                        Swal.fire(
+                          'Deleted!',
+                          'User has been deleted.',
+                          'success'
+                        )
+                      Fire.$emit('AfterCreate');
+                    }).catch(() => {
+                      Swal.fire(
+                          'Failed!',
+                          'We were unable to deleted.',
+                          'warning'
+                        )
+                    });
+                  }
+                })
+            },
+            addUser() {
+              this.$Progress.start();
+              this.form.post('api/user')
+              .then(() => {
+                Fire.$emit('AfterCreate');
+                  $('#AddNew').modal('hide');
+                      this.form.reset();
+                      Swal.fire({
+                          type: 'success',
+                          title: 'User Successfully Created',
+                      })
+                this.$Progress.finish();
+
+              })
+              .catch(() => {
+
+              })
+            },
             getUsers(){
               window.axios.get('api/user').then(({ data }) => (this.users = data.data));
             }
         },
         mounted() {
           this.getUsers();
+          Fire.$on('AfterCreate',() => {
+            this.getUsers();
+          });
         }
     }
 </script>

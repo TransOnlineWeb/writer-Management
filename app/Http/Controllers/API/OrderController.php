@@ -17,7 +17,7 @@ class OrderController extends Controller
      */
     public function index()
     {
-        //
+        return Order::latest()->paginate(10);
     }
 
     /**
@@ -42,6 +42,7 @@ class OrderController extends Controller
             'viewers' => 'required',
         ]);
 
+        //Not Urgent
         if ($request->urgent == 0) {
             $order = new Order();
             $order->order_number = $request->order_number;
@@ -60,9 +61,8 @@ class OrderController extends Controller
             $order_id = $order->id;
 
 
-            if ($request->files) {
-                $uploadedFiles = $request->files;
-                foreach ($uploadedFiles as $uploadedFile) {
+            if ($request->hasFile('files')) {
+                foreach ($request->file('files') as $uploadedFile) {
                     $filename = $uploadedFile->store('uploads');
                     // echo $filename;
                     $file = new File();
@@ -74,8 +74,39 @@ class OrderController extends Controller
             }
             return response(['status' => 'success'], 200);
 
+            // When Urgent
         } elseif ($request->urgent == 1) {
+            $order = new Order();
+            $order->order_number = $request->order_number;
+            $order->title = $request->title;
+            $order->description = $request->description;
+            $order->deadline = $request->deadline;
+            $order->pages = $request->pages;
+            $order->status = 0;
+            $order->amount = $request->amount;
+            $order->total_amount = $request->amount * $request->pages;
+            $viewers = $request->viewers;
+            $order->viewers = implode(',', $viewers);
+            $order->academic_level = $request->level;
+            $order->discipline = $request->discipline;
+            $order->paper_format = $request->paper_format;
+            $order->spacing = $request->spacing;
+            $order->urgency = $request->urgency;
+            $order->save();
+            $order_id = $order->id;
 
+            if ($request->hasFile('files')) {
+                foreach ($request->file('files') as $uploadedFile) {
+                    $filename = $uploadedFile->store('uploads');
+                    // echo $filename;
+                    $file = new File();
+                    $file->order_id = $order_id;
+                    $file->path = $filename;
+                    $file->order_number = $request->order_number;
+                    $file->save();
+                }
+            }
+            return response(['status' => 'success'], 200);
         }
     }
 
@@ -87,7 +118,7 @@ class OrderController extends Controller
      */
     public function show($id)
     {
-        //
+         return Order::where('id', $id)->first();
     }
 
     /**

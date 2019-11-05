@@ -35,6 +35,7 @@ let routes = [
     { path: '/profile', component: require('./components/profile.vue').default },
     { path: '/dashboard', component: require('./components/Dashboard.vue').default },
     { path: '/chat', component: require('./components/Chat.vue').default },
+    {path: '/orderdetails/:orderId', component: require('./components/OrderDetails.vue').default},
 ];
 
 const router = new VueRouter({
@@ -43,9 +44,9 @@ const router = new VueRouter({
 })
 
 //sweetalert
-import swal from 'sweetalert2';
-window.swal = swal;
-const toast = swal.mixin({
+import Swal from 'sweetalert2';
+window.Swal = Swal;
+const toast = Swal.mixin({
     toast: true,
     position: 'top-end',
     showConfirmButton: false,
@@ -66,6 +67,10 @@ Vue.use(VueNumericInput);
 import { Datetime } from 'vue-datetime';
 Vue.component('datetime', Datetime);
 
+// Vue Select
+import vSelect from 'vue-select';
+Vue.component('v-select', vSelect);
+
 // Checkbox
 import CheckboxRadio from 'vue-checkbox-radio';
 Vue.use(CheckboxRadio);
@@ -80,6 +85,10 @@ Vue.filter('upText', function(text){
 //filter for date
 Vue.filter('myDate',function(created){
     return moment(created).format('MMMM Do YYYY');
+});
+
+Vue.filter('myDatetime',function(created){
+    return moment(created).format('MMMM Do YYYY, h:mm a');
 });
 /**
  * The following block of code may be used to automatically register your
