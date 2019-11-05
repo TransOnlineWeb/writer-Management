@@ -10310,18 +10310,44 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "WritersCategory",
   data: function data() {
     return {
       categories: '',
+      editMode: '',
       form: new Form({
+        id: '',
         title: '',
         amount: ''
       })
     };
   },
   methods: {
+    updateCategory: function updateCategory() {
+      this.form.put('api/category/' + this.form.id).then(function () {
+        $('#addnew').modal('hide');
+        Swal.fire({
+          title: 'Updated!',
+          text: 'The Category has been updated.',
+          type: 'success'
+        });
+        Fire.$emit('entry');
+      })["catch"](function () {});
+    },
+    editCategory: function editCategory(cat) {
+      this.editMode = true;
+      $('#addnew').modal('show');
+      this.form.fill(cat);
+    },
     getCategories: function getCategories() {
       var _this = this;
 
@@ -10353,6 +10379,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     newModal: function newModal() {
+      this.editMode = false;
       this.form.reset();
       $('#addnew').modal('show');
     }
@@ -85319,7 +85346,18 @@ var render = function() {
                           ])
                         ]),
                         _vm._v(" "),
-                        _vm._m(1, true)
+                        _c(
+                          "span",
+                          {
+                            staticClass: "info-box-icon",
+                            on: {
+                              click: function($event) {
+                                return _vm.editCategory(cat)
+                              }
+                            }
+                          },
+                          [_c("i", { staticClass: "fas fa-edit" })]
+                        )
                       ])
                     ])
                   }),
@@ -85348,116 +85386,156 @@ var render = function() {
               { staticClass: "modal-dialog", attrs: { role: "document" } },
               [
                 _c("div", { staticClass: "modal-content" }, [
-                  _vm._m(2),
+                  _c("div", { staticClass: "modal-header" }, [
+                    !this.editMode
+                      ? _c("h5", { staticClass: "modal-title" }, [
+                          _vm._v("Add Category of Writer(s)")
+                        ])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    this.editMode
+                      ? _c("h5", { staticClass: "modal-title" }, [
+                          _vm._v("Edit Category")
+                        ])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm._m(1)
+                  ]),
                   _vm._v(" "),
-                  _c(
-                    "form",
-                    {
-                      on: {
-                        submit: function($event) {
-                          $event.preventDefault()
-                          return _vm.addCategory()
-                        }
-                      }
-                    },
-                    [
-                      _c("div", { staticClass: "modal-body" }, [
-                        _c(
-                          "div",
-                          { staticClass: "form-group" },
-                          [
-                            _c("label", [_vm._v("Title")]),
-                            _vm._v(" "),
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.form.title,
-                                  expression: "form.title"
-                                }
-                              ],
-                              staticClass: "form-control",
-                              class: {
-                                "is-invalid": _vm.form.errors.has("title")
-                              },
-                              attrs: {
-                                type: "text",
-                                name: "name",
-                                placeholder: "Enter Title"
-                              },
-                              domProps: { value: _vm.form.title },
-                              on: {
-                                input: function($event) {
-                                  if ($event.target.composing) {
-                                    return
-                                  }
-                                  _vm.$set(
-                                    _vm.form,
-                                    "title",
-                                    $event.target.value
-                                  )
-                                }
+                  _c("form", [
+                    _c("div", { staticClass: "modal-body" }, [
+                      _c(
+                        "div",
+                        { staticClass: "form-group" },
+                        [
+                          _c("label", [_vm._v("Title")]),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.form.title,
+                                expression: "form.title"
                               }
-                            }),
-                            _vm._v(" "),
-                            _c("has-error", {
-                              attrs: { form: _vm.form, field: "title" }
-                            })
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          { staticClass: "form-group" },
-                          [
-                            _c("label", [_vm._v("Amount Per Page")]),
-                            _vm._v(" "),
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.form.amount,
-                                  expression: "form.amount"
+                            ],
+                            staticClass: "form-control",
+                            class: {
+                              "is-invalid": _vm.form.errors.has("title")
+                            },
+                            attrs: {
+                              type: "text",
+                              name: "name",
+                              placeholder: "Enter Title"
+                            },
+                            domProps: { value: _vm.form.title },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
                                 }
-                              ],
-                              staticClass: "form-control",
-                              class: {
-                                "is-invalid": _vm.form.errors.has("amount")
-                              },
-                              attrs: {
-                                type: "number",
-                                name: "amount",
-                                placeholder: "Amount Per Page"
-                              },
-                              domProps: { value: _vm.form.amount },
-                              on: {
-                                input: function($event) {
-                                  if ($event.target.composing) {
-                                    return
-                                  }
-                                  _vm.$set(
-                                    _vm.form,
-                                    "amount",
-                                    $event.target.value
-                                  )
-                                }
+                                _vm.$set(_vm.form, "title", $event.target.value)
                               }
-                            }),
-                            _vm._v(" "),
-                            _c("has-error", {
-                              attrs: { form: _vm.form, field: "amount" }
-                            })
-                          ],
-                          1
-                        )
-                      ]),
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("has-error", {
+                            attrs: { form: _vm.form, field: "title" }
+                          })
+                        ],
+                        1
+                      ),
                       _vm._v(" "),
-                      _vm._m(3)
-                    ]
-                  )
+                      _c(
+                        "div",
+                        { staticClass: "form-group" },
+                        [
+                          _c("label", [_vm._v("Amount Per Page")]),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.form.amount,
+                                expression: "form.amount"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            class: {
+                              "is-invalid": _vm.form.errors.has("amount")
+                            },
+                            attrs: {
+                              type: "number",
+                              name: "amount",
+                              placeholder: "Amount Per Page"
+                            },
+                            domProps: { value: _vm.form.amount },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.form,
+                                  "amount",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("has-error", {
+                            attrs: { form: _vm.form, field: "amount" }
+                          })
+                        ],
+                        1
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "modal-footer" }, [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-danger",
+                          attrs: { type: "button", "data-dismiss": "modal" }
+                        },
+                        [_vm._v("Close")]
+                      ),
+                      _vm._v(" "),
+                      !this.editMode
+                        ? _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-success",
+                              attrs: { type: "button" },
+                              on: { click: _vm.addCategory }
+                            },
+                            [
+                              _vm._v(
+                                "\n                            Create\n                        "
+                              )
+                            ]
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      this.editMode
+                        ? _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-success",
+                              attrs: { type: "button" },
+                              on: { click: _vm.updateCategory }
+                            },
+                            [
+                              _vm._v(
+                                "\n                            Update\n                        "
+                              )
+                            ]
+                          )
+                        : _vm._e()
+                    ])
+                  ])
                 ])
               ]
             )
@@ -85479,53 +85557,18 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("span", { staticClass: "info-box-icon" }, [
-      _c("i", { staticClass: "fas fa-edit" })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-header" }, [
-      _c("h5", { staticClass: "modal-title", attrs: { id: "addnewLabel" } }, [
-        _vm._v("Add Category of Writer(s)")
-      ]),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "close",
-          attrs: {
-            type: "button",
-            "data-dismiss": "modal",
-            "aria-label": "Close"
-          }
-        },
-        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-footer" }, [
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-danger",
-          attrs: { type: "button", "data-dismiss": "modal" }
-        },
-        [_vm._v("Close")]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        { staticClass: "btn btn-success", attrs: { type: "submit" } },
-        [_vm._v("Create")]
-      )
-    ])
+    return _c(
+      "button",
+      {
+        staticClass: "close",
+        attrs: {
+          type: "button",
+          "data-dismiss": "modal",
+          "aria-label": "Close"
+        }
+      },
+      [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+    )
   }
 ]
 render._withStripped = true

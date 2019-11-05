@@ -21,7 +21,9 @@
                                         <span class="info-box-text">{{cat.title}}</span>
                                         <span class="info-box-number">Ksh. {{cat.amount}}</span>
                                     </div>
-                                    <span class="info-box-icon"><i class="fas fa-edit"></i></span>
+                                    <span class="info-box-icon" @click="editCategory(cat)"><i
+                                            class="fas fa-edit"></i></span>
+
                                 </div>
                             </div>
                         </div>
@@ -34,12 +36,13 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="addnewLabel">Add Category of Writer(s)</h5>
+                        <h5 class="modal-title" v-if="!this.editMode">Add Category of Writer(s)</h5>
+                        <h5 class="modal-title" v-if="this.editMode">Edit Category</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form @submit.prevent="addCategory()">
+                    <form>
                         <div class="modal-body">
                             <div class="form-group">
                                 <label>Title</label>
@@ -58,7 +61,12 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-success">Create</button>
+                            <button type="button" class="btn btn-success" @click="addCategory" v-if="!this.editMode">
+                                Create
+                            </button>
+                            <button type="button" class="btn btn-success" @click="updateCategory" v-if="this.editMode">
+                                Update
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -73,13 +81,35 @@
         data() {
             return {
                 categories: '',
+                editMode: '',
                 form: new Form({
+                    id: '',
                     title: '',
                     amount: '',
                 })
             }
         },
         methods: {
+            updateCategory() {
+                this.form.put('api/category/' + this.form.id)
+                    .then(() => {
+                        $('#addnew').modal('hide');
+                        Swal.fire({
+                            title: 'Updated!',
+                            text: 'The Category has been updated.',
+                            type: 'success'
+                        })
+                        Fire.$emit('entry');
+                    })
+                    .catch(() => {
+
+                    })
+            },
+            editCategory(cat) {
+                this.editMode = true;
+                $('#addnew').modal('show');
+                this.form.fill(cat);
+            },
             getCategories() {
                 axios.get("/api/category").then(({data}) => ([this.categories = data]));
             },
@@ -105,10 +135,12 @@
                     })
             },
             newModal() {
+                this.editMode = false;
                 this.form.reset();
                 $('#addnew').modal('show');
             },
-        },
+        }
+        ,
         created() {
             this.getCategories();
             Fire.$on('entry', () => {
