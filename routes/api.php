@@ -38,3 +38,5 @@ Route::get('getwriters', 'API\MoreOrdersController@getWriters');
 Route::get('MyWriters','API\UserController@profiles');
 
 Route::apiResources(['category' => 'API\WriterCategoryController']);
+
+Route::get('writer/{orderId}', 'API\MoreOrdersController@getWriter');

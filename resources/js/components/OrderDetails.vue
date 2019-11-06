@@ -22,16 +22,33 @@
                                                 <th style="width: 40px">Details</th>
                                             </tr>
                                             <tr>
-                                                <td>Name</td>
-                                                <td><span>{{details.name}}</span></td>
+                                                <td><b>Name</b></td>
+                                                <td>
+                                                    <span>{{writer.name}}</span>
+                                                    <span style="color: rebeccapurple;" v-if="!this.writer">No writer assigned</span>
+                                                </td>
                                             </tr>
                                             <tr>
-                                                <td>Email</td>
-                                                <td><span>{{details.email}}</span></td>
+                                                <td><b>Phone</b></td>
+                                                <td>
+                                                    <span>{{writer.phone_number}}</span>
+                                                    <span style="color: rebeccapurple;" v-if="!this.writer">No writer assigned</span>
+                                                </td>
                                             </tr>
                                             <tr>
-                                                <td>Price</td>
-                                                <td><span>${{details.price}}</span></td>
+                                                <td><b>Email</b></td>
+                                                <td>
+                                                    <span>{{writer.email}}</span>
+                                                    <span style="color: rebeccapurple;" v-if="!this.writer">No writer assigned</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><b>Cost Per Page</b></td>
+                                                <td><span>Ksh. {{details.amount}}</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td><b>Total Cost</b></td>
+                                                <td><span>Ksh. {{details.total_amount}}</span></td>
                                             </tr>
                                             </tbody></table>
                                     </div>
@@ -52,39 +69,39 @@
                                                 <th style="width: 40px">Details</th>
                                             </tr>
                                             <tr>
-                                                <td>Order Number</td>
+                                                <td><b>Order Number</b></td>
                                                 <td><span>#{{details.order_number}}</span></td>
                                             </tr>
                                             <tr>
-                                                <td>Document's Title</td>
+                                                <td><b>Title</b></td>
                                                 <td><span>{{details.title}}</span></td>
                                             </tr>
                                             <tr>
-                                                <td>Level</td>
+                                                <td><b>Level</b></td>
                                                 <td><span>{{details.academic_level}}</span></td>
                                             </tr>
                                             <tr>
-                                                <td>Discipline</td>
+                                                <td><b>Discipline</b></td>
                                                 <td><span>{{details.discipline}}</span></td>
                                             </tr>
                                             <tr>
-                                                <td>Viewers</td>
+                                                <td><b>Viewers</b></td>
                                                 <td><span>{{details.viewers}}</span></td>
                                             </tr>
                                             <tr>
-                                                <td>No. of Pages</td>
+                                                <td><b>No. of Pages</b></td>
                                                 <td><span>{{details.pages}}</span></td>
                                             </tr>
                                             <tr>
-                                                <td>Deadline</td>
+                                                <td><b>Deadline</b></td>
                                                 <td><span style="color: red;">{{details.deadline|myDatetime}}</span></td>
                                             </tr>
                                             <tr>
-                                                <td>Spacing</td>
+                                                <td><b>Spacing</b></td>
                                                 <td><span>{{details.spacing}}</span></td>
                                             </tr>
                                             <tr>
-                                                <td>Paper Format</td>
+                                                <td><b>Paper Format</b></td>
                                                 <td><span>{{details.paper_format}}</span></td>
                                             </tr>
                                             </tbody></table>
@@ -229,7 +246,7 @@
                 details: {},
                 filesCount: '',
                 files: {},
-                writer: '',
+                writer: {},
                 attachments:[],
                 formf: new FormData(),
                 form: new Form({
@@ -250,6 +267,9 @@
                 });
         },
         methods:{
+            getWriter(){
+                axios.get("/api/writer/" + this.orderId).then(({ data }) => ([this.writer = data]));
+            },
             validate(){
               if (this.attachments.length == 0){
                   this.e_files = 'This field is required';
@@ -359,6 +379,7 @@
             this.getMessages();
             this.getUser();
             this.getFiles();
+            this.getWriter();
             Fire.$on('entry', () =>{
                 this.getFiles();
                 this.getFilesCount();
