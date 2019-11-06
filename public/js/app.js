@@ -3933,6 +3933,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3952,15 +3956,37 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
+    placeBid: function placeBid() {
+      var _this = this;
+
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "Place this bid??",
+        //type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, place it!'
+      }).then(function (result) {
+        if (result.value) {
+          axios.post("api/bid/" + _this.orderId).then(function () {
+            Swal.fire('Delete!', 'Deleted!!', 'success');
+            Fire.$emit('entry');
+          })["catch"](function () {
+            Swal.fire('Failed!', 'There was something wrong');
+          });
+        }
+      });
+    },
     // getDetails(){
     //     axios.get("/api/order/" + this.orderId).then(({ data }) => ([this.details = data]));
     // },
     getFilesCount: function getFilesCount(order) {
-      var _this = this;
+      var _this2 = this;
 
       axios.get("/api/filescount/" + order.id).then(function (_ref) {
         var data = _ref.data;
-        return [_this.filesCount = data];
+        return [_this2.filesCount = data];
       });
     },
     // getFiles(order){
@@ -3982,28 +4008,28 @@ __webpack_require__.r(__webpack_exports__);
       axios.post('/api/downloadAll/' + this.orderId);
     },
     orderDetails: function orderDetails(order) {
-      var _this2 = this;
+      var _this3 = this;
 
       $('#OrderDetails').modal('show');
       window.axios.get("/api/order/" + order.id).then(function (_ref2) {
         var data = _ref2.data;
-        return [_this2.details = data];
+        return [_this3.details = data];
       });
       window.axios.get("/api/getfiles/" + order.id).then(function (_ref3) {
         var data = _ref3.data;
-        return [_this2.files = data];
+        return [_this3.files = data];
       });
       window.axios.get("/api/filescount/" + order.id).then(function (_ref4) {
         var data = _ref4.data;
-        return [_this2.filesCount = data];
+        return [_this3.filesCount = data];
       });
     },
     getOrders: function getOrders() {
-      var _this3 = this;
+      var _this4 = this;
 
       window.axios.get("api/order").then(function (_ref5) {
         var data = _ref5.data;
-        return [_this3.orders = data.data];
+        return [_this4.orders = data.data];
       });
     }
   },
@@ -80266,6 +80292,24 @@ var render = function() {
                               ]
                             )
                           : _vm._e()
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "card-footer" }, [
+                      _c("div", { staticClass: "row" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-dark",
+                            attrs: { type: "button" },
+                            on: {
+                              click: function($event) {
+                                return _vm.placeBid()
+                              }
+                            }
+                          },
+                          [_vm._v("Place Bid!")]
+                        )
                       ])
                     ])
                   ])

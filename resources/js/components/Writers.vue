@@ -153,6 +153,11 @@
                                         </div>
 
                                     </div>
+                                <div class="card-footer">
+                                    <div class="row">
+                                        <button type="button" class="btn btn-dark" @click="placeBid()">Place Bid!</button>
+                                    </div>
+                                </div>
                                 </div>
                             </div>
                         </div>
@@ -160,7 +165,6 @@
                 </div>
             </div>
         </div>
-    </div>
 </template>
 
 <script>
@@ -185,6 +189,30 @@
             }
         },
         methods:{
+            placeBid(){
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "Place this bid??",
+                    //type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, place it!'
+                }).then((result) => {
+                    if(result.value){
+                        axios.post("api/bid/" + this.orderId).then(()=>{
+                            Swal.fire(
+                                'Delete!',
+                                'Deleted!!',
+                                'success'
+                            )
+                            Fire.$emit('entry');
+                        }).catch(()=>{
+                            Swal.fire('Failed!','There was something wrong')
+                        });
+                    }
+                })
+            },
             // getDetails(){
             //     axios.get("/api/order/" + this.orderId).then(({ data }) => ([this.details = data]));
             // },

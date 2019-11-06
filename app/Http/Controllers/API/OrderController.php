@@ -17,9 +17,18 @@ class OrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
+
     public function index()
     {
-        return Order::latest()->paginate(10);
+        if (auth()->user()->role == "admin") {
+            return Order::latest()->paginate(10);
+        } elseif (auth()->user()->role == "writer") {
+            return Order::latest()->where('status', 0)->paginate(10);
+        }
     }
 
     /**
