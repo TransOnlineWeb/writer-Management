@@ -35,4 +35,6 @@ Route::get('download/{orderId}', 'API\MoreOrdersController@downloadFile');
 Route::post('addfiles/{orderId}', 'API\MoreOrdersController@addFiles');
 Route::get('getwriters', 'API\MoreOrdersController@getWriters');
 
+Route::get('MyWriters','API\UserController@profiles');
+
 Route::apiResources(['category' => 'API\WriterCategoryController']);

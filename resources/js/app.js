@@ -21,6 +21,8 @@ Vue.use(VueRouter);
 import  Gate from "./Gate";
 Vue.prototype.$gate =  new Gate(window.user);
 
+Vue.component('pagination', require('laravel-vue-pagination'));
+
 import VueProgressBar from 'vue-progressbar'
 Vue.use(VueProgressBar, {
     color: 'rgb(143, 255, 199)',
@@ -37,6 +39,7 @@ let routes = [
     { path: '/chat', component: require('./components/Chat.vue').default },
     { path: '/category', component: require('./components/WritersCategory.vue').default },
     {path: '/orderdetails/:orderId', component: require('./components/OrderDetails.vue').default},
+    { path: '/MyWriters', component: require('./components/MyWriters.vue').default },
 ];
 
 const router = new VueRouter({
@@ -113,4 +116,12 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 const app = new Vue({
     el: '#app',
     router,
+    data:{
+        search:''
+    },
+    methods:{
+        searchit:_.debounce(()=>{
+            Fire.$emit('searching');
+        },1000)
+    }
 });

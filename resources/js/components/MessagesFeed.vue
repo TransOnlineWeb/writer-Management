@@ -3,7 +3,7 @@
         <ul v-if="contact">
             <li v-for="message in messages" :class="`message${message.to == contact.id ? ' sent' : ' received'}`" :key="message.id">
                 <div class="text">
-                    <span class="messo">{{ message.text }}</span><br/><small class="date">{{message.created_at | myDate}}</small>
+                    <span class="messo">{{ message.text }}</span><br/><small class="date">{{message.created_at | myDatetime}}</small>
                 </div>
             </li>
         </ul>
