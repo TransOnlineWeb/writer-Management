@@ -62,14 +62,17 @@ window.Fire =  new Vue();
 import PulseLoader from 'vue-spinner/src/PulseLoader.vue';
 window.PulseLoader = PulseLoader;
 
+//star rating
+import StarRating from 'vue-star-rating'
+Vue.component('star-rating', StarRating);
 
 // Numeric input
 import VueNumericInput from 'vue-numeric-input';
 Vue.use(VueNumericInput);
 
-import { VueSpinners } from '@saeris/vue-spinners';
+/*import { VueSpinners } from '@saeris/vue-spinners';*/
 
-Vue.use(VueSpinners);
+/*Vue.use(VueSpinners);*/
 
 // Datetime
 import { Datetime } from 'vue-datetime';

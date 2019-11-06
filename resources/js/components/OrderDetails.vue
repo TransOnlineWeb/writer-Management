@@ -146,6 +146,15 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="row justify-content-center mt-5">
+                                        <h5>Rate this work</h5> <br>
+                                        <div class="mt-5">
+                                            <star-rating v-bind:increment="0.5" @rating-selected ="setRating"></star-rating>
+                                        </div>
+                                    </div>
+                                    <div class="row justify-content-center mt-5">
+                                        <button class="btn btn-success btn-sm"  @click="setRatting"><i class="fas fa-star"></i>Rate</button>
+                                    </div>
                                 </div>
                             </div>
 
@@ -220,6 +229,7 @@
         },
         data(){
             return{
+                rating: 0,
                 message: '',
                 typing: '',
                 users : {},
@@ -249,6 +259,13 @@
                 });
         },
         methods:{
+            setRatting(){
+                axios.post('/api/rating',{
+                    OrderId: this.OrderId,
+                    UserId: this.details.assigned_user_id,
+                    Rating: this.rating,
+                });
+            },
             validate(){
               if (this.attachments.length == 0){
                   this.e_files = 'This field is required';
@@ -339,6 +356,9 @@
             },
             getMessages(){
                 // axios.get("/api/getMessage/" + this.orderId).then((response) => (this.messages = response.data));
+            },
+            setRating: function(rating){
+                this.rating= rating;
             },
         },
         watch: {
