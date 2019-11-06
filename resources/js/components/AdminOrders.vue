@@ -16,6 +16,7 @@
                             <thead>
                             <tr>
                                 <th>Order#</th>
+                                <th>Bids</th>
                                 <th>Title</th>
                                 <th>Deadline</th>
                                 <th>Level</th>
@@ -27,6 +28,11 @@
                             <tbody>
                             <tr v-for="order in orders.data" :key="order.id">
                                 <td>{{order.order_number}}</td>
+                                <td>
+                                    <router-link :to="{path:'/bids/'+ order.id}" type="button"
+                                                 class="btn btn-success btn-sm">View Bids
+                                    </router-link>
+                                </td>
                                 <td>{{order.title}}</td>
                                 <td>
                                     <small style="color: red;">{{order.deadline|myDatetime}}</small>
