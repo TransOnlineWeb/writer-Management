@@ -3937,6 +3937,27 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3946,9 +3967,10 @@ __webpack_require__.r(__webpack_exports__);
       typing: '',
       users: {},
       messages: [],
-      orderId: this.$route.params.orderId,
+      orderId: '',
       details: [],
       filesCount: '',
+      ifBid: '',
       files: {},
       attachments: [],
       formf: new FormData(),
@@ -3956,8 +3978,16 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
-    placeBid: function placeBid() {
+    checkBid: function checkBid() {
       var _this = this;
+
+      axios.get("/api/checkbid/" + this.orderId).then(function (_ref) {
+        var data = _ref.data;
+        return [_this.ifBid = data];
+      });
+    },
+    placeBid: function placeBid() {
+      var _this2 = this;
 
       Swal.fire({
         title: 'Are you sure?',
@@ -3969,11 +3999,17 @@ __webpack_require__.r(__webpack_exports__);
         confirmButtonText: 'Yes, place it!'
       }).then(function (result) {
         if (result.value) {
-          axios.post("api/bid/" + _this.orderId).then(function () {
-            Swal.fire('Delete!', 'Deleted!!', 'success');
+          axios.post("/api/makebid/" + _this2.orderId).then(function () {
             Fire.$emit('entry');
-          })["catch"](function () {
-            Swal.fire('Failed!', 'There was something wrong');
+            Swal.fire('Placed!', 'Bid successfully placed!!', 'success');
+            Fire.$emit('entry');
+          })["catch"](function (error) {
+            _this2.errors = error.response.data.errors;
+            Swal.fire({
+              type: 'error',
+              title: 'Error!!',
+              text: error.response.data.msg
+            });
           });
         }
       });
@@ -3982,11 +4018,11 @@ __webpack_require__.r(__webpack_exports__);
     //     axios.get("/api/order/" + this.orderId).then(({ data }) => ([this.details = data]));
     // },
     getFilesCount: function getFilesCount(order) {
-      var _this2 = this;
+      var _this3 = this;
 
-      axios.get("/api/filescount/" + order.id).then(function (_ref) {
-        var data = _ref.data;
-        return [_this2.filesCount = data];
+      axios.get("/api/filescount/" + order.id).then(function (_ref2) {
+        var data = _ref2.data;
+        return [_this3.filesCount = data];
       });
     },
     // getFiles(order){
@@ -4008,37 +4044,43 @@ __webpack_require__.r(__webpack_exports__);
       axios.post('/api/downloadAll/' + this.orderId);
     },
     orderDetails: function orderDetails(order) {
-      var _this3 = this;
-
-      $('#OrderDetails').modal('show');
-      window.axios.get("/api/order/" + order.id).then(function (_ref2) {
-        var data = _ref2.data;
-        return [_this3.details = data];
-      });
-      window.axios.get("/api/getfiles/" + order.id).then(function (_ref3) {
-        var data = _ref3.data;
-        return [_this3.files = data];
-      });
-      window.axios.get("/api/filescount/" + order.id).then(function (_ref4) {
-        var data = _ref4.data;
-        return [_this3.filesCount = data];
-      });
-    },
-    getOrders: function getOrders() {
       var _this4 = this;
 
-      window.axios.get("api/order").then(function (_ref5) {
+      $('#OrderDetails').modal('show');
+      this.orderId = order.id;
+      window.axios.get("/api/order/" + order.id).then(function (_ref3) {
+        var data = _ref3.data;
+        return [_this4.details = data];
+      });
+      window.axios.get("/api/getfiles/" + order.id).then(function (_ref4) {
+        var data = _ref4.data;
+        return [_this4.files = data];
+      });
+      window.axios.get("/api/filescount/" + order.id).then(function (_ref5) {
         var data = _ref5.data;
-        return [_this4.orders = data.data];
+        return [_this4.filesCount = data];
+      });
+      this.checkBid();
+    },
+    getOrders: function getOrders() {
+      var _this5 = this;
+
+      window.axios.get("api/order").then(function (_ref6) {
+        var data = _ref6.data;
+        return [_this5.orders = data.data];
       });
     }
   },
-  mounted: function mounted() {
+  created: function created() {
+    var _this6 = this;
+
     this.getOrders(); // // this.getDetails();
     // this.getFiles();
     // this.getFilesCount();
 
-    console.log('Component mounted.');
+    Fire.$on('entry', function () {
+      _this6.checkBid();
+    });
   }
 });
 
@@ -11052,7 +11094,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.card-body .details{\n    max-height: 300px;\n    overflow: scroll;\n}\n.modal-dialog {\n    min-width: 60%;\n}\n", ""]);
+exports.push([module.i, "\n.card-body .details {\n    max-height: 300px;\n    overflow: scroll;\n}\n.modal-dialog {\n    min-width: 60%;\n}\n", ""]);
 
 // exports
 
@@ -80028,7 +80070,13 @@ var render = function() {
                             }
                           }
                         },
-                        [_vm._v("Order Number: " + _vm._s(order.order_number))]
+                        [
+                          _vm._v(
+                            "Order\n                                        Number: " +
+                              _vm._s(order.order_number) +
+                              "\n                                    "
+                          )
+                        ]
                       ),
                       _vm._v(" "),
                       _c("span", { staticClass: "info-box-text" }, [
@@ -80036,7 +80084,10 @@ var render = function() {
                       ]),
                       _vm._v(" "),
                       _c("span", { staticClass: "info-box-text" }, [
-                        _vm._v("Deadline: " + _vm._s(order.deadline))
+                        _vm._v(
+                          "Deadline: " +
+                            _vm._s(_vm._f("myDatetime")(order.deadline))
+                        )
                       ]),
                       _vm._v(" "),
                       _c("span", { staticClass: "info-box-text" }, [
@@ -80287,7 +80338,7 @@ var render = function() {
                               [
                                 _vm._m(6),
                                 _vm._v(
-                                  "\n                                            No files attached!!\n                                        "
+                                  "\n                                        No files attached!!\n                                    "
                                 )
                               ]
                             )
@@ -80297,19 +80348,32 @@ var render = function() {
                     _vm._v(" "),
                     _c("div", { staticClass: "card-footer" }, [
                       _c("div", { staticClass: "row" }, [
-                        _c(
-                          "button",
-                          {
-                            staticClass: "btn btn-dark",
-                            attrs: { type: "button" },
-                            on: {
-                              click: function($event) {
-                                return _vm.placeBid()
-                              }
-                            }
-                          },
-                          [_vm._v("Place Bid!")]
-                        )
+                        this.ifBid == 0
+                          ? _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-success",
+                                attrs: { type: "button" },
+                                on: {
+                                  click: function($event) {
+                                    return _vm.placeBid()
+                                  }
+                                }
+                              },
+                              [
+                                _c("i", { staticClass: "fas fa-thumbs-up" }),
+                                _vm._v(
+                                  "\n                                        Place Bid\n                                    "
+                                )
+                              ]
+                            )
+                          : _vm._e(),
+                        _vm._v(" "),
+                        this.ifBid > 0
+                          ? _c("span", { staticStyle: { color: "red" } }, [
+                              _vm._v("You already placed a bid!!")
+                            ])
+                          : _vm._e()
                       ])
                     ])
                   ])
@@ -80328,7 +80392,10 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("span", { staticClass: "info-box-icon bg-aqua" }, [
-      _c("i", { staticClass: "fas fa-envelope" })
+      _c("i", {
+        staticClass: "fas fa-envelope",
+        staticStyle: { color: "green" }
+      })
     ])
   },
   function() {
