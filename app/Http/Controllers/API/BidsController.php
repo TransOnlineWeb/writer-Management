@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Bid;
 use App\Http\Controllers\Controller;
+use App\User;
 use Illuminate\Http\Request;
 
 class BidsController extends Controller
@@ -66,9 +67,30 @@ class BidsController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($orderId)
     {
-        //
+        $bids = Bid::where('order_id', $orderId)->latest()->get();
+        $parent = array();
+
+        foreach ($bids as $bid) {
+            $name = User::where('id', $bid['user_id'])->value('name');
+            $email = User::where('id', $bid['user_id'])->value('email');
+            $phone = User::where('id', $bid['user_id'])->value('phone_number');
+            $level_id = User::where('id', $bid['user_id'])->value('level_id');
+
+            $child = array(
+                'name' => $name,
+                'email' => $email,
+                'phone' => $phone,
+                'id' => $bid['id'],
+                'level' => $level_id,
+                'status' => $bid['status']
+            );
+
+            array_push($parent, $child);
+        }
+
+        return $parent;
     }
 
     /**
