@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Bid;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -12,15 +13,37 @@ class BidsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
+
     public function index()
     {
         //
     }
 
+    public function makeBid($orderId)
+    {
+        $bid = new Bid();
+        $bid->order_id = $orderId;
+        $user = auth()->user()->id;
+        $bid->user_id = $user;
+        $bid->status = 0;
+        $bid->save();
+
+        return response(['status' => 'success'], 200);
+    }
+
+    public function checkBid($orderId)
+    {
+        return Bid::where('user_id', auth()->user()->id)->where('order_id', $orderId)->count();
+    }
+
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -31,7 +54,7 @@ class BidsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -42,8 +65,8 @@ class BidsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -54,7 +77,7 @@ class BidsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

@@ -177,7 +177,7 @@
                 typing: '',
                 users : {},
                 messages:[],
-                orderId: this.$route.params.orderId,
+                orderId: '',
                 details: [],
                 filesCount: '',
                 files: {},
@@ -200,10 +200,10 @@
                     confirmButtonText: 'Yes, place it!'
                 }).then((result) => {
                     if(result.value){
-                        axios.post("api/bid/" + this.orderId).then(()=>{
+                        axios.post("/api/makebid/" + this.orderId).then(()=>{
                             Swal.fire(
-                                'Delete!',
-                                'Deleted!!',
+                                'Placed!',
+                                'Bid successfully placed!!',
                                 'success'
                             )
                             Fire.$emit('entry');
@@ -243,6 +243,7 @@
             },
             orderDetails(order) {
               $('#OrderDetails').modal('show');
+              this.orderId = order.id;
               window.axios.get("/api/order/"+order.id).then(({ data }) => ([this.details = data]));
               window.axios.get("/api/getfiles/"+order.id).then(({ data }) => ([this.files = data]));
               window.axios.get("/api/filescount/"+order.id).then(({ data }) => ([this.filesCount = data]));

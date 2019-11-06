@@ -3946,7 +3946,7 @@ __webpack_require__.r(__webpack_exports__);
       typing: '',
       users: {},
       messages: [],
-      orderId: this.$route.params.orderId,
+      orderId: '',
       details: [],
       filesCount: '',
       files: {},
@@ -3969,8 +3969,8 @@ __webpack_require__.r(__webpack_exports__);
         confirmButtonText: 'Yes, place it!'
       }).then(function (result) {
         if (result.value) {
-          axios.post("api/bid/" + _this.orderId).then(function () {
-            Swal.fire('Delete!', 'Deleted!!', 'success');
+          axios.post("/api/makebid/" + _this.orderId).then(function () {
+            Swal.fire('Placed!', 'Bid successfully placed!!', 'success');
             Fire.$emit('entry');
           })["catch"](function () {
             Swal.fire('Failed!', 'There was something wrong');
@@ -4011,6 +4011,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this3 = this;
 
       $('#OrderDetails').modal('show');
+      this.orderId = order.id;
       window.axios.get("/api/order/" + order.id).then(function (_ref2) {
         var data = _ref2.data;
         return [_this3.details = data];
