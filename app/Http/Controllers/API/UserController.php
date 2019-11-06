@@ -70,6 +70,12 @@ class UserController extends Controller
     {
         return auth()->user();
     }
+    public function profiles()
+    {
+//        $user = User::all();
+        return User::Where('role','writer')->latest()->paginate(9);
+
+    }
     public function updateProfile(Request $request)
     {
         $user =  auth()->user();
