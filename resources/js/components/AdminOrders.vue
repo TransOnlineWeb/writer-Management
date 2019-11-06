@@ -224,7 +224,7 @@
                             <div class="row justify-content-center">
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <v-select v-model="form.writer" label="email" :options="writers" placeholder="Assign Writer"></v-select>
+                                        <v-select v-model="writer_obj" label="email" :options="writers" placeholder="Assign Writer" v-on:change="writerId()"></v-select>
                                     </div>
                                 </div>
                             </div>
@@ -260,6 +260,7 @@
                 e_viewers: '',
                 writers: '',
                 orders: {},
+                writer_obj: '',
                 urgent: false,
                 attachments: [],
                 formf: new FormData(),
@@ -282,6 +283,13 @@
             }
         },
         methods: {
+            writerId(){
+                if (this.writer_obj) {
+                    this.form.writer = this.writer_obj['id'];
+                }else if(!this.writer_obj){
+                   this.form.writer = '';
+                }
+            },
             getWriters(){
                 axios.get("/api/getwriters").then(({data}) => ([this.writers = data]));
             },
@@ -289,6 +297,7 @@
                 axios.get("/api/order").then(({data}) => ([this.orders = data]));
             },
             validateForm() {
+                this.writerId();
                 if (!this.form.title) {
                     // set(type, 'required');
                     this.form.errors.set({
@@ -372,6 +381,7 @@
 
                 axios.post('/api/order', this.formf, config).then(response => {
                     $('#addnew').modal('hide');
+                    Fire.$emit('entry');
                     this.form.reset();
                     swal.fire({
                         type: 'success',
@@ -414,6 +424,9 @@
         created() {
             this.getOrders();
             this.getWriters();
+            Fire.$on('entry', () => {
+                this.getOrders();
+            })
         }
     }
 </script>

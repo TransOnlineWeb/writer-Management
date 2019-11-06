@@ -229,6 +229,7 @@
                 details: {},
                 filesCount: '',
                 files: {},
+                writer: '',
                 attachments:[],
                 formf: new FormData(),
                 form: new Form({

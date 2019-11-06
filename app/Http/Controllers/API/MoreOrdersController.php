@@ -52,4 +52,8 @@ class MoreOrdersController extends Controller
     public function getWriters(){
         return (object) User::where('role', 'writer')->where('status_id', 1)->get();
     }
+
+    public function getWriter($id){
+        return User::where('id', $id)->first();
+    }
 }

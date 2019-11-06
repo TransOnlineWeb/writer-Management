@@ -64,10 +64,6 @@ window.PulseLoader = PulseLoader;
 import VueNumericInput from 'vue-numeric-input';
 Vue.use(VueNumericInput);
 
-import { VueSpinners } from '@saeris/vue-spinners';
-
-Vue.use(VueSpinners);
-
 // Datetime
 import { Datetime } from 'vue-datetime';
 Vue.component('datetime', Datetime);
