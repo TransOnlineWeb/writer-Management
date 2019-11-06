@@ -123,33 +123,35 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             <i class="nav-icon fas fa-tachometer-alt blue"></i>
                             <p>
                                 Dashboard
-                             </p>
-                         </router-link>
-                     </li>
-                     <li class="nav-item">
+                            </p>
+                        </router-link>
+                    </li>
+                    <li class="nav-item">
                         <router-link to="/users" class="nav-link">
                             <i class="nav-icon fas fa-users yellow"></i>
-                        <p>
-                            Users
-                        </p>
+                            <p>
+                                Users
+                            </p>
                         </router-link>
-                     </li>
+                    </li>
                     <li class="nav-item">
                         <router-link to="/chat" class="nav-link">
                             <i class="nav-icon fas fa-comments green"></i>
-                        <p>
-                            Chat
-                        </p>
+                            <p>
+                                Chat
+                            </p>
                         </router-link>
+                    </li>
+                    <li class="nav-item">
+                        <router-link to="/category" class="nav-link">
+                            <i class="nav-icon fas fa-cogs"></i>
+                            <p>
+                                Writers' Category
+                            </p>
+                        </router-link>
+                    </li>
+                    <li class="nav-item">
                      </li>
-                     <li class="nav-item">
-                         <router-link to="/profile" class="nav-link">
-                         <i class="nav-icon fas fa-user orange"></i>
-                         <p>
-                            Profile
-                        </p>
-                         </router-link>
-                      </li>
                         <li class="nav-item">
                             <router-link to="/order" class="nav-link">
                                 <i class="nav-icon fas fa-cogs"></i>
@@ -163,6 +165,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
                           <i class="nav-icon fas fa-user-tie teal"></i>
                             <p>
                                 MyWriters
+                            </p>
+                        </router-link>
+                    </li>
+                    <li class="nav-item">
+                        <router-link to="/profile" class="nav-link">
+                            <i class="nav-icon fas fa-user orange"></i>
+                            <p>
+                                Profile
                             </p>
                         </router-link>
                     </li>
