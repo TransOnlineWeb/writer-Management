@@ -35,6 +35,7 @@ let routes = [
     { path: '/profile', component: require('./components/profile.vue').default },
     { path: '/dashboard', component: require('./components/Dashboard.vue').default },
     { path: '/chat', component: require('./components/Chat.vue').default },
+    { path: '/category', component: require('./components/WritersCategory.vue').default },
     {path: '/orderdetails/:orderId', component: require('./components/OrderDetails.vue').default},
 ];
 
@@ -62,6 +63,10 @@ window.PulseLoader = PulseLoader;
 // Numeric input
 import VueNumericInput from 'vue-numeric-input';
 Vue.use(VueNumericInput);
+
+import { VueSpinners } from '@saeris/vue-spinners';
+
+Vue.use(VueSpinners);
 
 // Datetime
 import { Datetime } from 'vue-datetime';
