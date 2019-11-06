@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRatingsTable extends Migration
+class CreateBidsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CreateRatingsTable extends Migration
      */
     public function up()
     {
-        Schema::create('ratings', function (Blueprint $table) {
+        Schema::create('bids', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('order_id');
-            $table->integer('user_id');
-            $table->double('rating');
-           $table->timestamps();
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('order_id');
+            $table->unsignedInteger('status');
+            $table->timestamps();
         });
     }
 
@@ -29,6 +29,6 @@ class CreateRatingsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ratings');
+        Schema::dropIfExists('bids');
     }
 }

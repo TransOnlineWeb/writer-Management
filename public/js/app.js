@@ -2117,8 +2117,9 @@ __webpack_require__.r(__webpack_exports__);
       e_spacing: '',
       e_description: '',
       e_viewers: '',
-      writers: '',
+      writers: {},
       orders: {},
+      writer_obj: '',
       urgent: false,
       attachments: [],
       formf: new FormData(),
@@ -2141,6 +2142,13 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
+    writerId: function writerId() {
+      if (this.writer_obj) {
+        this.form.writer = this.writer_obj['id'];
+      } else if (!this.writer_obj) {
+        this.form.writer = '';
+      }
+    },
     getWriters: function getWriters() {
       var _this = this;
 
@@ -2158,6 +2166,8 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     validateForm: function validateForm() {
+      this.writerId();
+
       if (!this.form.title) {
         // set(type, 'required');
         this.form.errors.set({
@@ -2246,6 +2256,7 @@ __webpack_require__.r(__webpack_exports__);
       };
       axios.post('/api/order', this.formf, config).then(function (response) {
         $('#addnew').modal('hide');
+        Fire.$emit('entry');
 
         _this3.form.reset();
 
@@ -2286,8 +2297,13 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   created: function created() {
+    var _this4 = this;
+
     this.getOrders();
     this.getWriters();
+    Fire.$on('entry', function () {
+      _this4.getOrders();
+    });
   }
 });
 
@@ -3279,6 +3295,23 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     user: {
@@ -3298,6 +3331,7 @@ __webpack_require__.r(__webpack_exports__);
       details: {},
       filesCount: '',
       files: {},
+      writer: {},
       attachments: [],
       formf: new FormData(),
       form: new Form({})
@@ -3319,9 +3353,24 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     setRatting: function setRatting() {
       axios.post('/api/rating', {
-        OrderId: this.OrderId,
-        UserId: this.details.assigned_user_id,
+        OrderId: this.orderId,
+        UserId: this.writer.id,
         Rating: this.rating
+      }).then(function (response) {
+        Swal.fire({
+          type: 'success',
+          title: 'Rating Submited!!',
+          text: 'Order rated successfully'
+        });
+      })["catch"](function (response) {//error
+      });
+    },
+    getWriter: function getWriter() {
+      var _this2 = this;
+
+      axios.get("/api/writer/" + this.orderId).then(function (_ref) {
+        var data = _ref.data;
+        return [_this2.writer = data];
       });
     },
     validate: function validate() {
@@ -3336,7 +3385,7 @@ __webpack_require__.r(__webpack_exports__);
       axios.post('/api/downloadAll/' + this.orderId);
     },
     submit: function submit() {
-      var _this2 = this;
+      var _this3 = this;
 
       for (var i = 0; i < this.attachments.length; i++) {
         this.formf.append('files[]', this.attachments[i]);
@@ -3351,7 +3400,7 @@ __webpack_require__.r(__webpack_exports__);
         Fire.$emit('entry');
         $('#addnew').modal('hide');
 
-        _this2.form.reset();
+        _this3.form.reset();
 
         Swal.fire({
           type: 'success',
@@ -3383,14 +3432,14 @@ __webpack_require__.r(__webpack_exports__);
       this.messages.push(message);
     },
     scrollToBottom: function scrollToBottom() {
-      var _this3 = this;
+      var _this4 = this;
 
       setTimeout(function () {
-        _this3.$refs.feed.scrollTop = _this3.$refs.feed.scrollHeight - _this3.$refs.feed.clientHeight;
+        _this4.$refs.feed.scrollTop = _this4.$refs.feed.scrollHeight - _this4.$refs.feed.clientHeight;
       }, 50);
     },
     sendMessage: function sendMessage() {
-      var _this4 = this;
+      var _this5 = this;
 
       console.log(this.orderId);
 
@@ -3403,36 +3452,36 @@ __webpack_require__.r(__webpack_exports__);
         OrderId: this.orderId,
         contact_id: this.users
       }).then(function (response) {
-        _this4.messages.push(response.data);
+        _this5.messages.push(response.data);
 
-        _this4.message = '';
+        _this5.message = '';
       });
     },
     download: function download(id) {
       axios.get("/api/download/" + id).then();
     },
     getDetails: function getDetails() {
-      var _this5 = this;
+      var _this6 = this;
 
-      axios.get("/api/order/" + this.orderId).then(function (_ref) {
-        var data = _ref.data;
-        return [_this5.details = data];
+      axios.get("/api/order/" + this.orderId).then(function (_ref2) {
+        var data = _ref2.data;
+        return [_this6.details = data];
       });
     },
     getFilesCount: function getFilesCount() {
-      var _this6 = this;
+      var _this7 = this;
 
-      axios.get("/api/filescount/" + this.orderId).then(function (_ref2) {
-        var data = _ref2.data;
-        return [_this6.filesCount = data];
+      axios.get("/api/filescount/" + this.orderId).then(function (_ref3) {
+        var data = _ref3.data;
+        return [_this7.filesCount = data];
       });
     },
     getFiles: function getFiles() {
-      var _this7 = this;
+      var _this8 = this;
 
-      axios.get("/api/getfiles/" + this.orderId).then(function (_ref3) {
-        var data = _ref3.data;
-        return [_this7.files = data];
+      axios.get("/api/getfiles/" + this.orderId).then(function (_ref4) {
+        var data = _ref4.data;
+        return [_this8.files = data];
       });
     },
     getUser: function getUser() {// axios.get("/api/getUser/" + this.orderId).then(({ data }) => ([this.users = data]));
@@ -3454,17 +3503,18 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   created: function created() {
-    var _this8 = this;
+    var _this9 = this;
 
     this.getDetails();
     this.getFilesCount();
     this.getMessages();
     this.getUser();
     this.getFiles();
+    this.getWriter();
     Fire.$on('entry', function () {
-      _this8.getFiles();
+      _this9.getFiles();
 
-      _this8.getFilesCount();
+      _this9.getFilesCount();
     });
   }
 });
@@ -3620,19 +3670,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       editmode: false,
       users: {},
+      categories: {},
       form: new Form({
         id: '',
         name: '',
@@ -3640,31 +3683,38 @@ __webpack_require__.r(__webpack_exports__);
         role: '',
         level_id: '',
         status_id: '',
-        photo: '',
         email: '',
         password: ''
       })
     };
   },
   methods: {
-    updateUserInfo: function updateUserInfo() {
+    getCategories: function getCategories() {
       var _this = this;
+
+      window.axios.get('/api/category').then(function (_ref) {
+        var data = _ref.data;
+        return _this.categories = data.data;
+      });
+    },
+    updateUserInfo: function updateUserInfo() {
+      var _this2 = this;
 
       this.$Progress.start();
       this.form.put('api/user/' + this.form.id).then(function () {
         Fire.$emit('AfterCreate');
         $('#AddNew').modal('hide');
 
-        _this.form.reset();
+        _this2.form.reset();
 
         Swal.fire({
           type: 'success',
           title: 'User Information Updated'
         });
 
-        _this.$Progress.finish();
+        _this2.$Progress.finish();
       })["catch"](function () {
-        _this.$Progress.fail();
+        _this2.$Progress.fail();
       });
     },
     editUser: function editUser(user) {
@@ -3679,7 +3729,7 @@ __webpack_require__.r(__webpack_exports__);
       $('#AddNew').modal('show');
     },
     deleteUser: function deleteUser(id) {
-      var _this2 = this;
+      var _this3 = this;
 
       Swal.fire({
         title: 'Are you sure?',
@@ -3691,7 +3741,7 @@ __webpack_require__.r(__webpack_exports__);
         confirmButtonText: 'Yes, delete it!'
       }).then(function (result) {
         if (result.value) {
-          _this2.form["delete"]('api/user/' + id).then(function () {
+          _this3.form["delete"]('api/user/' + id).then(function () {
             Swal.fire('Deleted!', 'User has been deleted.', 'success');
             Fire.$emit('AfterCreate');
           })["catch"](function () {
@@ -3701,38 +3751,39 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     addUser: function addUser() {
-      var _this3 = this;
+      var _this4 = this;
 
       this.$Progress.start();
       this.form.post('api/user').then(function () {
         Fire.$emit('AfterCreate');
         $('#AddNew').modal('hide');
 
-        _this3.form.reset();
+        _this4.form.reset();
 
         Swal.fire({
           type: 'success',
           title: 'User Successfully Created'
         });
 
-        _this3.$Progress.finish();
+        _this4.$Progress.finish();
       })["catch"](function () {});
     },
     getUsers: function getUsers() {
-      var _this4 = this;
+      var _this5 = this;
 
-      window.axios.get('api/user').then(function (_ref) {
-        var data = _ref.data;
-        return _this4.users = data.data;
+      window.axios.get('api/user').then(function (_ref2) {
+        var data = _ref2.data;
+        return _this5.users = data.data;
       });
     }
   },
   mounted: function mounted() {
-    var _this5 = this;
+    var _this6 = this;
 
     this.getUsers();
+    this.getCategories();
     Fire.$on('AfterCreate', function () {
-      _this5.getUsers();
+      _this6.getUsers();
     });
   }
 });
@@ -3913,6 +3964,31 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3922,9 +3998,10 @@ __webpack_require__.r(__webpack_exports__);
       typing: '',
       users: {},
       messages: [],
-      orderId: this.$route.params.orderId,
+      orderId: '',
       details: [],
       filesCount: '',
+      ifBid: '',
       files: {},
       attachments: [],
       formf: new FormData(),
@@ -3932,15 +4009,51 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
+    checkBid: function checkBid() {
+      var _this = this;
+
+      axios.get("/api/checkbid/" + this.orderId).then(function (_ref) {
+        var data = _ref.data;
+        return [_this.ifBid = data];
+      });
+    },
+    placeBid: function placeBid() {
+      var _this2 = this;
+
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "Place this bid??",
+        //type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, place it!'
+      }).then(function (result) {
+        if (result.value) {
+          axios.post("/api/makebid/" + _this2.orderId).then(function () {
+            Fire.$emit('entry');
+            Swal.fire('Placed!', 'Bid successfully placed!!', 'success');
+            Fire.$emit('entry');
+          })["catch"](function (error) {
+            _this2.errors = error.response.data.errors;
+            Swal.fire({
+              type: 'error',
+              title: 'Error!!',
+              text: error.response.data.msg
+            });
+          });
+        }
+      });
+    },
     // getDetails(){
     //     axios.get("/api/order/" + this.orderId).then(({ data }) => ([this.details = data]));
     // },
     getFilesCount: function getFilesCount(order) {
-      var _this = this;
+      var _this3 = this;
 
-      axios.get("/api/filescount/" + order.id).then(function (_ref) {
-        var data = _ref.data;
-        return [_this.filesCount = data];
+      axios.get("/api/filescount/" + order.id).then(function (_ref2) {
+        var data = _ref2.data;
+        return [_this3.filesCount = data];
       });
     },
     // getFiles(order){
@@ -3962,37 +4075,43 @@ __webpack_require__.r(__webpack_exports__);
       axios.post('/api/downloadAll/' + this.orderId);
     },
     orderDetails: function orderDetails(order) {
-      var _this2 = this;
+      var _this4 = this;
 
       $('#OrderDetails').modal('show');
-      window.axios.get("/api/order/" + order.id).then(function (_ref2) {
-        var data = _ref2.data;
-        return [_this2.details = data];
-      });
-      window.axios.get("/api/getfiles/" + order.id).then(function (_ref3) {
+      this.orderId = order.id;
+      window.axios.get("/api/order/" + order.id).then(function (_ref3) {
         var data = _ref3.data;
-        return [_this2.files = data];
+        return [_this4.details = data];
       });
-      window.axios.get("/api/filescount/" + order.id).then(function (_ref4) {
+      window.axios.get("/api/getfiles/" + order.id).then(function (_ref4) {
         var data = _ref4.data;
-        return [_this2.filesCount = data];
+        return [_this4.files = data];
       });
+      window.axios.get("/api/filescount/" + order.id).then(function (_ref5) {
+        var data = _ref5.data;
+        return [_this4.filesCount = data];
+      });
+      this.checkBid();
     },
     getOrders: function getOrders() {
-      var _this3 = this;
+      var _this5 = this;
 
-      window.axios.get("api/order").then(function (_ref5) {
-        var data = _ref5.data;
-        return [_this3.orders = data.data];
+      window.axios.get("api/order").then(function (_ref6) {
+        var data = _ref6.data;
+        return [_this5.orders = data.data];
       });
     }
   },
-  mounted: function mounted() {
+  created: function created() {
+    var _this6 = this;
+
     this.getOrders(); // // this.getDetails();
     // this.getFiles();
     // this.getFilesCount();
 
-    console.log('Component mounted.');
+    Fire.$on('entry', function () {
+      _this6.checkBid();
+    });
   }
 });
 
@@ -11006,7 +11125,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.card-body .details{\n    max-height: 300px;\n    overflow: scroll;\n}\n.modal-dialog {\n    min-width: 60%;\n}\n", ""]);
+exports.push([module.i, "\n.card-body .details {\n    max-height: 300px;\n    overflow: scroll;\n}\n.modal-dialog {\n    min-width: 60%;\n}\n", ""]);
 
 // exports
 
@@ -77851,12 +77970,17 @@ var render = function() {
                                 options: _vm.writers,
                                 placeholder: "Assign Writer"
                               },
+                              on: {
+                                change: function($event) {
+                                  return _vm.writerId()
+                                }
+                              },
                               model: {
-                                value: _vm.form.writer,
+                                value: _vm.writer_obj,
                                 callback: function($$v) {
-                                  _vm.$set(_vm.form, "writer", $$v)
+                                  _vm.writer_obj = $$v
                                 },
-                                expression: "form.writer"
+                                expression: "writer_obj"
                               }
                             })
                           ],
@@ -78551,27 +78675,73 @@ var render = function() {
                           _vm._m(1),
                           _vm._v(" "),
                           _c("tr", [
-                            _c("td", [_vm._v("Name")]),
+                            _vm._m(2),
                             _vm._v(" "),
                             _c("td", [
-                              _c("span", [_vm._v(_vm._s(_vm.details.name))])
+                              _c("span", [_vm._v(_vm._s(_vm.writer.name))]),
+                              _vm._v(" "),
+                              !this.writer
+                                ? _c(
+                                    "span",
+                                    { staticStyle: { color: "rebeccapurple" } },
+                                    [_vm._v("No writer assigned")]
+                                  )
+                                : _vm._e()
                             ])
                           ]),
                           _vm._v(" "),
                           _c("tr", [
-                            _c("td", [_vm._v("Email")]),
-                            _vm._v(" "),
-                            _c("td", [
-                              _c("span", [_vm._v(_vm._s(_vm.details.email))])
-                            ])
-                          ]),
-                          _vm._v(" "),
-                          _c("tr", [
-                            _c("td", [_vm._v("Price")]),
+                            _vm._m(3),
                             _vm._v(" "),
                             _c("td", [
                               _c("span", [
-                                _vm._v("$" + _vm._s(_vm.details.price))
+                                _vm._v(_vm._s(_vm.writer.phone_number))
+                              ]),
+                              _vm._v(" "),
+                              !this.writer
+                                ? _c(
+                                    "span",
+                                    { staticStyle: { color: "rebeccapurple" } },
+                                    [_vm._v("No writer assigned")]
+                                  )
+                                : _vm._e()
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("tr", [
+                            _vm._m(4),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c("span", [_vm._v(_vm._s(_vm.writer.email))]),
+                              _vm._v(" "),
+                              !this.writer
+                                ? _c(
+                                    "span",
+                                    { staticStyle: { color: "rebeccapurple" } },
+                                    [_vm._v("No writer assigned")]
+                                  )
+                                : _vm._e()
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("tr", [
+                            _vm._m(5),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c("span", [
+                                _vm._v("Ksh. " + _vm._s(_vm.details.amount))
+                              ])
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("tr", [
+                            _vm._m(6),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c("span", [
+                                _vm._v(
+                                  "Ksh. " + _vm._s(_vm.details.total_amount)
+                                )
                               ])
                             ])
                           ])
@@ -78584,7 +78754,7 @@ var render = function() {
                 _c("hr"),
                 _vm._v(" "),
                 _c("div", { staticClass: "box" }, [
-                  _vm._m(2),
+                  _vm._m(7),
                   _vm._v(" "),
                   _c(
                     "div",
@@ -78592,10 +78762,10 @@ var render = function() {
                     [
                       _c("table", { staticClass: "table table-striped" }, [
                         _c("tbody", [
-                          _vm._m(3),
+                          _vm._m(8),
                           _vm._v(" "),
                           _c("tr", [
-                            _c("td", [_vm._v("Order Number")]),
+                            _vm._m(9),
                             _vm._v(" "),
                             _c("td", [
                               _c("span", [
@@ -78605,7 +78775,7 @@ var render = function() {
                           ]),
                           _vm._v(" "),
                           _c("tr", [
-                            _c("td", [_vm._v("Document's Title")]),
+                            _vm._m(10),
                             _vm._v(" "),
                             _c("td", [
                               _c("span", [_vm._v(_vm._s(_vm.details.title))])
@@ -78613,7 +78783,7 @@ var render = function() {
                           ]),
                           _vm._v(" "),
                           _c("tr", [
-                            _c("td", [_vm._v("Level")]),
+                            _vm._m(11),
                             _vm._v(" "),
                             _c("td", [
                               _c("span", [
@@ -78623,7 +78793,7 @@ var render = function() {
                           ]),
                           _vm._v(" "),
                           _c("tr", [
-                            _c("td", [_vm._v("Discipline")]),
+                            _vm._m(12),
                             _vm._v(" "),
                             _c("td", [
                               _c("span", [
@@ -78633,7 +78803,7 @@ var render = function() {
                           ]),
                           _vm._v(" "),
                           _c("tr", [
-                            _c("td", [_vm._v("Viewers")]),
+                            _vm._m(13),
                             _vm._v(" "),
                             _c("td", [
                               _c("span", [_vm._v(_vm._s(_vm.details.viewers))])
@@ -78641,7 +78811,7 @@ var render = function() {
                           ]),
                           _vm._v(" "),
                           _c("tr", [
-                            _c("td", [_vm._v("No. of Pages")]),
+                            _vm._m(14),
                             _vm._v(" "),
                             _c("td", [
                               _c("span", [_vm._v(_vm._s(_vm.details.pages))])
@@ -78649,7 +78819,7 @@ var render = function() {
                           ]),
                           _vm._v(" "),
                           _c("tr", [
-                            _c("td", [_vm._v("Deadline")]),
+                            _vm._m(15),
                             _vm._v(" "),
                             _c("td", [
                               _c("span", { staticStyle: { color: "red" } }, [
@@ -78663,7 +78833,7 @@ var render = function() {
                           ]),
                           _vm._v(" "),
                           _c("tr", [
-                            _c("td", [_vm._v("Spacing")]),
+                            _vm._m(16),
                             _vm._v(" "),
                             _c("td", [
                               _c("span", [_vm._v(_vm._s(_vm.details.spacing))])
@@ -78671,7 +78841,7 @@ var render = function() {
                           ]),
                           _vm._v(" "),
                           _c("tr", [
-                            _c("td", [_vm._v("Paper Format")]),
+                            _vm._m(17),
                             _vm._v(" "),
                             _c("td", [
                               _c("span", [
@@ -78688,7 +78858,7 @@ var render = function() {
               _vm._v(" "),
               _c("div", { staticClass: "col-md-6" }, [
                 _c("div", { staticClass: "box" }, [
-                  _vm._m(4),
+                  _vm._m(18),
                   _vm._v(" "),
                   _c(
                     "div",
@@ -78738,7 +78908,7 @@ var render = function() {
                                       }
                                     }
                                   },
-                                  [_vm._m(5, true)]
+                                  [_vm._m(19, true)]
                                 )
                               ]
                             )
@@ -78768,7 +78938,7 @@ var render = function() {
                             [_vm._v("×")]
                           ),
                           _vm._v(" "),
-                          _vm._m(6),
+                          _vm._m(20),
                           _vm._v(
                             "\n                                        No files attached!!\n                                    "
                           )
@@ -78778,10 +78948,10 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "box" }, [
-                  _vm._m(7),
+                  _vm._m(21),
                   _vm._v(" "),
                   _c("div", { staticClass: "box-body" }, [
-                    _vm._m(8),
+                    _vm._m(22),
                     _vm._v(" "),
                     _c(
                       "div",
@@ -78957,7 +79127,7 @@ var render = function() {
           { staticClass: "modal-dialog", attrs: { role: "document" } },
           [
             _c("div", { staticClass: "modal-content" }, [
-              _vm._m(9),
+              _vm._m(23),
               _vm._v(" "),
               _c(
                 "form",
@@ -78988,7 +79158,7 @@ var render = function() {
                     ])
                   ]),
                   _vm._v(" "),
-                  _vm._m(10)
+                  _vm._m(24)
                 ]
               )
             ])
@@ -79021,6 +79191,36 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
+    return _c("td", [_c("b", [_vm._v("Name")])])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", [_c("b", [_vm._v("Phone")])])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", [_c("b", [_vm._v("Email")])])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", [_c("b", [_vm._v("Cost Per Page")])])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", [_c("b", [_vm._v("Total Cost")])])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
     return _c("div", { staticClass: "box-header" }, [
       _c("h4", { staticClass: "box-title" }, [_vm._v("Order Details")])
     ])
@@ -79034,6 +79234,60 @@ var staticRenderFns = [
       _vm._v(" "),
       _c("th", { staticStyle: { width: "40px" } }, [_vm._v("Details")])
     ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", [_c("b", [_vm._v("Order Number")])])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", [_c("b", [_vm._v("Title")])])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", [_c("b", [_vm._v("Level")])])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", [_c("b", [_vm._v("Discipline")])])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", [_c("b", [_vm._v("Viewers")])])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", [_c("b", [_vm._v("No. of Pages")])])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", [_c("b", [_vm._v("Deadline")])])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", [_c("b", [_vm._v("Spacing")])])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", [_c("b", [_vm._v("Paper Format")])])
   },
   function() {
     var _vm = this
@@ -79519,7 +79773,7 @@ var render = function() {
                             _c(
                               "option",
                               { attrs: { selected: "", value: "" } },
-                              [_vm._v("--Select Level--")]
+                              [_vm._v("--Select UserType--")]
                             ),
                             _vm._v(" "),
                             _c("option", { attrs: { value: "writer" } }, [
@@ -79543,35 +79797,12 @@ var render = function() {
                       1
                     ),
                     _vm._v(" "),
-                    _c("div", { staticClass: "col" }, [
-                      _c(
-                        "div",
-                        { staticClass: "form-group d-flex" },
-                        [
-                          _c("label", [_vm._v("Profile-Photo")]),
-                          _vm._v(" "),
-                          _c("input", {
-                            staticClass: "form-control-file",
-                            attrs: {
-                              type: "file",
-                              multiple: "",
-                              id: "photo",
-                              name: "photo"
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c("has-error", {
-                            attrs: { form: _vm.form, field: "photo" }
-                          })
-                        ],
-                        1
-                      )
-                    ]),
-                    _vm._v(" "),
                     _c(
                       "div",
                       { staticClass: "form-group" },
                       [
+                        _c("div"),
+                        _vm._v(" "),
                         _c(
                           "select",
                           {
@@ -79615,18 +79846,15 @@ var render = function() {
                               [_vm._v("--Select Level--")]
                             ),
                             _vm._v(" "),
-                            _c("option", { attrs: { value: "1" } }, [
-                              _vm._v("Starter")
-                            ]),
-                            _vm._v(" "),
-                            _c("option", { attrs: { value: "2" } }, [
-                              _vm._v("Mid")
-                            ]),
-                            _vm._v(" "),
-                            _c("option", { attrs: { value: "3" } }, [
-                              _vm._v("Senior")
-                            ])
-                          ]
+                            _vm._l(_vm.categories, function(category) {
+                              return _c(
+                                "option",
+                                { domProps: { value: category.id } },
+                                [_vm._v(_vm._s(category.title))]
+                              )
+                            })
+                          ],
+                          2
                         ),
                         _vm._v(" "),
                         _c("has-error", {
@@ -79895,7 +80123,13 @@ var render = function() {
                             }
                           }
                         },
-                        [_vm._v("Order Number: " + _vm._s(order.order_number))]
+                        [
+                          _vm._v(
+                            "Order\n                                        Number: " +
+                              _vm._s(order.order_number) +
+                              "\n                                    "
+                          )
+                        ]
                       ),
                       _vm._v(" "),
                       _c("span", { staticClass: "info-box-text" }, [
@@ -79903,7 +80137,10 @@ var render = function() {
                       ]),
                       _vm._v(" "),
                       _c("span", { staticClass: "info-box-text" }, [
-                        _vm._v("Deadline: " + _vm._s(order.deadline))
+                        _vm._v(
+                          "Deadline: " +
+                            _vm._s(_vm._f("myDatetime")(order.deadline))
+                        )
                       ]),
                       _vm._v(" "),
                       _c("span", { staticClass: "info-box-text" }, [
@@ -80154,10 +80391,41 @@ var render = function() {
                               [
                                 _vm._m(6),
                                 _vm._v(
-                                  "\n                                            No files attached!!\n                                        "
+                                  "\n                                        No files attached!!\n                                    "
                                 )
                               ]
                             )
+                          : _vm._e()
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "card-footer" }, [
+                      _c("div", { staticClass: "row" }, [
+                        this.ifBid == 0
+                          ? _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-success",
+                                attrs: { type: "button" },
+                                on: {
+                                  click: function($event) {
+                                    return _vm.placeBid()
+                                  }
+                                }
+                              },
+                              [
+                                _c("i", { staticClass: "fas fa-thumbs-up" }),
+                                _vm._v(
+                                  "\n                                        Place Bid\n                                    "
+                                )
+                              ]
+                            )
+                          : _vm._e(),
+                        _vm._v(" "),
+                        this.ifBid > 0
+                          ? _c("span", { staticStyle: { color: "red" } }, [
+                              _vm._v("You already placed a bid!!")
+                            ])
                           : _vm._e()
                       ])
                     ])
@@ -80177,7 +80445,10 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("span", { staticClass: "info-box-icon bg-aqua" }, [
-      _c("i", { staticClass: "fas fa-envelope" })
+      _c("i", {
+        staticClass: "fas fa-envelope",
+        staticStyle: { color: "green" }
+      })
     ])
   },
   function() {
@@ -97720,11 +97991,7 @@ window.PulseLoader = vue_spinner_src_PulseLoader_vue__WEBPACK_IMPORTED_MODULE_5_
 Vue.component('star-rating', vue_star_rating__WEBPACK_IMPORTED_MODULE_6___default.a); // Numeric input
 
 
-Vue.use(vue_numeric_input__WEBPACK_IMPORTED_MODULE_7___default.a);
-/*import { VueSpinners } from '@saeris/vue-spinners';*/
-
-/*Vue.use(VueSpinners);*/
-// Datetime
+Vue.use(vue_numeric_input__WEBPACK_IMPORTED_MODULE_7___default.a); // Datetime
 
 
 Vue.component('datetime', vue_datetime__WEBPACK_IMPORTED_MODULE_8__["Datetime"]); // Vue Select

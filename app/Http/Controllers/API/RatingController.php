@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Rating;
 use Illuminate\Http\Request;
 
 class RatingController extends Controller
@@ -25,7 +26,12 @@ class RatingController extends Controller
      */
     public function store(Request $request)
     {
-        //
+       $rating = Rating::create([
+           'order_id' => $request->OrderId,
+           'user_id' => $request->UserId,
+           'rating' => $request ->Rating,
+       ]);
+        return response()->json($rating);
     }
 
     /**

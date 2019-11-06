@@ -40,7 +40,7 @@ class UserController extends Controller
             'password' => 'sometimes|required|min:6',
             'phone_number' => 'required|string|min:10',
             'role' => 'required|string',
-            'level_id' => 'required|string',
+            'level_id' => 'required',
             'status_id' => 'required|string',
         ]);
 

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Category;
 use App\Http\Controllers\Controller;
 use App\Order;
 use App\File;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -15,9 +17,18 @@ class OrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
+
     public function index()
     {
-        return Order::latest()->paginate(10);
+        if (auth()->user()->role == "admin") {
+            return Order::latest()->paginate(10);
+        } elseif (auth()->user()->role == "writer") {
+            return Order::latest()->where('status', 0)->paginate(10);
+        }
     }
 
     /**
@@ -31,7 +42,7 @@ class OrderController extends Controller
         $request->validate([
             'level' => 'required',
             'discipline' => 'required',
-            'order_number' => 'required',
+            'order_number' => 'required|unique:orders',
             'title' => 'required',
             'pages' => 'required',
             'deadline' => 'required',
@@ -45,12 +56,21 @@ class OrderController extends Controller
         //Not Urgent
         if ($request->urgent == 0) {
             $order = new Order();
+            if ($request->writer) {
+                $order->assigned_user_id = $request->writer;
+                $order->status = 1;
+                $level_id = User::where('id', $request->writer)->value('level_id');
+                $amount = Category::where('id', $level_id)->value('amount');
+                $order->amount = $amount;
+                $order->total_amount = $amount * $request->pages;
+            } else {
+                $order->status = 0;
+            }
             $order->order_number = $request->order_number;
             $order->title = $request->title;
             $order->description = $request->description;
             $order->deadline = $request->deadline;
             $order->pages = $request->pages;
-            $order->status = 0;
             $viewers = $request->viewers;
             $order->viewers = implode(',', $viewers);
             $order->academic_level = $request->level;
@@ -77,12 +97,17 @@ class OrderController extends Controller
             // When Urgent
         } elseif ($request->urgent == 1) {
             $order = new Order();
+            if ($request->writer) {
+                $order->assigned_user_id = $request->writer;
+                $order->status = 1;
+            } else {
+                $order->status = 0;
+            }
             $order->order_number = $request->order_number;
             $order->title = $request->title;
             $order->description = $request->description;
             $order->deadline = $request->deadline;
             $order->pages = $request->pages;
-            $order->status = 0;
             $order->amount = $request->amount;
             $order->total_amount = $request->amount * $request->pages;
             $viewers = $request->viewers;
@@ -91,7 +116,7 @@ class OrderController extends Controller
             $order->discipline = $request->discipline;
             $order->paper_format = $request->paper_format;
             $order->spacing = $request->spacing;
-            $order->urgency = $request->urgency;
+            $order->urgency = $request->urgent;
             $order->save();
             $order_id = $order->id;
 
@@ -118,7 +143,7 @@ class OrderController extends Controller
      */
     public function show($id)
     {
-         return Order::where('id', $id)->first();
+        return Order::where('id', $id)->first();
     }
 
     /**
