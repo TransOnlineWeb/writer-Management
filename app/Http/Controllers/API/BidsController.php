@@ -25,14 +25,23 @@ class BidsController extends Controller
 
     public function makeBid($orderId)
     {
-        $bid = new Bid();
-        $bid->order_id = $orderId;
-        $user = auth()->user()->id;
-        $bid->user_id = $user;
-        $bid->status = 0;
-        $bid->save();
+        $ifBid = Bid::where('user_id', auth()->user()->id)->where('order_id', $orderId)->count();
 
-        return response(['status' => 'success'], 200);
+        if ($ifBid == 0) {
+            $bid = new Bid();
+            $bid->order_id = $orderId;
+            $user = auth()->user()->id;
+            $bid->user_id = $user;
+            $bid->status = 0;
+            $bid->save();
+
+            return response(['status' => 'success'], 200);
+        } else {
+            return response()->json([
+                'status' => 'error',
+                'msg' => 'You already placed a bid',
+            ], 422);
+        }
     }
 
     public function checkBid($orderId)

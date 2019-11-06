@@ -44,4 +44,4 @@ Route::get('writer/{orderId}', 'API\MoreOrdersController@getWriter');
 Route::apiResources(['bid' => 'API\BidsController']);
 
 Route::post('makebid/{orderId}','API\BidsController@makeBid');
-Route::post('checkbid/{orderId}','API\BidsController@makeBid');
+Route::get('checkbid/{orderId}','API\BidsController@checkBid');
