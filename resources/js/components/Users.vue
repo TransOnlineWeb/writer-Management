@@ -94,27 +94,19 @@
                 <div class="form-group">
                   <select v-model="form.role" class="form-control" name="role" id="role"
                           :class="{ 'is-invalid': form.errors.has('role') }">
-                      <option selected value="">--Select Level--</option>
+                      <option selected value="">--Select UserType--</option>
                       <option value="writer">Writer</option>
                       <option value="editor">Editor</option>
                       <option value="admin">Admin</option>
                   </select>
                   <has-error :form="form" field="role"></has-error>
                 </div>
-                <div class="col">
-                  <div class="form-group d-flex">
-                      <label>Profile-Photo</label>
-                      <input type="file" multiple class="form-control-file" id="photo" name="photo">
-                      <has-error :form="form" field="photo"></has-error>
-                  </div>
-                </div>
                 <div class="form-group">
+                  <div v-if=""></div>
                   <select v-model="form.level_id" class="form-control" name="level_id" id="level_id"
                           :class="{ 'is-invalid': form.errors.has('level_id') }">
                       <option selected value="">--Select Level--</option>
-                      <option value="1">Starter</option>
-                      <option value="2">Mid</option>
-                      <option value="3">Senior</option>
+                      <option v-for="category in categories" :value="category.id">{{ category.title }}</option>
                   </select>
                   <has-error :form="form" field="level_id"></has-error>
                 </div>
@@ -152,6 +144,7 @@
             return{
                 editmode: false,
                 users: {},
+                categories: {},
                 form: new Form ({
                   id: '',
                   name: '',
@@ -159,13 +152,15 @@
                   role: '',
                   level_id: '',
                   status_id: '',
-                  photo: '',
                   email: '',
                   password: '',
                 })
             }
         },
         methods: {
+            getCategories(){
+              window.axios.get('/api/category').then(({ data }) => (this.categories = data.data));
+            },
             updateUserInfo() {
               this.$Progress.start();
               this.form.put('api/user/'+this.form.id)
@@ -245,6 +240,7 @@
         },
         mounted() {
           this.getUsers();
+          this.getCategories()
           Fire.$on('AfterCreate',() => {
             this.getUsers();
           });
