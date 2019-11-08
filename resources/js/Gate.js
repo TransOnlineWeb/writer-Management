@@ -12,4 +12,7 @@ export default class Gate {
     isWriter(){
         return this.user.role === 'writer';
     }
+    isAdminOrisEditor(){
+        return this.user.role === 'admin' || this.user.role === 'editor';
+    }
 }

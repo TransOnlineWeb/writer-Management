@@ -35,5 +35,8 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('isEditor',function ($user){
             return $user-> role == 'editor';
         });
+        Gate::define('isAdminOrisEditor',function ($user){
+            return $user-> role == 'admin' || $user-> role == 'editor';
+        });
     }
 }

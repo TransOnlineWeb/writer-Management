@@ -79020,7 +79020,7 @@ var render = function() {
                       _c("td", [_vm._v(_vm._s(order.academic_level))]),
                       _vm._v(" "),
                       _c("td", [
-                        order.status == 0
+                        order.status == 1
                           ? _c(
                               "span",
                               { staticClass: "badge badge-pill badge-warning" },
@@ -79028,23 +79028,23 @@ var render = function() {
                             )
                           : _vm._e(),
                         _vm._v(" "),
-                        order.status == 1
+                        order.status == 3
                           ? _c(
                               "span",
                               { staticClass: "badge badge-pill badge-info" },
-                              [_vm._v("Assigned")]
+                              [_vm._v("Uploaded")]
                             )
                           : _vm._e(),
                         _vm._v(" "),
-                        order.status == "Working"
+                        order.status == 4
                           ? _c(
                               "span",
                               { staticClass: "badge badge-pill badge-dark" },
-                              [_vm._v("Working")]
+                              [_vm._v("Revision")]
                             )
                           : _vm._e(),
                         _vm._v(" "),
-                        order.status == "Completed"
+                        order.status == 5
                           ? _c(
                               "span",
                               { staticClass: "badge badge-pill badge-success" },
@@ -79293,55 +79293,75 @@ var render = function() {
                         _c("tbody", [
                           _vm._m(1),
                           _vm._v(" "),
-                          _c("tr", [
-                            _vm._m(2),
-                            _vm._v(" "),
-                            _c("td", [
-                              _c("span", [_vm._v(_vm._s(_vm.writer.name))]),
-                              _vm._v(" "),
-                              !this.writer
-                                ? _c(
-                                    "span",
-                                    { staticStyle: { color: "rebeccapurple" } },
-                                    [_vm._v("No writer assigned")]
-                                  )
-                                : _vm._e()
-                            ])
-                          ]),
+                          _vm.$gate.isAdmin()
+                            ? _c("tr", [
+                                _vm._m(2),
+                                _vm._v(" "),
+                                _c("td", [
+                                  _c("span", [_vm._v(_vm._s(_vm.writer.name))]),
+                                  _vm._v(" "),
+                                  !this.writer
+                                    ? _c(
+                                        "span",
+                                        {
+                                          staticStyle: {
+                                            color: "rebeccapurple"
+                                          }
+                                        },
+                                        [_vm._v("No writer assigned")]
+                                      )
+                                    : _vm._e()
+                                ])
+                              ])
+                            : _vm._e(),
                           _vm._v(" "),
-                          _c("tr", [
-                            _vm._m(3),
-                            _vm._v(" "),
-                            _c("td", [
-                              _c("span", [
-                                _vm._v(_vm._s(_vm.writer.phone_number))
-                              ]),
-                              _vm._v(" "),
-                              !this.writer
-                                ? _c(
-                                    "span",
-                                    { staticStyle: { color: "rebeccapurple" } },
-                                    [_vm._v("No writer assigned")]
-                                  )
-                                : _vm._e()
-                            ])
-                          ]),
+                          _vm.$gate.isAdmin()
+                            ? _c("tr", [
+                                _vm._m(3),
+                                _vm._v(" "),
+                                _c("td", [
+                                  _c("span", [
+                                    _vm._v(_vm._s(_vm.writer.phone_number))
+                                  ]),
+                                  _vm._v(" "),
+                                  !this.writer
+                                    ? _c(
+                                        "span",
+                                        {
+                                          staticStyle: {
+                                            color: "rebeccapurple"
+                                          }
+                                        },
+                                        [_vm._v("No writer assigned")]
+                                      )
+                                    : _vm._e()
+                                ])
+                              ])
+                            : _vm._e(),
                           _vm._v(" "),
-                          _c("tr", [
-                            _vm._m(4),
-                            _vm._v(" "),
-                            _c("td", [
-                              _c("span", [_vm._v(_vm._s(_vm.writer.email))]),
-                              _vm._v(" "),
-                              !this.writer
-                                ? _c(
-                                    "span",
-                                    { staticStyle: { color: "rebeccapurple" } },
-                                    [_vm._v("No writer assigned")]
-                                  )
-                                : _vm._e()
-                            ])
-                          ]),
+                          _vm.$gate.isAdmin()
+                            ? _c("tr", [
+                                _vm._m(4),
+                                _vm._v(" "),
+                                _c("td", [
+                                  _c("span", [
+                                    _vm._v(_vm._s(_vm.writer.email))
+                                  ]),
+                                  _vm._v(" "),
+                                  !this.writer
+                                    ? _c(
+                                        "span",
+                                        {
+                                          staticStyle: {
+                                            color: "rebeccapurple"
+                                          }
+                                        },
+                                        [_vm._v("No writer assigned")]
+                                      )
+                                    : _vm._e()
+                                ])
+                              ])
+                            : _vm._e(),
                           _vm._v(" "),
                           _c("tr", [
                             _vm._m(5),
@@ -79487,19 +79507,21 @@ var render = function() {
                     },
                     [
                       _c("div", { staticClass: "box-body" }, [
-                        _c(
-                          "button",
-                          {
-                            staticClass: "btn btn-success btn-sm",
-                            attrs: { type: "button" },
-                            on: { click: _vm.newModal }
-                          },
-                          [
-                            _vm._v(
-                              "\n                                                Add more files\n                                            "
+                        _vm.$gate.isAdmin()
+                          ? _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-success btn-sm",
+                                attrs: { type: "button" },
+                                on: { click: _vm.newModal }
+                              },
+                              [
+                                _vm._v(
+                                  "\n                                                Add more files\n                                            "
+                                )
+                              ]
                             )
-                          ]
-                        )
+                          : _vm._e()
                       ])
                     ]
                   ),
@@ -79590,38 +79612,45 @@ var render = function() {
                     )
                   ]),
                   _vm._v(" "),
-                  _c("div", { staticClass: "row mt-5" }, [
-                    _c("h5", [_vm._v("Rate this work")]),
-                    _vm._v(" "),
-                    _c("br"),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      { staticClass: "mt-5" },
-                      [
-                        _c("star-rating", {
-                          attrs: {
-                            increment: 0.5,
-                            "read-only": _vm.myRate,
-                            rating: _vm.rating
-                          },
-                          on: { "rating-selected": _vm.setRating }
-                        })
-                      ],
-                      1
-                    )
-                  ]),
+                  _vm.$gate.isAdmin()
+                    ? _c("div", { staticClass: "row mt-5" }, [
+                        _c("h5", [_vm._v("Rate this work")]),
+                        _vm._v(" "),
+                        _c("br"),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "mt-5" },
+                          [
+                            _c("star-rating", {
+                              attrs: {
+                                increment: 0.5,
+                                "read-only": _vm.myRate,
+                                rating: _vm.rating
+                              },
+                              on: { "rating-selected": _vm.setRating }
+                            })
+                          ],
+                          1
+                        )
+                      ])
+                    : _vm._e(),
                   _vm._v(" "),
-                  _c("div", [
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-success btn-sm",
-                        on: { click: _vm.setRatting }
-                      },
-                      [_c("i", { staticClass: "fas fa-star" }), _vm._v("Rate")]
-                    )
-                  ])
+                  _vm.$gate.isAdmin()
+                    ? _c("div", [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-success btn-sm",
+                            on: { click: _vm.setRatting }
+                          },
+                          [
+                            _c("i", { staticClass: "fas fa-star" }),
+                            _vm._v("Rate")
+                          ]
+                        )
+                      ])
+                    : _vm._e()
                 ])
               ])
             ])
@@ -98487,6 +98516,11 @@ function () {
     value: function isWriter() {
       return this.user.role === 'writer';
     }
+  }, {
+    key: "isAdminOrisEditor",
+    value: function isAdminOrisEditor() {
+      return this.user.role === 'admin' || this.user.role === 'editor';
+    }
   }]);
 
   return Gate;
@@ -98709,8 +98743,8 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 window.Pusher = __webpack_require__(/*! pusher-js */ "./node_modules/pusher-js/dist/web/pusher.js");
 window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
   broadcaster: 'pusher',
-  key: "2dd403e5b2da16c3ed2c",
-  cluster: "ap2",
+  key: "",
+  cluster: "mt1",
   encrypted: true
 });
 
@@ -100018,8 +100052,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\xampp\htdocs\Writing-Management\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\xampp\htdocs\Writing-Management\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /opt/lampp/htdocs/Transonline/writer-Management/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /opt/lampp/htdocs/Transonline/writer-Management/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
