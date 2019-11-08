@@ -102,7 +102,22 @@ class BidsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $bid = Bid::findOrFail($id);
+        $bid->status = 1;
+        $bid->update();
+
+        $orderId = Bid::where('id', $id)->value('order_id');
+        $others = Bid::where('order_id', $orderId)->where('status', 0)->get();
+
+        if (count($others) > 0){
+            foreach ($others as $other){
+                $each = Bid::findOrFail($other['id']);
+                $each->status = 2;
+                $each->update();
+            }
+        }
+
+        return response(['status' => 'success'], 200);
     }
 
     /**

@@ -2377,6 +2377,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Bids",
   data: function data() {
@@ -2386,17 +2388,50 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
-    getBids: function getBids() {
+    acceptBid: function acceptBid(bidId) {
       var _this = this;
+
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "Accept this bid? Please, note that this will reject all the other bids",
+        //type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, accept bid!'
+      }).then(function (result) {
+        if (result.value) {
+          axios.patch("/api/bid/" + bidId).then(function () {
+            Fire.$emit('entry');
+            Swal.fire('Placed!', 'Bid accepted!!', 'success');
+            Fire.$emit('entry');
+          })["catch"](function (error) {
+            _this.errors = error.response.data.errors;
+            Swal.fire({
+              type: 'error',
+              title: 'Error!!',
+              text: error.response.data.msg
+            });
+          });
+        }
+      });
+    },
+    getBids: function getBids() {
+      var _this2 = this;
 
       axios.get("/api/bid/" + this.orderId).then(function (_ref) {
         var data = _ref.data;
-        return [_this.bids = data];
+        return [_this2.bids = data];
       });
     }
   },
   created: function created() {
+    var _this3 = this;
+
     this.getBids();
+    Fire.$on('entry', function () {
+      _this3.getBids();
+    });
   }
 });
 
@@ -3733,19 +3768,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       editmode: false,
       users: {},
+      categories: {},
       form: new Form({
         id: '',
         name: '',
@@ -3753,31 +3781,38 @@ __webpack_require__.r(__webpack_exports__);
         role: '',
         level_id: '',
         status_id: '',
-        photo: '',
         email: '',
         password: ''
       })
     };
   },
   methods: {
-    updateUserInfo: function updateUserInfo() {
+    getCategories: function getCategories() {
       var _this = this;
+
+      window.axios.get('/api/category').then(function (_ref) {
+        var data = _ref.data;
+        return _this.categories = data.data;
+      });
+    },
+    updateUserInfo: function updateUserInfo() {
+      var _this2 = this;
 
       this.$Progress.start();
       this.form.put('api/user/' + this.form.id).then(function () {
         Fire.$emit('AfterCreate');
         $('#AddNew').modal('hide');
 
-        _this.form.reset();
+        _this2.form.reset();
 
         Swal.fire({
           type: 'success',
           title: 'User Information Updated'
         });
 
-        _this.$Progress.finish();
+        _this2.$Progress.finish();
       })["catch"](function () {
-        _this.$Progress.fail();
+        _this2.$Progress.fail();
       });
     },
     editUser: function editUser(user) {
@@ -3792,7 +3827,7 @@ __webpack_require__.r(__webpack_exports__);
       $('#AddNew').modal('show');
     },
     deleteUser: function deleteUser(id) {
-      var _this2 = this;
+      var _this3 = this;
 
       Swal.fire({
         title: 'Are you sure?',
@@ -3804,7 +3839,7 @@ __webpack_require__.r(__webpack_exports__);
         confirmButtonText: 'Yes, delete it!'
       }).then(function (result) {
         if (result.value) {
-          _this2.form["delete"]('api/user/' + id).then(function () {
+          _this3.form["delete"]('api/user/' + id).then(function () {
             Swal.fire('Deleted!', 'User has been deleted.', 'success');
             Fire.$emit('AfterCreate');
           })["catch"](function () {
@@ -3814,38 +3849,39 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     addUser: function addUser() {
-      var _this3 = this;
+      var _this4 = this;
 
       this.$Progress.start();
       this.form.post('api/user').then(function () {
         Fire.$emit('AfterCreate');
         $('#AddNew').modal('hide');
 
-        _this3.form.reset();
+        _this4.form.reset();
 
         Swal.fire({
           type: 'success',
           title: 'User Successfully Created'
         });
 
-        _this3.$Progress.finish();
+        _this4.$Progress.finish();
       })["catch"](function () {});
     },
     getUsers: function getUsers() {
-      var _this4 = this;
+      var _this5 = this;
 
-      window.axios.get('api/user').then(function (_ref) {
-        var data = _ref.data;
-        return _this4.users = data.data;
+      window.axios.get('api/user').then(function (_ref2) {
+        var data = _ref2.data;
+        return _this5.users = data.data;
       });
     }
   },
   mounted: function mounted() {
-    var _this5 = this;
+    var _this6 = this;
 
     this.getUsers();
+    this.getCategories();
     Fire.$on('AfterCreate', function () {
-      _this5.getUsers();
+      _this6.getUsers();
     });
   }
 });
@@ -78246,7 +78282,45 @@ var render = function() {
                             : _vm._e()
                         ]),
                         _vm._v(" "),
-                        _vm._m(2, true)
+                        _c("td", [
+                          bid.status == 0
+                            ? _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-primary btn-sm",
+                                  attrs: { type: "button" },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.acceptBid(bid.id)
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                                    Accept\n                                "
+                                  )
+                                ]
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _c("span", [
+                            bid.status == 1
+                              ? _c("i", {
+                                  staticClass: "fas fa-certificate",
+                                  staticStyle: { color: "green" }
+                                })
+                              : _vm._e()
+                          ]),
+                          _vm._v(" "),
+                          _c("span", [
+                            bid.status == 2
+                              ? _c("i", {
+                                  staticClass: "fas fa-ban",
+                                  staticStyle: { color: "red" }
+                                })
+                              : _vm._e()
+                          ])
+                        ])
                       ])
                     }),
                     0
@@ -78286,22 +78360,6 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Action")])
       ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("td", [
-      _c(
-        "button",
-        { staticClass: "btn btn-primary btn-sm", attrs: { type: "button" } },
-        [
-          _vm._v(
-            "\n                                    Accept\n                                "
-          )
-        ]
-      )
     ])
   }
 ]
@@ -79964,7 +80022,7 @@ var render = function() {
                             _c(
                               "option",
                               { attrs: { selected: "", value: "" } },
-                              [_vm._v("--Select Level--")]
+                              [_vm._v("--Select UserType--")]
                             ),
                             _vm._v(" "),
                             _c("option", { attrs: { value: "writer" } }, [
@@ -79988,35 +80046,12 @@ var render = function() {
                       1
                     ),
                     _vm._v(" "),
-                    _c("div", { staticClass: "col" }, [
-                      _c(
-                        "div",
-                        { staticClass: "form-group d-flex" },
-                        [
-                          _c("label", [_vm._v("Profile-Photo")]),
-                          _vm._v(" "),
-                          _c("input", {
-                            staticClass: "form-control-file",
-                            attrs: {
-                              type: "file",
-                              multiple: "",
-                              id: "photo",
-                              name: "photo"
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c("has-error", {
-                            attrs: { form: _vm.form, field: "photo" }
-                          })
-                        ],
-                        1
-                      )
-                    ]),
-                    _vm._v(" "),
                     _c(
                       "div",
                       { staticClass: "form-group" },
                       [
+                        _c("div"),
+                        _vm._v(" "),
                         _c(
                           "select",
                           {
@@ -80060,18 +80095,15 @@ var render = function() {
                               [_vm._v("--Select Level--")]
                             ),
                             _vm._v(" "),
-                            _c("option", { attrs: { value: "1" } }, [
-                              _vm._v("Starter")
-                            ]),
-                            _vm._v(" "),
-                            _c("option", { attrs: { value: "2" } }, [
-                              _vm._v("Mid")
-                            ]),
-                            _vm._v(" "),
-                            _c("option", { attrs: { value: "3" } }, [
-                              _vm._v("Senior")
-                            ])
-                          ]
+                            _vm._l(_vm.categories, function(category) {
+                              return _c(
+                                "option",
+                                { domProps: { value: category.id } },
+                                [_vm._v(_vm._s(category.title))]
+                              )
+                            })
+                          ],
+                          2
                         ),
                         _vm._v(" "),
                         _c("has-error", {
