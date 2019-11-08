@@ -236,10 +236,12 @@
                         <img alt=""  :src="getProfilePhoto(user.photo)">
                     </div>
                     <div class="info">
+                        <div class="row justify-content-center">
+                            <star-rating v-bind:increment="0.5" v-bind:star-size="30" @rating-selected ="setRating"></star-rating>
+                        </div>
                         <h2><div class="title"><a>{{user.name}}</a></div></h2>
                         <div class="desc"><b>{{user.email}}</b></div>
                         <div class="desc"><b>{{user.phone_number}}</b></div>
-                        <div class="desc"><b>{{user.role}}</b></div>
                         <div class="card-footer">
                             <div class="row">
                                 <div class="col-sm-4 border-right">
@@ -283,6 +285,7 @@
         name: "writers",
         data() {
             return {
+                rating: 1.5,
                 users: {},
 
 

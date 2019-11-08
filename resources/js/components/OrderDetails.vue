@@ -163,6 +163,15 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="row justify-content-center mt-5">
+                                        <h5>Rate this work</h5> <br>
+                                        <div class="mt-5">
+                                            <star-rating v-bind:increment="0.5" @rating-selected ="setRating"></star-rating>
+                                        </div>
+                                    </div>
+                                    <div class="row justify-content-center mt-5">
+                                        <button class="btn btn-success btn-sm"  @click="setRatting"><i class="fas fa-star"></i>Rate</button>
+                                    </div>
                                 </div>
                             </div>
 
@@ -237,6 +246,7 @@
         },
         data(){
             return{
+                rating: 0,
                 message: '',
                 typing: '',
                 users : {},
@@ -267,6 +277,22 @@
                 });
         },
         methods:{
+            setRatting(){
+                axios.post('/api/rating',{
+                    OrderId: this.orderId,
+                    UserId: this.writer.id,
+                    Rating: this.rating,
+                }).then(response=>{
+                    Swal.fire({
+                        type: 'success',
+                        title: 'Rating Submited!!',
+                        text: 'Order rated successfully',
+
+                    })
+                }).catch(response=>{
+                    //error
+                });
+            },
             getWriter(){
                 axios.get("/api/writer/" + this.orderId).then(({ data }) => ([this.writer = data]));
             },
@@ -360,6 +386,9 @@
             },
             getMessages(){
                 // axios.get("/api/getMessage/" + this.orderId).then((response) => (this.messages = response.data));
+            },
+            setRating: function(rating){
+                this.rating= rating;
             },
         },
         watch: {

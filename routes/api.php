@@ -39,6 +39,8 @@ Route::get('MyWriters','API\UserController@profiles');
 
 Route::apiResources(['category' => 'API\WriterCategoryController']);
 
+Route::apiResources(['rating' => 'API\RatingController']);
+
 Route::get('writer/{orderId}', 'API\MoreOrdersController@getWriter');
 
 Route::apiResources(['bid' => 'API\BidsController']);
