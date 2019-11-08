@@ -40,7 +40,8 @@ Route::get('MyWriters','API\UserController@profiles');
 Route::apiResources(['category' => 'API\WriterCategoryController']);
 
 Route::apiResources(['rating' => 'API\RatingController']);
-
+Route::get('rate/{orderId}','API\RatingController@getRate');
+Route::get('myRate/{orderId}', 'API\RAtingController@getMyRate');
 Route::get('writer/{orderId}', 'API\MoreOrdersController@getWriter');
 
 Route::apiResources(['bid' => 'API\BidsController']);

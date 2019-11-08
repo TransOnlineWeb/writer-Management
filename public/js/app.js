@@ -3543,6 +3543,8 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       rating: 0,
+      rated: '',
+      myRate: false,
       message: '',
       typing: '',
       users: {},
@@ -3573,6 +3575,15 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     setRatting: function setRatting() {
+      if (this.rated != 0) {
+        Swal.fire({
+          type: 'error',
+          title: 'already rated!',
+          text: 'you have already rated this work'
+        });
+        return;
+      }
+
       axios.post('/api/rating', {
         OrderId: this.orderId,
         UserId: this.writer.id,
@@ -3586,12 +3597,28 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (response) {//error
       });
     },
-    getWriter: function getWriter() {
+    getRate: function getRate() {
       var _this2 = this;
 
-      axios.get("/api/writer/" + this.orderId).then(function (_ref) {
+      axios.get("/api/myRate/" + this.orderId).then(function (_ref) {
         var data = _ref.data;
-        return [_this2.writer = data];
+        return [_this2.rating = data];
+      });
+    },
+    getWriter: function getWriter() {
+      var _this3 = this;
+
+      axios.get("/api/writer/" + this.orderId).then(function (_ref2) {
+        var data = _ref2.data;
+        return [_this3.writer = data];
+      });
+    },
+    getRating: function getRating() {
+      var _this4 = this;
+
+      axios.get("/api/rate/" + this.orderId).then(function (_ref3) {
+        var data = _ref3.data;
+        return [_this4.rated = data];
       });
     },
     validate: function validate() {
@@ -3606,7 +3633,7 @@ __webpack_require__.r(__webpack_exports__);
       axios.post('/api/downloadAll/' + this.orderId);
     },
     submit: function submit() {
-      var _this3 = this;
+      var _this5 = this;
 
       for (var i = 0; i < this.attachments.length; i++) {
         this.formf.append('files[]', this.attachments[i]);
@@ -3621,7 +3648,7 @@ __webpack_require__.r(__webpack_exports__);
         Fire.$emit('entry');
         $('#addnew').modal('hide');
 
-        _this3.form.reset();
+        _this5.form.reset();
 
         Swal.fire({
           type: 'success',
@@ -3653,14 +3680,14 @@ __webpack_require__.r(__webpack_exports__);
       this.messages.push(message);
     },
     scrollToBottom: function scrollToBottom() {
-      var _this4 = this;
+      var _this6 = this;
 
       setTimeout(function () {
-        _this4.$refs.feed.scrollTop = _this4.$refs.feed.scrollHeight - _this4.$refs.feed.clientHeight;
+        _this6.$refs.feed.scrollTop = _this6.$refs.feed.scrollHeight - _this6.$refs.feed.clientHeight;
       }, 50);
     },
     sendMessage: function sendMessage() {
-      var _this5 = this;
+      var _this7 = this;
 
       console.log(this.orderId);
 
@@ -3673,36 +3700,36 @@ __webpack_require__.r(__webpack_exports__);
         OrderId: this.orderId,
         contact_id: this.users
       }).then(function (response) {
-        _this5.messages.push(response.data);
+        _this7.messages.push(response.data);
 
-        _this5.message = '';
+        _this7.message = '';
       });
     },
     download: function download(id) {
       axios.get("/api/download/" + id).then();
     },
     getDetails: function getDetails() {
-      var _this6 = this;
+      var _this8 = this;
 
-      axios.get("/api/order/" + this.orderId).then(function (_ref2) {
-        var data = _ref2.data;
-        return [_this6.details = data];
+      axios.get("/api/order/" + this.orderId).then(function (_ref4) {
+        var data = _ref4.data;
+        return [_this8.details = data];
       });
     },
     getFilesCount: function getFilesCount() {
-      var _this7 = this;
+      var _this9 = this;
 
-      axios.get("/api/filescount/" + this.orderId).then(function (_ref3) {
-        var data = _ref3.data;
-        return [_this7.filesCount = data];
+      axios.get("/api/filescount/" + this.orderId).then(function (_ref5) {
+        var data = _ref5.data;
+        return [_this9.filesCount = data];
       });
     },
     getFiles: function getFiles() {
-      var _this8 = this;
+      var _this10 = this;
 
-      axios.get("/api/getfiles/" + this.orderId).then(function (_ref4) {
-        var data = _ref4.data;
-        return [_this8.files = data];
+      axios.get("/api/getfiles/" + this.orderId).then(function (_ref6) {
+        var data = _ref6.data;
+        return [_this10.files = data];
       });
     },
     getUser: function getUser() {// axios.get("/api/getUser/" + this.orderId).then(({ data }) => ([this.users = data]));
@@ -3711,6 +3738,14 @@ __webpack_require__.r(__webpack_exports__);
     },
     setRating: function setRating(rating) {
       this.rating = rating;
+    },
+    hasRated: function hasRated() {
+      if (this.rated != 0) {
+        this.myRate = true;
+        console.log('ftyui');
+      } else {
+        console.log('ftyui');
+      }
     }
   },
   watch: {
@@ -3724,7 +3759,7 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   created: function created() {
-    var _this9 = this;
+    var _this11 = this;
 
     this.getDetails();
     this.getFilesCount();
@@ -3732,10 +3767,15 @@ __webpack_require__.r(__webpack_exports__);
     this.getUser();
     this.getFiles();
     this.getWriter();
+    this.getRating();
+    this.getRate();
+    this.hasRated();
     Fire.$on('entry', function () {
-      _this9.getFiles();
+      _this11.getFiles();
 
-      _this9.getFilesCount();
+      _this11.getFilesCount();
+
+      _this11.hasRated();
     });
   }
 });
@@ -79126,7 +79166,11 @@ var render = function() {
                 { staticClass: "row justify-content-center" },
                 [
                   _c("star-rating", {
-                    attrs: { increment: 0.5, "star-size": 30 },
+                    attrs: {
+                      increment: 0.5,
+                      "read-only": true,
+                      "star-size": 30
+                    },
                     on: { "rating-selected": _vm.setRating }
                   })
                 ],
@@ -79546,45 +79590,38 @@ var render = function() {
                     )
                   ]),
                   _vm._v(" "),
-                  _c(
-                    "div",
-                    { staticClass: "row justify-content-center mt-5" },
-                    [
-                      _c("h5", [_vm._v("Rate this work")]),
-                      _vm._v(" "),
-                      _c("br"),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        { staticClass: "mt-5" },
-                        [
-                          _c("star-rating", {
-                            attrs: { increment: 0.5 },
-                            on: { "rating-selected": _vm.setRating }
-                          })
-                        ],
-                        1
-                      )
-                    ]
-                  ),
+                  _c("div", { staticClass: "row mt-5" }, [
+                    _c("h5", [_vm._v("Rate this work")]),
+                    _vm._v(" "),
+                    _c("br"),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "mt-5" },
+                      [
+                        _c("star-rating", {
+                          attrs: {
+                            increment: 0.5,
+                            "read-only": _vm.myRate,
+                            rating: _vm.rating
+                          },
+                          on: { "rating-selected": _vm.setRating }
+                        })
+                      ],
+                      1
+                    )
+                  ]),
                   _vm._v(" "),
-                  _c(
-                    "div",
-                    { staticClass: "row justify-content-center mt-5" },
-                    [
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-success btn-sm",
-                          on: { click: _vm.setRatting }
-                        },
-                        [
-                          _c("i", { staticClass: "fas fa-star" }),
-                          _vm._v("Rate")
-                        ]
-                      )
-                    ]
-                  )
+                  _c("div", [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-success btn-sm",
+                        on: { click: _vm.setRatting }
+                      },
+                      [_c("i", { staticClass: "fas fa-star" }), _vm._v("Rate")]
+                    )
+                  ])
                 ])
               ])
             ])
@@ -98672,8 +98709,8 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 window.Pusher = __webpack_require__(/*! pusher-js */ "./node_modules/pusher-js/dist/web/pusher.js");
 window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
   broadcaster: 'pusher',
-  key: "",
-  cluster: "mt1",
+  key: "2dd403e5b2da16c3ed2c",
+  cluster: "ap2",
   encrypted: true
 });
 
@@ -99981,8 +100018,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /opt/lampp/htdocs/Transonline/writer-Management/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /opt/lampp/htdocs/Transonline/writer-Management/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\xampp\htdocs\Writing-Management\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\Writing-Management\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

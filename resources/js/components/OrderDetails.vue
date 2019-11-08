@@ -163,13 +163,13 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row justify-content-center mt-5">
+                                    <div class="row mt-5">
                                         <h5>Rate this work</h5> <br>
                                         <div class="mt-5">
-                                            <star-rating v-bind:increment="0.5" @rating-selected ="setRating"></star-rating>
+                                            <star-rating v-bind:increment="0.5" :read-only="myRate" :rating="rating" @rating-selected="setRating"></star-rating>
                                         </div>
                                     </div>
-                                    <div class="row justify-content-center mt-5">
+                                    <div>
                                         <button class="btn btn-success btn-sm"  @click="setRatting"><i class="fas fa-star"></i>Rate</button>
                                     </div>
                                 </div>
@@ -182,7 +182,7 @@
                             <div class="card-body composer">
                                 <textarea v-model="message"  placeholder="Write your question here..."></textarea><br>
                                 <div class="col-md-10">
-                                    <button class="btn btn-success btn-md pull-left"  @click="sendMessage"><i class="fas fa-paper-plane"></i>&nbsp;Send message</button>
+                                    <button class="btn btn-success btn-md pull-left"  @click="sendMessage" ><i class="fas fa-paper-plane"></i>&nbsp;Send message</button>
                                 </div>
                             </div>
                         </div>
@@ -247,6 +247,8 @@
         data(){
             return{
                 rating: 0,
+                rated:'',
+                myRate: false,
                 message: '',
                 typing: '',
                 users : {},
@@ -278,6 +280,14 @@
         },
         methods:{
             setRatting(){
+                if ( this.rated != 0) {
+                    Swal.fire({
+                        type: 'error',
+                        title: 'already rated!',
+                        text: 'you have already rated this work',
+                    });
+                    return;
+                }
                 axios.post('/api/rating',{
                     OrderId: this.orderId,
                     UserId: this.writer.id,
@@ -293,8 +303,14 @@
                     //error
                 });
             },
+            getRate(){
+               axios.get("/api/myRate/" + this.orderId).then(({data})=>([this.rating = data]));
+            },
             getWriter(){
                 axios.get("/api/writer/" + this.orderId).then(({ data }) => ([this.writer = data]));
+            },
+            getRating(){
+                axios.get("/api/rate/" + this.orderId).then(({data})=>([this.rated = data]));
             },
             validate(){
               if (this.attachments.length == 0){
@@ -390,6 +406,14 @@
             setRating: function(rating){
                 this.rating= rating;
             },
+            hasRated(){
+                if (this.rated != 0){
+                    this.myRate = true;
+                    console.log('ftyui');
+                }else {
+                    console.log('ftyui');
+                }
+            },
         },
         watch: {
             messages(messages){
@@ -409,9 +433,13 @@
             this.getUser();
             this.getFiles();
             this.getWriter();
+            this.getRating();
+            this.getRate();
+            this.hasRated();
             Fire.$on('entry', () =>{
                 this.getFiles();
                 this.getFilesCount();
+                this.hasRated();
             })
         }
     }
