@@ -37,9 +37,11 @@
                                     <span v-if="bid.status == 3" style="color: #ff079c">Cancelled</span>
                                 </td>
                                 <td>
-                                    <button type="button" class="btn btn-primary btn-sm">
+                                    <button type="button" class="btn btn-primary btn-sm" @click="acceptBid(bid.id)" v-if="bid.status == 0">
                                         Accept
                                     </button>
+                                    <span><i class="fas fa-certificate" style="color: green;" v-if="bid.status == 1"></i> </span>
+                                    <span><i class="fas fa-ban" style="color: red;" v-if="bid.status == 2"></i> </span>
                                 </td>
                             </tr>
                             </tbody>
@@ -61,12 +63,46 @@
             }
         },
         methods: {
+            acceptBid(bidId){
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "Accept this bid? Please, note that this will reject all the other bids",
+                    //type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, accept bid!'
+                }).then((result) => {
+                    if (result.value) {
+                        axios.patch("/api/bid/" + bidId).then(() => {
+                            Fire.$emit('entry');
+                            Swal.fire(
+                                'Placed!',
+                                'Bid accepted!!',
+                                'success'
+                            )
+                            Fire.$emit('entry');
+                        }).catch(error => {
+                            this.errors = error.response.data.errors;
+                            Swal.fire({
+                                type: 'error',
+                                title: 'Error!!',
+                                text: error.response.data.msg,
+
+                            })
+                        });
+                    }
+                })
+            },
             getBids() {
                 axios.get("/api/bid/" + this.orderId).then(({data}) => ([this.bids = data]));
             }
         },
         created() {
             this.getBids();
+            Fire.$on('entry', () =>{
+                this.getBids();
+            })
         }
     }
 </script>

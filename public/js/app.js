@@ -2377,6 +2377,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Bids",
   data: function data() {
@@ -2386,17 +2388,50 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
-    getBids: function getBids() {
+    acceptBid: function acceptBid(bidId) {
       var _this = this;
+
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "Accept this bid? Please, note that this will reject all the other bids",
+        //type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, accept bid!'
+      }).then(function (result) {
+        if (result.value) {
+          axios.patch("/api/bid/" + bidId).then(function () {
+            Fire.$emit('entry');
+            Swal.fire('Placed!', 'Bid accepted!!', 'success');
+            Fire.$emit('entry');
+          })["catch"](function (error) {
+            _this.errors = error.response.data.errors;
+            Swal.fire({
+              type: 'error',
+              title: 'Error!!',
+              text: error.response.data.msg
+            });
+          });
+        }
+      });
+    },
+    getBids: function getBids() {
+      var _this2 = this;
 
       axios.get("/api/bid/" + this.orderId).then(function (_ref) {
         var data = _ref.data;
-        return [_this.bids = data];
+        return [_this2.bids = data];
       });
     }
   },
   created: function created() {
+    var _this3 = this;
+
     this.getBids();
+    Fire.$on('entry', function () {
+      _this3.getBids();
+    });
   }
 });
 
@@ -78317,7 +78352,45 @@ var render = function() {
                             : _vm._e()
                         ]),
                         _vm._v(" "),
-                        _vm._m(2, true)
+                        _c("td", [
+                          bid.status == 0
+                            ? _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-primary btn-sm",
+                                  attrs: { type: "button" },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.acceptBid(bid.id)
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                                    Accept\n                                "
+                                  )
+                                ]
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _c("span", [
+                            bid.status == 1
+                              ? _c("i", {
+                                  staticClass: "fas fa-certificate",
+                                  staticStyle: { color: "green" }
+                                })
+                              : _vm._e()
+                          ]),
+                          _vm._v(" "),
+                          _c("span", [
+                            bid.status == 2
+                              ? _c("i", {
+                                  staticClass: "fas fa-ban",
+                                  staticStyle: { color: "red" }
+                                })
+                              : _vm._e()
+                          ])
+                        ])
                       ])
                     }),
                     0
@@ -78357,22 +78430,6 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Action")])
       ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("td", [
-      _c(
-        "button",
-        { staticClass: "btn btn-primary btn-sm", attrs: { type: "button" } },
-        [
-          _vm._v(
-            "\n                                    Accept\n                                "
-          )
-        ]
-      )
     ])
   }
 ]
@@ -98209,8 +98266,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
 /* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(sweetalert2__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var vue_spinner_src_PulseLoader_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vue-spinner/src/PulseLoader.vue */ "./node_modules/vue-spinner/src/PulseLoader.vue");
-/* harmony import */ var vue_star_rating__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vue-star-rating */ "./node_modules/vue-star-rating/dist/star-rating.min.js");
-/* harmony import */ var vue_star_rating__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(vue_star_rating__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var vue_star_rating__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! vue-star-rating */ "./node_modules/vue-star-rating/dist/star-rating.min.js");
+/* harmony import */ var vue_star_rating__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(vue_star_rating__WEBPACK_IMPORTED_MODULE_12__);
 /* harmony import */ var vue_numeric_input__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vue-numeric-input */ "./node_modules/vue-numeric-input/dist/vue-numeric-input.min.js");
 /* harmony import */ var vue_numeric_input__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(vue_numeric_input__WEBPACK_IMPORTED_MODULE_7__);
 /* harmony import */ var vue_datetime__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! vue-datetime */ "./node_modules/vue-datetime/dist/vue-datetime.js");
@@ -98298,7 +98355,7 @@ window.Fire = new Vue();
 window.PulseLoader = vue_spinner_src_PulseLoader_vue__WEBPACK_IMPORTED_MODULE_5__["default"]; //star rating
 
 
-Vue.component('star-rating', vue_star_rating__WEBPACK_IMPORTED_MODULE_6___default.a); // Numeric input
+Vue.component('star-rating', vue_star_rating__WEBPACK_IMPORTED_MODULE_12___default.a); // Numeric input
 
 
 Vue.use(vue_numeric_input__WEBPACK_IMPORTED_MODULE_7___default.a); // Datetime
@@ -98401,8 +98458,8 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 window.Pusher = __webpack_require__(/*! pusher-js */ "./node_modules/pusher-js/dist/web/pusher.js");
 window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
   broadcaster: 'pusher',
-  key: "2dd403e5b2da16c3ed2c",
-  cluster: "ap2",
+  key: "",
+  cluster: "mt1",
   encrypted: true
 });
 
@@ -99641,8 +99698,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\xampp\htdocs\Writing-Management\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\xampp\htdocs\Writing-Management\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /opt/lampp/htdocs/Transonline/writer-Management/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /opt/lampp/htdocs/Transonline/writer-Management/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
