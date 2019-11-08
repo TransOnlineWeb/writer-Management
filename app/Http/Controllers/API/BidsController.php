@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\API;
 
 use App\Bid;
+use App\Category;
 use App\Http\Controllers\Controller;
+use App\Order;
 use App\User;
 use Illuminate\Http\Request;
 
@@ -102,15 +104,33 @@ class BidsController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // Change bid status from pending to accepted
         $bid = Bid::findOrFail($id);
         $bid->status = 1;
         $bid->update();
 
+        //Update order details/assign user to order
+        $user = User::where('id', $bid->user_id)->first();
         $orderId = Bid::where('id', $id)->value('order_id');
+        $amount = Category::where('id', $user['level_id'])->value('amount');
+
+        $order = Order::findOrFail($orderId);
+
+        // Check if urgent or not
+        if ($order->urgency == 0) {
+            $order->amount = $amount;
+            $order->total_amount = $order->pages * $amount;
+        }
+        $order->status = 1;
+        $order->assigned_user_id = $user['id'];
+        $order->update();
+
+
         $others = Bid::where('order_id', $orderId)->where('status', 0)->get();
 
-        if (count($others) > 0){
-            foreach ($others as $other){
+        // Reject all the other bids
+        if (count($others) > 0) {
+            foreach ($others as $other) {
                 $each = Bid::findOrFail($other['id']);
                 $each->status = 2;
                 $each->update();
