@@ -18,6 +18,16 @@ class RatingController extends Controller
         //
     }
 
+    public function getRate($orderId)
+    {
+        return Rating::where('order_id',$orderId)->count();
+
+    }
+
+    public function getMyRate($orderId)
+    {
+        return Rating::where('order_id', $orderId)->value('rating');
+    }
     /**
      * Store a newly created resource in storage.
      *
