@@ -21,21 +21,21 @@
                                                 <th>Title</th>
                                                 <th style="width: 40px">Details</th>
                                             </tr>
-                                            <tr>
+                                            <tr v-if="$gate.isAdmin()">
                                                 <td><b>Name</b></td>
                                                 <td>
                                                     <span>{{writer.name}}</span>
                                                     <span style="color: rebeccapurple;" v-if="!this.writer">No writer assigned</span>
                                                 </td>
                                             </tr>
-                                            <tr>
+                                            <tr v-if="$gate.isAdmin()">
                                                 <td><b>Phone</b></td>
                                                 <td>
                                                     <span>{{writer.phone_number}}</span>
                                                     <span style="color: rebeccapurple;" v-if="!this.writer">No writer assigned</span>
                                                 </td>
                                             </tr>
-                                            <tr>
+                                            <tr v-if="$gate.isAdmin()">
                                                 <td><b>Email</b></td>
                                                 <td>
                                                     <span>{{writer.email}}</span>
@@ -117,7 +117,7 @@
                                     </div>
                                     <div class="box" style="margin-bottom: 10px;">
                                         <div class="box-body">
-                                            <button type="button" class="btn btn-success btn-sm" @click="newModal">
+                                            <button type="button" class="btn btn-success btn-sm" @click="newModal" v-if="$gate.isAdmin()">
                                                 Add more files
                                             </button>
                                         </div>
@@ -163,13 +163,13 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row mt-5">
+                                    <div class="row mt-5" v-if="$gate.isAdmin()">
                                         <h5>Rate this work</h5> <br>
                                         <div class="mt-5">
                                             <star-rating v-bind:increment="0.5" :read-only="myRate" :rating="rating" @rating-selected="setRating"></star-rating>
                                         </div>
                                     </div>
-                                    <div>
+                                    <div v-if="$gate.isAdmin()">
                                         <button class="btn btn-success btn-sm"  @click="setRatting"><i class="fas fa-star"></i>Rate</button>
                                     </div>
                                 </div>

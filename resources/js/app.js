@@ -42,6 +42,7 @@ let routes = [
     { path: '/MyWriters', component: require('./components/MyWriters.vue').default },
     {path: '/bids/:orderId', component: require('./components/Bids.vue').default},
     {path: '/announcement', component: require('./components/Announcement.vue').default},
+    { path: '/myorder', component: require('./components/MyOrders.vue').default },
 ];
 
 const router = new VueRouter({

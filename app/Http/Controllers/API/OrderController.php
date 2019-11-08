@@ -31,6 +31,10 @@ class OrderController extends Controller
         }
     }
 
+    public function getMyOrders(){
+        return Order::latest()->where('assigned_user_id', auth()->user()->id)->paginate(10);
+    }
+
     /**
      * Store a newly created resource in storage.
      *
