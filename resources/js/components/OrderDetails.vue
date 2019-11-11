@@ -173,6 +173,35 @@
                                         <button class="btn btn-success btn-sm"  @click="setRatting"><i class="fas fa-star"></i>Rate</button>
                                     </div>
                                 </div>
+                                <div class="box" v-if="$gate.isWriter()">
+                                    <div class="box-body">
+                                        <button type="button" class="btn btn-success btn-sm" @click="isCompleted">Upload completed task</button>
+                                    </div>
+                                </div>
+                                <div class="box">
+                                    <div class="box-header">
+                                        <h4>Completed</h4>
+                                    </div>
+                                    <div class="box-body">
+                                        <div class="row">
+                                            <div class="col-md-6 col-sm-6 col-xs-12" v-for="com in completed" :key="com.id">
+                                                <a @click.prevent="download(com.id)">
+                                                    <div class="info-box">
+                                                        <span class="info-box-icon" style="background-color: purple;"><i class="fas fa-download" style="color: white;"></i></span>
+
+                                                        <div class="info-box-content">
+                                                            <span class="info-box-text">Download</span>
+                                                        </div>
+                                                        <!-- /.info-box-content -->
+                                                    </div>
+                                                </a>
+                                                <!-- /.info-box -->
+                                            </div>
+                                            <!--                                            <button type="button" class="btn btn-primary" @click="downloadAll">Download all files</button>-->
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
 
                         </div>
@@ -252,7 +281,9 @@
                 message: '',
                 typing: '',
                 users : {},
+                isComplete: false,
                 e_files: '',
+                completed: {},
                 messages:[],
                 orderId: this.$route.params.orderId,
                 details: {},
@@ -279,6 +310,10 @@
                 });
         },
         methods:{
+            isCompleted(){
+                this.isComplete = true;
+                this.newModal();
+            },
             setRatting(){
                 if ( this.rated != 0) {
                     Swal.fire({
@@ -330,21 +365,39 @@
 
                 const config = { headers: { 'Content-Type': 'multipart/form-data' } };
 
-                axios.post('/api/addfiles/' + this.orderId,this.formf,config).then(response=>{
-                    Fire.$emit('entry');
-                    $('#addnew').modal('hide');
-                    this.form.reset();
-                    Swal.fire({
-                        type: 'success',
-                        title: 'Submited!!',
-                        text: 'Files added successfully',
+                if (this.isComplete){
+                    axios.post('/api/uploadcomplete/' + this.orderId,this.formf,config).then(response=>{
+                        Fire.$emit('entry');
+                        $('#addnew').modal('hide');
+                        this.form.reset();
+                        Swal.fire({
+                            type: 'success',
+                            title: 'Submited!!',
+                            text: 'File(s) sent successfully',
+
+                        })
 
                     })
+                        .catch(response=>{
+                            //error
+                        });
+                } else {
+                    axios.post('/api/addfiles/' + this.orderId,this.formf,config).then(response=>{
+                        Fire.$emit('entry');
+                        $('#addnew').modal('hide');
+                        this.form.reset();
+                        Swal.fire({
+                            type: 'success',
+                            title: 'Submited!!',
+                            text: 'Files added successfully',
 
-                })
-                    .catch(response=>{
-                        //error
-                    });
+                        })
+
+                    })
+                        .catch(response=>{
+                            //error
+                        });
+                }
             },
             fieldChange(e){
                 let selectedFiles=e.target.files;
@@ -397,8 +450,8 @@
             getFiles(){
                 axios.get("/api/getfiles/" + this.orderId).then(({ data }) => ([this.files = data]));
             },
-            getUser(){
-                // axios.get("/api/getUser/" + this.orderId).then(({ data }) => ([this.users = data]));
+            getCompletedFiles(){
+                axios.get("/api/getcompleted/" + this.orderId).then(({ data }) => ([this.completed = data]));
             },
             getMessages(){
                 // axios.get("/api/getMessage/" + this.orderId).then((response) => (this.messages = response.data));
@@ -430,12 +483,12 @@
             this.getDetails();
             this.getFilesCount();
             this.getMessages();
-            this.getUser();
             this.getFiles();
             this.getWriter();
             this.getRating();
             this.getRate();
             this.hasRated();
+            this.getCompletedFiles();
             Fire.$on('entry', () =>{
                 this.getFiles();
                 this.getFilesCount();

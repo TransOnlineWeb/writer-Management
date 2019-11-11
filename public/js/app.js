@@ -3816,6 +3816,35 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     user: {
@@ -3831,7 +3860,9 @@ __webpack_require__.r(__webpack_exports__);
       message: '',
       typing: '',
       users: {},
+      isComplete: false,
       e_files: '',
+      completed: {},
       messages: [],
       orderId: this.$route.params.orderId,
       details: {},
@@ -3857,6 +3888,10 @@ __webpack_require__.r(__webpack_exports__);
     });
   },
   methods: {
+    isCompleted: function isCompleted() {
+      this.isComplete = true;
+      this.newModal();
+    },
     setRatting: function setRatting() {
       if (this.rated != 0) {
         Swal.fire({
@@ -3927,19 +3962,36 @@ __webpack_require__.r(__webpack_exports__);
           'Content-Type': 'multipart/form-data'
         }
       };
-      axios.post('/api/addfiles/' + this.orderId, this.formf, config).then(function (response) {
-        Fire.$emit('entry');
-        $('#addnew').modal('hide');
 
-        _this5.form.reset();
+      if (this.isComplete) {
+        axios.post('/api/uploadcomplete/' + this.orderId, this.formf, config).then(function (response) {
+          Fire.$emit('entry');
+          $('#addnew').modal('hide');
 
-        Swal.fire({
-          type: 'success',
-          title: 'Submited!!',
-          text: 'Files added successfully'
+          _this5.form.reset();
+
+          Swal.fire({
+            type: 'success',
+            title: 'Submited!!',
+            text: 'File(s) sent successfully'
+          });
+        })["catch"](function (response) {//error
         });
-      })["catch"](function (response) {//error
-      });
+      } else {
+        axios.post('/api/addfiles/' + this.orderId, this.formf, config).then(function (response) {
+          Fire.$emit('entry');
+          $('#addnew').modal('hide');
+
+          _this5.form.reset();
+
+          Swal.fire({
+            type: 'success',
+            title: 'Submited!!',
+            text: 'Files added successfully'
+          });
+        })["catch"](function (response) {//error
+        });
+      }
     },
     fieldChange: function fieldChange(e) {
       var selectedFiles = e.target.files;
@@ -4015,7 +4067,13 @@ __webpack_require__.r(__webpack_exports__);
         return [_this10.files = data];
       });
     },
-    getUser: function getUser() {// axios.get("/api/getUser/" + this.orderId).then(({ data }) => ([this.users = data]));
+    getCompletedFiles: function getCompletedFiles() {
+      var _this11 = this;
+
+      axios.get("/api/getcompleted/" + this.orderId).then(function (_ref7) {
+        var data = _ref7.data;
+        return [_this11.completed = data];
+      });
     },
     getMessages: function getMessages() {// axios.get("/api/getMessage/" + this.orderId).then((response) => (this.messages = response.data));
     },
@@ -4042,23 +4100,23 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   created: function created() {
-    var _this11 = this;
+    var _this12 = this;
 
     this.getDetails();
     this.getFilesCount();
     this.getMessages();
-    this.getUser();
     this.getFiles();
     this.getWriter();
     this.getRating();
     this.getRate();
     this.hasRated();
+    this.getCompletedFiles();
     Fire.$on('entry', function () {
-      _this11.getFiles();
+      _this12.getFiles();
 
-      _this11.getFilesCount();
+      _this12.getFilesCount();
 
-      _this11.hasRated();
+      _this12.hasRated();
     });
   }
 });
@@ -77620,7 +77678,25 @@ var render = function() {
             _vm._v(" "),
             _c("div", { staticClass: "card-body table-responsive p-0" }, [
               _c("table", { staticClass: "table table-hover" }, [
-                _vm._m(0),
+                _c("thead", [
+                  _c("tr", [
+                    _c("th", [_vm._v("Order#")]),
+                    _vm._v(" "),
+                    _vm.$gate.isAdmin() ? _c("th", [_vm._v("Bids")]) : _vm._e(),
+                    _vm._v(" "),
+                    _c("th", [_vm._v("Title")]),
+                    _vm._v(" "),
+                    _c("th", [_vm._v("Deadline")]),
+                    _vm._v(" "),
+                    _c("th", [_vm._v("Level")]),
+                    _vm._v(" "),
+                    _c("th", [_vm._v("Status")]),
+                    _vm._v(" "),
+                    _c("th", [_vm._v("Urgency")]),
+                    _vm._v(" "),
+                    _c("th", [_vm._v("More")])
+                  ])
+                ]),
                 _vm._v(" "),
                 _c(
                   "tbody",
@@ -77628,27 +77704,29 @@ var render = function() {
                     return _c("tr", { key: order.id }, [
                       _c("td", [_vm._v(_vm._s(order.order_number))]),
                       _vm._v(" "),
-                      _c(
-                        "td",
-                        [
-                          _c(
-                            "router-link",
-                            {
-                              staticClass: "btn btn-success btn-sm",
-                              attrs: {
-                                to: { path: "/bids/" + order.id },
-                                type: "button"
-                              }
-                            },
+                      _vm.$gate.isAdmin()
+                        ? _c(
+                            "td",
                             [
-                              _vm._v(
-                                "View Bids\n                                "
+                              _c(
+                                "router-link",
+                                {
+                                  staticClass: "btn btn-success btn-sm",
+                                  attrs: {
+                                    to: { path: "/bids/" + order.id },
+                                    type: "button"
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "View Bids\n                                "
+                                  )
+                                ]
                               )
-                            ]
+                            ],
+                            1
                           )
-                        ],
-                        1
-                      ),
+                        : _vm._e(),
                       _vm._v(" "),
                       _c("td", [_vm._v(_vm._s(order.title))]),
                       _vm._v(" "),
@@ -77677,15 +77755,15 @@ var render = function() {
                             )
                           : _vm._e(),
                         _vm._v(" "),
-                        order.status == "Working"
+                        order.status == 3
                           ? _c(
                               "span",
                               { staticClass: "badge badge-pill badge-dark" },
-                              [_vm._v("Working")]
+                              [_vm._v("Uploaded")]
                             )
                           : _vm._e(),
                         _vm._v(" "),
-                        order.status == "Completed"
+                        order.status == 4
                           ? _c(
                               "span",
                               { staticClass: "badge badge-pill badge-success" },
@@ -77748,7 +77826,7 @@ var render = function() {
           { staticClass: "modal-dialog modal-lg", attrs: { role: "document" } },
           [
             _c("div", { staticClass: "modal-content" }, [
-              _vm._m(1),
+              _vm._m(0),
               _vm._v(" "),
               _c(
                 "form",
@@ -78587,30 +78665,6 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("tr", [
-        _c("th", [_vm._v("Order#")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Bids")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Title")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Deadline")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Level")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Status")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Urgency")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("More")])
-      ])
-    ])
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -80490,6 +80544,57 @@ var render = function() {
                         )
                       ])
                     : _vm._e()
+                ]),
+                _vm._v(" "),
+                _vm.$gate.isWriter()
+                  ? _c("div", { staticClass: "box" }, [
+                      _c("div", { staticClass: "box-body" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-success btn-sm",
+                            attrs: { type: "button" },
+                            on: { click: _vm.isCompleted }
+                          },
+                          [_vm._v("Upload completed task")]
+                        )
+                      ])
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _c("div", { staticClass: "box" }, [
+                  _vm._m(23),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "box-body" }, [
+                    _c(
+                      "div",
+                      { staticClass: "row" },
+                      _vm._l(_vm.completed, function(com) {
+                        return _c(
+                          "div",
+                          {
+                            key: com.id,
+                            staticClass: "col-md-6 col-sm-6 col-xs-12"
+                          },
+                          [
+                            _c(
+                              "a",
+                              {
+                                on: {
+                                  click: function($event) {
+                                    $event.preventDefault()
+                                    return _vm.download(com.id)
+                                  }
+                                }
+                              },
+                              [_vm._m(24, true)]
+                            )
+                          ]
+                        )
+                      }),
+                      0
+                    )
+                  ])
                 ])
               ])
             ])
@@ -80607,7 +80712,7 @@ var render = function() {
           { staticClass: "modal-dialog", attrs: { role: "document" } },
           [
             _c("div", { staticClass: "modal-content" }, [
-              _vm._m(23),
+              _vm._m(25),
               _vm._v(" "),
               _c(
                 "form",
@@ -80638,7 +80743,7 @@ var render = function() {
                     ])
                   ]),
                   _vm._v(" "),
-                  _vm._m(24)
+                  _vm._m(26)
                 ]
               )
             ])
@@ -80842,6 +80947,38 @@ var staticRenderFns = [
           )
         ]
       )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "box-header" }, [
+      _c("h4", [_vm._v("Completed")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "info-box" }, [
+      _c(
+        "span",
+        {
+          staticClass: "info-box-icon",
+          staticStyle: { "background-color": "purple" }
+        },
+        [
+          _c("i", {
+            staticClass: "fas fa-download",
+            staticStyle: { color: "white" }
+          })
+        ]
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "info-box-content" }, [
+        _c("span", { staticClass: "info-box-text" }, [_vm._v("Download")])
+      ])
     ])
   },
   function() {
@@ -99592,8 +99729,8 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 window.Pusher = __webpack_require__(/*! pusher-js */ "./node_modules/pusher-js/dist/web/pusher.js");
 window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
   broadcaster: 'pusher',
-  key: "2dd403e5b2da16c3ed2c",
-  cluster: "ap2",
+  key: "",
+  cluster: "mt1",
   encrypted: true
 });
 
@@ -101039,8 +101176,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\xampp\htdocs\Writing-Management\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\xampp\htdocs\Writing-Management\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /opt/lampp/htdocs/Transonline/writer-Management/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /opt/lampp/htdocs/Transonline/writer-Management/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

@@ -28,6 +28,8 @@ class OrderController extends Controller
             return Order::latest()->paginate(10);
         } elseif (auth()->user()->role == "writer") {
             return Order::latest()->where('status', 0)->paginate(10);
+        }elseif (auth()->user()->role == "editor"){
+            return Order::latest()->where('status', 3)->paginate(10);
         }
     }
 

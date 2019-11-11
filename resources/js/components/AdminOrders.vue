@@ -16,7 +16,7 @@
                             <thead>
                             <tr>
                                 <th>Order#</th>
-                                <th>Bids</th>
+                                <th v-if="$gate.isAdmin()">Bids</th>
                                 <th>Title</th>
                                 <th>Deadline</th>
                                 <th>Level</th>
@@ -28,7 +28,7 @@
                             <tbody>
                             <tr v-for="order in orders.data" :key="order.id">
                                 <td>{{order.order_number}}</td>
-                                <td>
+                                <td v-if="$gate.isAdmin()">
                                     <router-link :to="{path:'/bids/'+ order.id}" type="button"
                                                  class="btn btn-success btn-sm">View Bids
                                     </router-link>
@@ -43,8 +43,8 @@
                                           v-if="order.status == 0">Pending..</span>
                                     <span class="badge badge-pill badge-info" v-if="order.status == 1">Assigned</span>
                                     <span class="badge badge-pill badge-dark"
-                                          v-if="order.status == 'Working'">Working</span>
-                                    <span class="badge badge-pill badge-success" v-if="order.status == 'Completed'">Completed</span>
+                                          v-if="order.status == 3">Uploaded</span>
+                                    <span class="badge badge-pill badge-success" v-if="order.status == 4">Completed</span>
                                 </td>
                                 <td>
                                     <span class="badge badge-dark" v-if="order.urgency == 1">Urgent</span>

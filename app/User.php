@@ -41,4 +41,8 @@ class User extends Authenticatable
     public function category(){
         return $this->belongsTo(Category::class);
     }
+
+    public function wallet(){
+        return $this->hasOne(Wallet::class);
+    }
 }
