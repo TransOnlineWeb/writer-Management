@@ -20,6 +20,11 @@ class MoreOrdersController extends Controller
         return File::where('order_id', $orderId)->where('isComplete', 0)->get();
     }
 
+    public function getCompletedFiles($orderId)
+    {
+        return File::where('order_id', $orderId)->where('isComplete', 1)->get();
+    }
+
     public function downloadFile($id)
     {
         $file = File::where('id', $id)->firstOrFail();
