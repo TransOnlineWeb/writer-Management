@@ -173,6 +173,11 @@
                                         <button class="btn btn-success btn-sm"  @click="setRatting"><i class="fas fa-star"></i>Rate</button>
                                     </div>
                                 </div>
+                                <div class="box">
+                                    <div class="box-body">
+                                        <button type="button" class="btn btn-success btn-sm" @click="isCompleted">Upload completed task</button>
+                                    </div>
+                                </div>
                             </div>
 
                         </div>
@@ -252,6 +257,7 @@
                 message: '',
                 typing: '',
                 users : {},
+                isComplete: false,
                 e_files: '',
                 messages:[],
                 orderId: this.$route.params.orderId,
@@ -279,6 +285,10 @@
                 });
         },
         methods:{
+            isCompleted(){
+                this.isComplete = true;
+                this.newModal();
+            },
             setRatting(){
                 if ( this.rated != 0) {
                     Swal.fire({
@@ -330,21 +340,39 @@
 
                 const config = { headers: { 'Content-Type': 'multipart/form-data' } };
 
-                axios.post('/api/addfiles/' + this.orderId,this.formf,config).then(response=>{
-                    Fire.$emit('entry');
-                    $('#addnew').modal('hide');
-                    this.form.reset();
-                    Swal.fire({
-                        type: 'success',
-                        title: 'Submited!!',
-                        text: 'Files added successfully',
+                if (this.isComplete){
+                    axios.post('/api/uploadcomplete/' + this.orderId,this.formf,config).then(response=>{
+                        Fire.$emit('entry');
+                        $('#addnew').modal('hide');
+                        this.form.reset();
+                        Swal.fire({
+                            type: 'success',
+                            title: 'Submited!!',
+                            text: 'File(s) sent successfully',
+
+                        })
 
                     })
+                        .catch(response=>{
+                            //error
+                        });
+                } else {
+                    axios.post('/api/addfiles/' + this.orderId,this.formf,config).then(response=>{
+                        Fire.$emit('entry');
+                        $('#addnew').modal('hide');
+                        this.form.reset();
+                        Swal.fire({
+                            type: 'success',
+                            title: 'Submited!!',
+                            text: 'Files added successfully',
 
-                })
-                    .catch(response=>{
-                        //error
-                    });
+                        })
+
+                    })
+                        .catch(response=>{
+                            //error
+                        });
+                }
             },
             fieldChange(e){
                 let selectedFiles=e.target.files;

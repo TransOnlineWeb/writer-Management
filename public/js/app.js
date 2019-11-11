@@ -3745,6 +3745,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     user: {
@@ -3760,6 +3765,7 @@ __webpack_require__.r(__webpack_exports__);
       message: '',
       typing: '',
       users: {},
+      isComplete: false,
       e_files: '',
       messages: [],
       orderId: this.$route.params.orderId,
@@ -3786,6 +3792,10 @@ __webpack_require__.r(__webpack_exports__);
     });
   },
   methods: {
+    isCompleted: function isCompleted() {
+      this.isComplete = true;
+      this.newModal();
+    },
     setRatting: function setRatting() {
       if (this.rated != 0) {
         Swal.fire({
@@ -3856,19 +3866,36 @@ __webpack_require__.r(__webpack_exports__);
           'Content-Type': 'multipart/form-data'
         }
       };
-      axios.post('/api/addfiles/' + this.orderId, this.formf, config).then(function (response) {
-        Fire.$emit('entry');
-        $('#addnew').modal('hide');
 
-        _this5.form.reset();
+      if (this.isComplete) {
+        axios.post('/api/uploadcomplete/' + this.orderId, this.formf, config).then(function (response) {
+          Fire.$emit('entry');
+          $('#addnew').modal('hide');
 
-        Swal.fire({
-          type: 'success',
-          title: 'Submited!!',
-          text: 'Files added successfully'
+          _this5.form.reset();
+
+          Swal.fire({
+            type: 'success',
+            title: 'Submited!!',
+            text: 'File(s) sent successfully'
+          });
+        })["catch"](function (response) {//error
         });
-      })["catch"](function (response) {//error
-      });
+      } else {
+        axios.post('/api/addfiles/' + this.orderId, this.formf, config).then(function (response) {
+          Fire.$emit('entry');
+          $('#addnew').modal('hide');
+
+          _this5.form.reset();
+
+          Swal.fire({
+            type: 'success',
+            title: 'Submited!!',
+            text: 'Files added successfully'
+          });
+        })["catch"](function (response) {//error
+        });
+      }
     },
     fieldChange: function fieldChange(e) {
       var selectedFiles = e.target.files;
@@ -77606,15 +77633,15 @@ var render = function() {
                             )
                           : _vm._e(),
                         _vm._v(" "),
-                        order.status == "Working"
+                        order.status == 3
                           ? _c(
                               "span",
                               { staticClass: "badge badge-pill badge-dark" },
-                              [_vm._v("Working")]
+                              [_vm._v("Uploaded")]
                             )
                           : _vm._e(),
                         _vm._v(" "),
-                        order.status == "Completed"
+                        order.status == 4
                           ? _c(
                               "span",
                               { staticClass: "badge badge-pill badge-success" },
@@ -80302,6 +80329,20 @@ var render = function() {
                         )
                       ])
                     : _vm._e()
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "box" }, [
+                  _c("div", { staticClass: "box-body" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-success btn-sm",
+                        attrs: { type: "button" },
+                        on: { click: _vm.isCompleted }
+                      },
+                      [_vm._v("Upload completed task")]
+                    )
+                  ])
                 ])
               ])
             ])
@@ -99397,8 +99438,8 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 window.Pusher = __webpack_require__(/*! pusher-js */ "./node_modules/pusher-js/dist/web/pusher.js");
 window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
   broadcaster: 'pusher',
-  key: "2dd403e5b2da16c3ed2c",
-  cluster: "ap2",
+  key: "",
+  cluster: "mt1",
   encrypted: true
 });
 
@@ -100775,8 +100816,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\xampp\htdocs\Writing-Management\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\xampp\htdocs\Writing-Management\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /opt/lampp/htdocs/Transonline/writer-Management/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /opt/lampp/htdocs/Transonline/writer-Management/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
