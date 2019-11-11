@@ -50,5 +50,6 @@ Route::post('makebid/{orderId}','API\BidsController@makeBid');
 Route::get('checkbid/{orderId}','API\BidsController@checkBid');
 
 Route::apiResources(['Announcement' => 'API\AnnouncementController']);
+Route::get('announce','API\AnnouncementController@announce');
 
 Route::get('myorders','API\OrderController@getMyOrders');

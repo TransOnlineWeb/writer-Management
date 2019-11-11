@@ -184,6 +184,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         </router-link>
                     </li>
                     <li class="nav-item">
+                        <router-link to="/announcements" class="nav-link">
+                            <i class="nav-icon fas fa-bullhorn yellow"></i>
+                            <p>
+                                Announcement
+                            </p>
+                        </router-link>
+                    </li>
+                    <li class="nav-item">
                         <router-link to="/profile" class="nav-link">
                             <i class="nav-icon fas fa-user orange"></i>
                             <p>

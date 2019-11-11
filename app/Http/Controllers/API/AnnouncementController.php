@@ -21,6 +21,10 @@ class AnnouncementController extends Controller
     {
         return Announcement::where('status', 'Complete')->latest()->paginate(10);
     }
+    public function announce()
+    {
+        return Announcement::latest()->paginate(10);
+    }
 
     /**
      * Store a newly created resource in storage.
