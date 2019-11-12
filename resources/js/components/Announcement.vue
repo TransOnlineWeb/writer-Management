@@ -8,7 +8,7 @@
 
                         <div class="card-tools">
                             <button type="button" class="btn btn-primary" @click="newModal">
-                                <i class="fa fa-pencil"></i>
+                                <i class="fas fa-pen"></i>
                                 Compose Message
                             </button>
                         </div>
@@ -30,7 +30,7 @@
                                 <td>{{ mes.title | upText }}</td>
                                 <td>{{ mes.created_at | myDate }}</td>
                                 <td><span class="tag tag-success">{{ mes.status }}</span></td>
-                                <td>{{ mes.message | upText }}</td>
+                                <td>{{ mes.message | upText | truncate('30') }}</td>
                                 <td>
                                     <button type="button" class="btn btn-sm btn-primary" @click="editModal(mes)">
                                         <i class="fa fa-edit"></i>
@@ -176,7 +176,7 @@
                 })
             },
             loadMessages() {
-                axios.get("api/Announcement").then(({data}) => (this.messages = data.data));
+                axios.get("api/announce").then(({data}) => (this.messages = data.data));
             },
             postMessage() {
                 this.$Progress.start();

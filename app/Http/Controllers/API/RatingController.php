@@ -26,7 +26,13 @@ class RatingController extends Controller
 
     public function getMyRate($orderId)
     {
-        return Rating::where('order_id', $orderId)->value('rating');
+        $rate = Rating::where('order_id',$orderId)->count();
+        if($rate != 0){
+            return Rating::where('order_id', $orderId)->value('rating');
+        }else{
+            return 0;
+        }
+
     }
     /**
      * Store a newly created resource in storage.

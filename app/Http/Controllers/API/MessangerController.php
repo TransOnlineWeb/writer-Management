@@ -2,11 +2,17 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Announcement;
-use App\Http\Controllers\Controller;
+use App\Events\ChatEvent;
+use App\Events\NewMessage;
+use App\Messenger;
+use App\Notifications\RepliedToThread;
+use App\User;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 
-class AnnouncementController extends Controller
+class MessangerController extends Controller
 {
     public function __construct()
     {
@@ -19,13 +25,13 @@ class AnnouncementController extends Controller
      */
     public function index()
     {
-        return Announcement::where('status', 'Complete')->latest()->paginate(10);
-    }
-    public function announce()
-    {
-        return Announcement::latest()->paginate(10);
+
     }
 
+    public function getMessagesFor($orderId){
+        $messages = Messenger::where('Oder_id',$orderId)->get();
+        return response()->json($messages);
+    }
     /**
      * Store a newly created resource in storage.
      *
@@ -34,17 +40,7 @@ class AnnouncementController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'title' => 'required|string',
-            'message' => 'required',
-            'status' => 'required'
-        ]);
-
-        return Announcement::create([
-            'title' => $request['title'],
-            'message' => $request['message'],
-            'status' => $request['status'],
-        ]);
+        //
     }
 
     /**
@@ -53,6 +49,18 @@ class AnnouncementController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    public function send(Request $request)
+    {
+        $message = Messenger::create([
+            'from'=> auth()->user()->id,
+            'to'=>$request->contact_id,
+            'text'=>$request->text,
+            'Oder_Id'=>$request->OrderId,
+        ]);
+        broadcast(new ChatEvent($message));
+        return response()->json($message);
+    }
+
     public function show($id)
     {
         //
@@ -67,15 +75,7 @@ class AnnouncementController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $message = Announcement::findorFail($id);
-
-        $this->validate($request, [
-            'title' => 'required|string',
-            'message' => 'required',
-            'status' => 'required'
-        ]);
-
-        $message->update($request->all());
+        //
     }
 
     /**
@@ -86,8 +86,6 @@ class AnnouncementController extends Controller
      */
     public function destroy($id)
     {
-        $message = Announcement::findorFail($id);
-
-        $message->delete();
+        //
     }
 }

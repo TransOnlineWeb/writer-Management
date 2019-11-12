@@ -43,6 +43,7 @@ let routes = [
     {path: '/bids/:orderId', component: require('./components/Bids.vue').default},
     {path: '/announcement', component: require('./components/Announcement.vue').default},
     { path: '/myorder', component: require('./components/MyOrders.vue').default },
+    {path: '/announcements', component: require('./components/AnnouncementView.vue').default},
 ];
 
 const router = new VueRouter({
@@ -100,6 +101,11 @@ Vue.filter('myDate',function(created){
 Vue.filter('myDatetime',function(created){
     return moment(created).format('MMMM Do YYYY, h:mm a');
 });
+ //filter for truncating worda
+Vue.filter('truncate',function(string, value) {
+    return string.substring(0, value) + '...';
+});
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue

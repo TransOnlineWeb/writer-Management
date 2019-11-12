@@ -55,7 +55,17 @@ Route::post('makebid/{orderId}','API\BidsController@makeBid');
 Route::get('checkbid/{orderId}','API\BidsController@checkBid');
 
 Route::apiResources(['Announcement' => 'API\AnnouncementController']);
+Route::get('announce','API\AnnouncementController@announce');
 
 Route::get('myorders','API\OrderController@getMyOrders');
+
+Route::apiResources(['messenger'=>'API\MessangerController']);
+Route::post('messenger/send','API\MessangerController@send');
+Route::get('receiver','API\MessangerController@index');
+Route::get('getMessage/{orderId}','API\MessangerController@getMessagesFor');
+
+Route::get('getUser/{orderId}','API\OrderController@user');
+Route::get('getAdmin','API\OrderController@admin');
+Route::get('getMessage/{orderId}','API\MessangerController@getMessagesFor');
 
 Route::post('verify_task/{orderId}','API\WalletTransactionsController@isVerified');
