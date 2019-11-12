@@ -82251,9 +82251,7 @@ var render = function() {
     _c("div", { staticClass: "row justify-content-center" }, [
       _c("div", { staticClass: "col-md-12" }, [
         _c("div", { staticClass: "card" }, [
-          _c("div", { staticClass: "card-header" }, [
-            _vm._v("Example Component")
-          ]),
+          _c("div", { staticClass: "card-header" }, [_vm._v("Orders")]),
           _vm._v(" "),
           _c("div", { staticClass: "card-body" }, [
             _c("h3", [_vm._v("New Orders")]),
@@ -100266,8 +100264,8 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 window.Pusher = __webpack_require__(/*! pusher-js */ "./node_modules/pusher-js/dist/web/pusher.js");
 window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
   broadcaster: 'pusher',
-  key: "2dd403e5b2da16c3ed2c",
-  cluster: "ap2",
+  key: "",
+  cluster: "mt1",
   encrypted: true
 });
 
@@ -101713,8 +101711,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\xampp\htdocs\Writing-Management\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\xampp\htdocs\Writing-Management\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Users\mihz\Desktop\political\writer-Management\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Users\mihz\Desktop\political\writer-Management\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
