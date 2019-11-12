@@ -3774,6 +3774,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     user: {
@@ -3817,6 +3827,34 @@ __webpack_require__.r(__webpack_exports__);
     });
   },
   methods: {
+    verify: function verify() {
+      var _this2 = this;
+
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "Verify??",
+        //type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, verify it!'
+      }).then(function (result) {
+        if (result.value) {
+          axios.post("/api/makebid/" + _this2.orderId).then(function () {
+            Fire.$emit('entry');
+            Swal.fire('Placed!', 'Bid successfully placed!!', 'success');
+            Fire.$emit('entry');
+          })["catch"](function (error) {
+            _this2.errors = error.response.data.errors;
+            Swal.fire({
+              type: 'error',
+              title: 'Error!!',
+              text: error.response.data.msg
+            });
+          });
+        }
+      });
+    },
     isCompleted: function isCompleted() {
       this.isComplete = true;
       this.newModal();
@@ -3845,27 +3883,27 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     getRate: function getRate() {
-      var _this2 = this;
+      var _this3 = this;
 
       axios.get("/api/myRate/" + this.orderId).then(function (_ref) {
         var data = _ref.data;
-        return [_this2.rating = data];
+        return [_this3.rating = data];
       });
     },
     getWriter: function getWriter() {
-      var _this3 = this;
+      var _this4 = this;
 
       axios.get("/api/writer/" + this.orderId).then(function (_ref2) {
         var data = _ref2.data;
-        return [_this3.writer = data];
+        return [_this4.writer = data];
       });
     },
     getRating: function getRating() {
-      var _this4 = this;
+      var _this5 = this;
 
       axios.get("/api/rate/" + this.orderId).then(function (_ref3) {
         var data = _ref3.data;
-        return [_this4.rated = data];
+        return [_this5.rated = data];
       });
     },
     validate: function validate() {
@@ -3880,7 +3918,7 @@ __webpack_require__.r(__webpack_exports__);
       axios.post('/api/downloadAll/' + this.orderId);
     },
     submit: function submit() {
-      var _this5 = this;
+      var _this6 = this;
 
       for (var i = 0; i < this.attachments.length; i++) {
         this.formf.append('files[]', this.attachments[i]);
@@ -3897,7 +3935,7 @@ __webpack_require__.r(__webpack_exports__);
           Fire.$emit('entry');
           $('#addnew').modal('hide');
 
-          _this5.form.reset();
+          _this6.form.reset();
 
           Swal.fire({
             type: 'success',
@@ -3911,7 +3949,7 @@ __webpack_require__.r(__webpack_exports__);
           Fire.$emit('entry');
           $('#addnew').modal('hide');
 
-          _this5.form.reset();
+          _this6.form.reset();
 
           Swal.fire({
             type: 'success',
@@ -3944,14 +3982,14 @@ __webpack_require__.r(__webpack_exports__);
       this.messages.push(message);
     },
     scrollToBottom: function scrollToBottom() {
-      var _this6 = this;
+      var _this7 = this;
 
       setTimeout(function () {
-        _this6.$refs.feed.scrollTop = _this6.$refs.feed.scrollHeight - _this6.$refs.feed.clientHeight;
+        _this7.$refs.feed.scrollTop = _this7.$refs.feed.scrollHeight - _this7.$refs.feed.clientHeight;
       }, 50);
     },
     sendMessage: function sendMessage() {
-      var _this7 = this;
+      var _this8 = this;
 
       console.log(this.orderId);
 
@@ -3964,44 +4002,44 @@ __webpack_require__.r(__webpack_exports__);
         OrderId: this.orderId,
         contact_id: this.users
       }).then(function (response) {
-        _this7.messages.push(response.data);
+        _this8.messages.push(response.data);
 
-        _this7.message = '';
+        _this8.message = '';
       });
     },
     download: function download(id) {
       axios.get("/api/download/" + id).then();
     },
     getDetails: function getDetails() {
-      var _this8 = this;
+      var _this9 = this;
 
       axios.get("/api/order/" + this.orderId).then(function (_ref4) {
         var data = _ref4.data;
-        return [_this8.details = data];
+        return [_this9.details = data];
       });
     },
     getFilesCount: function getFilesCount() {
-      var _this9 = this;
+      var _this10 = this;
 
       axios.get("/api/filescount/" + this.orderId).then(function (_ref5) {
         var data = _ref5.data;
-        return [_this9.filesCount = data];
+        return [_this10.filesCount = data];
       });
     },
     getFiles: function getFiles() {
-      var _this10 = this;
+      var _this11 = this;
 
       axios.get("/api/getfiles/" + this.orderId).then(function (_ref6) {
         var data = _ref6.data;
-        return [_this10.files = data];
+        return [_this11.files = data];
       });
     },
     getCompletedFiles: function getCompletedFiles() {
-      var _this11 = this;
+      var _this12 = this;
 
       axios.get("/api/getcompleted/" + this.orderId).then(function (_ref7) {
         var data = _ref7.data;
-        return [_this11.completed = data];
+        return [_this12.completed = data];
       });
     },
     getMessages: function getMessages() {// axios.get("/api/getMessage/" + this.orderId).then((response) => (this.messages = response.data));
@@ -4029,7 +4067,7 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   created: function created() {
-    var _this12 = this;
+    var _this13 = this;
 
     this.getDetails();
     this.getFilesCount();
@@ -4041,11 +4079,11 @@ __webpack_require__.r(__webpack_exports__);
     this.hasRated();
     this.getCompletedFiles();
     Fire.$on('entry', function () {
-      _this12.getFiles();
+      _this13.getFiles();
 
-      _this12.getFilesCount();
+      _this13.getFilesCount();
 
-      _this12.hasRated();
+      _this13.hasRated();
     });
   }
 });
@@ -80407,7 +80445,56 @@ var render = function() {
                       0
                     )
                   ])
-                ])
+                ]),
+                _vm._v(" "),
+                _vm.$gate.isEditor()
+                  ? _c("div", { staticClass: "box" }, [
+                      _vm._m(25),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "box-body" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-success btn-sm",
+                            attrs: { type: "button" },
+                            on: {
+                              click: function($event) {
+                                return _vm.verify()
+                              }
+                            }
+                          },
+                          [_vm._v("Verify")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-warning btn-sm",
+                            attrs: { type: "button" }
+                          },
+                          [_vm._v("Revision")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-dark btn-sm",
+                            attrs: { type: "button" }
+                          },
+                          [_vm._v("Fine")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-danger btn-sm",
+                            attrs: { type: "button" }
+                          },
+                          [_vm._v("Reject")]
+                        )
+                      ])
+                    ])
+                  : _vm._e()
               ])
             ])
           ]),
@@ -80524,7 +80611,7 @@ var render = function() {
           { staticClass: "modal-dialog", attrs: { role: "document" } },
           [
             _c("div", { staticClass: "modal-content" }, [
-              _vm._m(25),
+              _vm._m(26),
               _vm._v(" "),
               _c(
                 "form",
@@ -80555,7 +80642,7 @@ var render = function() {
                     ])
                   ]),
                   _vm._v(" "),
-                  _vm._m(26)
+                  _vm._m(27)
                 ]
               )
             ])
@@ -80791,6 +80878,14 @@ var staticRenderFns = [
       _c("div", { staticClass: "info-box-content" }, [
         _c("span", { staticClass: "info-box-text" }, [_vm._v("Download")])
       ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "box-header" }, [
+      _c("h4", [_vm._v("Actions")])
     ])
   },
   function() {

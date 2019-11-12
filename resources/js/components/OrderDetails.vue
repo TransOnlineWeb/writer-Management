@@ -201,7 +201,17 @@
                                         </div>
                                     </div>
                                 </div>
-
+                                <div class="box" v-if="$gate.isEditor()">
+                                    <div class="box-header">
+                                        <h4>Actions</h4>
+                                    </div>
+                                    <div class="box-body">
+                                        <button type="button" class="btn btn-success btn-sm" @click="verify()">Verify</button>
+                                        <button type="button" class="btn btn-warning btn-sm">Revision</button>
+                                        <button type="button" class="btn btn-dark btn-sm">Fine</button>
+                                        <button type="button" class="btn btn-danger btn-sm">Reject</button>
+                                    </div>
+                                </div>
                             </div>
 
                         </div>
@@ -310,6 +320,37 @@
                 });
         },
         methods:{
+            verify(){
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "Verify??",
+                    //type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, verify it!'
+                }).then((result) => {
+                    if (result.value) {
+                        axios.post("/api/makebid/" + this.orderId).then(() => {
+                            Fire.$emit('entry');
+                            Swal.fire(
+                                'Placed!',
+                                'Bid successfully placed!!',
+                                'success'
+                            )
+                            Fire.$emit('entry');
+                        }).catch(error => {
+                            this.errors = error.response.data.errors;
+                            Swal.fire({
+                                type: 'error',
+                                title: 'Error!!',
+                                text: error.response.data.msg,
+
+                            })
+                        });
+                    }
+                })
+            },
             isCompleted(){
                 this.isComplete = true;
                 this.newModal();
