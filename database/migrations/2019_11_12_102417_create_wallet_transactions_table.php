@@ -16,7 +16,7 @@ class CreateWalletTransactionsTable extends Migration
         Schema::create('wallet_transactions', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id')->index();
-            $table->string('type');
+            $table->unsignedInteger('type');
             $table->unsignedBigInteger('order_id');
             $table->unsignedBigInteger('order_number');
             $table->decimal('amount', 12, 2);

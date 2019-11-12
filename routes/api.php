@@ -43,7 +43,7 @@ Route::apiResources(['category' => 'API\WriterCategoryController']);
 
 Route::apiResources(['rating' => 'API\RatingController']);
 Route::get('rate/{orderId}','API\RatingController@getRate');
-Route::get('myRate/{orderId}', 'API\RAtingController@getMyRate');
+Route::get('myRate/{orderId}', 'API\RatingController@getMyRate');
 Route::get('writer/{orderId}', 'API\MoreOrdersController@getWriter');
 
 Route::apiResources(['bid' => 'API\BidsController']);
@@ -54,3 +54,5 @@ Route::get('checkbid/{orderId}','API\BidsController@checkBid');
 Route::apiResources(['Announcement' => 'API\AnnouncementController']);
 
 Route::get('myorders','API\OrderController@getMyOrders');
+
+Route::post('verify_task/{orderId}','API\WalletTransactionsController@isVerified');

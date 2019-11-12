@@ -44,7 +44,8 @@
                                     <span class="badge badge-pill badge-info" v-if="order.status == 1">Assigned</span>
                                     <span class="badge badge-pill badge-dark"
                                           v-if="order.status == 3">Uploaded</span>
-                                    <span class="badge badge-pill badge-success" v-if="order.status == 4">Completed</span>
+                                    <span class="badge badge-pill badge-warning" v-if="order.status == 4">Revision</span>
+                                    <span class="badge badge-pill badge-success" v-if="order.status == 5">Completed</span>
                                 </td>
                                 <td>
                                     <span class="badge badge-dark" v-if="order.urgency == 1">Urgent</span>

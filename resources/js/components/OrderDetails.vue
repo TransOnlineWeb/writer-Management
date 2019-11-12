@@ -331,11 +331,11 @@
                     confirmButtonText: 'Yes, verify it!'
                 }).then((result) => {
                     if (result.value) {
-                        axios.post("/api/makebid/" + this.orderId).then(() => {
+                        axios.post("/api/verify_task/" + this.orderId).then(() => {
                             Fire.$emit('entry');
                             Swal.fire(
                                 'Placed!',
-                                'Bid successfully placed!!',
+                                'Successfully verified as completed!!',
                                 'success'
                             )
                             Fire.$emit('entry');

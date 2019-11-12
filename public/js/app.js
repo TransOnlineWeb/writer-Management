@@ -2108,6 +2108,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -3840,9 +3841,9 @@ __webpack_require__.r(__webpack_exports__);
         confirmButtonText: 'Yes, verify it!'
       }).then(function (result) {
         if (result.value) {
-          axios.post("/api/makebid/" + _this2.orderId).then(function () {
+          axios.post("/api/verify_task/" + _this2.orderId).then(function () {
             Fire.$emit('entry');
-            Swal.fire('Placed!', 'Bid successfully placed!!', 'success');
+            Swal.fire('Placed!', 'Successfully verified as completed!!', 'success');
             Fire.$emit('entry');
           })["catch"](function (error) {
             _this2.errors = error.response.data.errors;
@@ -77731,6 +77732,14 @@ var render = function() {
                           : _vm._e(),
                         _vm._v(" "),
                         order.status == 4
+                          ? _c(
+                              "span",
+                              { staticClass: "badge badge-pill badge-warning" },
+                              [_vm._v("Revision")]
+                            )
+                          : _vm._e(),
+                        _vm._v(" "),
+                        order.status == 5
                           ? _c(
                               "span",
                               { staticClass: "badge badge-pill badge-success" },
