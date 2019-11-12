@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Order;
+use App\User;
 use App\Wallet;
 use App\WalletTransaction;
 use Illuminate\Http\Request;
@@ -15,9 +16,21 @@ class WalletTransactionsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
+
     public function index()
     {
         //
+    }
+
+    public function walletBalance()
+    {
+        $user = auth()->user()->id;
+
+        return User::find($user)->wallet;
     }
 
     /**

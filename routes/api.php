@@ -47,6 +47,7 @@ Route::get('myRate/{orderId}', 'API\RatingController@getMyRate');
 Route::get('writer/{orderId}', 'API\MoreOrdersController@getWriter');
 Route::get('getcompleted', 'API\MoreOrdersController@getCompleted');
 Route::get('getrevision', 'API\MoreOrdersController@getRevision');
+Route::get('wallet', 'API\WalletTransactionsController@walletBalance');
 
 Route::apiResources(['bid' => 'API\BidsController']);
 

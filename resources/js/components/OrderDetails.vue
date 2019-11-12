@@ -21,21 +21,21 @@
                                                 <th>Title</th>
                                                 <th style="width: 40px">Details</th>
                                             </tr>
-                                            <tr v-if="$gate.isAdmin()">
+                                            <tr v-if="$gate.isAdminOrisEditor()">
                                                 <td><b>Name</b></td>
                                                 <td>
                                                     <span>{{writer.name}}</span>
                                                     <span style="color: rebeccapurple;" v-if="!this.writer">No writer assigned</span>
                                                 </td>
                                             </tr>
-                                            <tr v-if="$gate.isAdmin()">
+                                            <tr v-if="$gate.isAdminOrisEditor()">
                                                 <td><b>Phone</b></td>
                                                 <td>
                                                     <span>{{writer.phone_number}}</span>
                                                     <span style="color: rebeccapurple;" v-if="!this.writer">No writer assigned</span>
                                                 </td>
                                             </tr>
-                                            <tr v-if="$gate.isAdmin()">
+                                            <tr v-if="$gate.isAdminOrisEditor()">
                                                 <td><b>Email</b></td>
                                                 <td>
                                                     <span>{{writer.email}}</span>
