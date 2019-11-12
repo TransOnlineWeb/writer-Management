@@ -2108,6 +2108,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -2153,6 +2157,22 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
+    getRevision: function getRevision() {
+      var _this = this;
+
+      axios.get("/api/getrevision").then(function (_ref) {
+        var data = _ref.data;
+        return [_this.orders = data];
+      });
+    },
+    getCompleted: function getCompleted() {
+      var _this2 = this;
+
+      axios.get("/api/getcompleted").then(function (_ref2) {
+        var data = _ref2.data;
+        return [_this2.orders = data];
+      });
+    },
     writerId: function writerId() {
       if (this.writer_obj) {
         this.form.writer = this.writer_obj['id'];
@@ -2161,19 +2181,19 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     getWriters: function getWriters() {
-      var _this = this;
+      var _this3 = this;
 
-      axios.get("/api/getwriters").then(function (_ref) {
-        var data = _ref.data;
-        return [_this.writers = data];
+      axios.get("/api/getwriters").then(function (_ref3) {
+        var data = _ref3.data;
+        return [_this3.writers = data];
       });
     },
     getOrders: function getOrders() {
-      var _this2 = this;
+      var _this4 = this;
 
-      axios.get("/api/order").then(function (_ref2) {
-        var data = _ref2.data;
-        return [_this2.orders = data];
+      axios.get("/api/order").then(function (_ref4) {
+        var data = _ref4.data;
+        return [_this4.orders = data];
       });
     },
     validateForm: function validateForm() {
@@ -2241,7 +2261,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     submitOrder: function submitOrder() {
-      var _this3 = this;
+      var _this5 = this;
 
       for (var i = 0; i < this.attachments.length; i++) {
         this.formf.append('files[]', this.attachments[i]);
@@ -2269,7 +2289,7 @@ __webpack_require__.r(__webpack_exports__);
         $('#addnew').modal('hide');
         Fire.$emit('entry');
 
-        _this3.form.reset();
+        _this5.form.reset();
 
         swal.fire({
           type: 'success',
@@ -2308,12 +2328,12 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   created: function created() {
-    var _this4 = this;
+    var _this6 = this;
 
     this.getOrders();
     this.getWriters();
     Fire.$on('entry', function () {
-      _this4.getOrders();
+      _this6.getOrders();
     });
   }
 });
@@ -3850,6 +3870,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     user: {
@@ -3893,6 +3923,34 @@ __webpack_require__.r(__webpack_exports__);
     });
   },
   methods: {
+    verify: function verify() {
+      var _this2 = this;
+
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "Verify??",
+        //type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, verify it!'
+      }).then(function (result) {
+        if (result.value) {
+          axios.post("/api/verify_task/" + _this2.orderId).then(function () {
+            Fire.$emit('entry');
+            Swal.fire('Placed!', 'Successfully verified as completed!!', 'success');
+            Fire.$emit('entry');
+          })["catch"](function (error) {
+            _this2.errors = error.response.data.errors;
+            Swal.fire({
+              type: 'error',
+              title: 'Error!!',
+              text: error.response.data.msg
+            });
+          });
+        }
+      });
+    },
     isCompleted: function isCompleted() {
       this.isComplete = true;
       this.newModal();
@@ -3921,27 +3979,27 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     getRate: function getRate() {
-      var _this2 = this;
+      var _this3 = this;
 
       axios.get("/api/myRate/" + this.orderId).then(function (_ref) {
         var data = _ref.data;
-        return [_this2.rating = data];
+        return [_this3.rating = data];
       });
     },
     getWriter: function getWriter() {
-      var _this3 = this;
+      var _this4 = this;
 
       axios.get("/api/writer/" + this.orderId).then(function (_ref2) {
         var data = _ref2.data;
-        return [_this3.writer = data];
+        return [_this4.writer = data];
       });
     },
     getRating: function getRating() {
-      var _this4 = this;
+      var _this5 = this;
 
       axios.get("/api/rate/" + this.orderId).then(function (_ref3) {
         var data = _ref3.data;
-        return [_this4.rated = data];
+        return [_this5.rated = data];
       });
     },
     validate: function validate() {
@@ -3956,7 +4014,7 @@ __webpack_require__.r(__webpack_exports__);
       axios.post('/api/downloadAll/' + this.orderId);
     },
     submit: function submit() {
-      var _this5 = this;
+      var _this6 = this;
 
       for (var i = 0; i < this.attachments.length; i++) {
         this.formf.append('files[]', this.attachments[i]);
@@ -3973,7 +4031,7 @@ __webpack_require__.r(__webpack_exports__);
           Fire.$emit('entry');
           $('#addnew').modal('hide');
 
-          _this5.form.reset();
+          _this6.form.reset();
 
           Swal.fire({
             type: 'success',
@@ -3987,7 +4045,7 @@ __webpack_require__.r(__webpack_exports__);
           Fire.$emit('entry');
           $('#addnew').modal('hide');
 
-          _this5.form.reset();
+          _this6.form.reset();
 
           Swal.fire({
             type: 'success',
@@ -4020,14 +4078,14 @@ __webpack_require__.r(__webpack_exports__);
       this.messages.push(message);
     },
     scrollToBottom: function scrollToBottom() {
-      var _this6 = this;
+      var _this7 = this;
 
       setTimeout(function () {
-        _this6.$refs.feed.scrollTop = _this6.$refs.feed.scrollHeight - _this6.$refs.feed.clientHeight;
+        _this7.$refs.feed.scrollTop = _this7.$refs.feed.scrollHeight - _this7.$refs.feed.clientHeight;
       }, 50);
     },
     sendMessage: function sendMessage() {
-      var _this7 = this;
+      var _this8 = this;
 
       console.log(this.orderId);
 
@@ -4040,68 +4098,68 @@ __webpack_require__.r(__webpack_exports__);
         OrderId: this.orderId,
         contact_id: this.users
       }).then(function (response) {
-        _this7.messages.push(response.data);
+        _this8.messages.push(response.data);
 
-        _this7.message = '';
+        _this8.message = '';
       });
     },
     download: function download(id) {
       axios.get("/api/download/" + id).then();
     },
     getDetails: function getDetails() {
-      var _this8 = this;
+      var _this9 = this;
 
       axios.get("/api/order/" + this.orderId).then(function (_ref4) {
         var data = _ref4.data;
-        return [_this8.details = data];
+        return [_this9.details = data];
       });
     },
     getFilesCount: function getFilesCount() {
-      var _this9 = this;
+      var _this10 = this;
 
       axios.get("/api/filescount/" + this.orderId).then(function (_ref5) {
         var data = _ref5.data;
-        return [_this9.filesCount = data];
+        return [_this10.filesCount = data];
       });
-    },
-    getUser: function getUser() {
-      var _this10 = this;
-
-      if (this.$gate.isAdmin()) {
-        axios.get("/api/getUser/" + this.orderId).then(function (_ref6) {
-          var data = _ref6.data;
-          return [_this10.users = data];
-        });
-      }
-
-      if (this.$gate.isWriter()) {
-        axios.get("/api/getAdmin/").then(function (_ref7) {
-          var data = _ref7.data;
-          return [_this10.users = data];
-        });
-      }
     },
     getFiles: function getFiles() {
       var _this11 = this;
 
-      axios.get("/api/getfiles/" + this.orderId).then(function (_ref8) {
-        var data = _ref8.data;
+      axios.get("/api/getfiles/" + this.orderId).then(function (_ref6) {
+        var data = _ref6.data;
         return [_this11.files = data];
       });
     },
-    getCompletedFiles: function getCompletedFiles() {
+    getUser: function getUser() {
       var _this12 = this;
+
+      if (this.$gate.isAdmin()) {
+        axios.get("/api/getUser/" + this.orderId).then(function (_ref7) {
+          var data = _ref7.data;
+          return [_this12.users = data];
+        });
+      }
+
+      if (this.$gate.isWriter()) {
+        axios.get("/api/getAdmin/").then(function (_ref8) {
+          var data = _ref8.data;
+          return [_this12.users = data];
+        });
+      }
+    },
+    getCompletedFiles: function getCompletedFiles() {
+      var _this13 = this;
 
       axios.get("/api/getcompleted/" + this.orderId).then(function (_ref9) {
         var data = _ref9.data;
-        return [_this12.completed = data];
+        return [_this13.completed = data];
       });
     },
     getMessages: function getMessages() {
-      var _this13 = this;
+      var _this14 = this;
 
       axios.get("/api/getMessage/" + this.orderId).then(function (response) {
-        return _this13.messages = response.data;
+        return _this14.messages = response.data;
       });
     },
     setRating: function setRating(rating) {
@@ -4127,7 +4185,7 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   created: function created() {
-    var _this14 = this;
+    var _this15 = this;
 
     this.getDetails();
     this.getFilesCount();
@@ -4140,11 +4198,11 @@ __webpack_require__.r(__webpack_exports__);
     this.getUser();
     this.getCompletedFiles();
     Fire.$on('entry', function () {
-      _this14.getFiles();
+      _this15.getFiles();
 
-      _this14.getFilesCount();
+      _this15.getFilesCount();
 
-      _this14.hasRated();
+      _this15.hasRated();
     });
   }
 });
@@ -77693,14 +77751,49 @@ var render = function() {
               _c("h3", { staticClass: "card-title" }, [_vm._v("Orders")]),
               _vm._v(" "),
               _c("div", { staticClass: "card-tools" }, [
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-sm btn-primary",
-                    on: { click: _vm.newModal }
-                  },
-                  [_vm._v("New Order")]
-                )
+                _vm.$gate.isAdmin()
+                  ? _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-sm btn-primary",
+                        on: { click: _vm.newModal }
+                      },
+                      [_vm._v("New Order")]
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.$gate.isEditor()
+                  ? _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-sm btn-primary",
+                        on: { click: _vm.getOrders }
+                      },
+                      [_vm._v("Pending")]
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.$gate.isEditor()
+                  ? _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-sm btn-success",
+                        on: { click: _vm.getCompleted }
+                      },
+                      [_vm._v("Completed")]
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.$gate.isEditor()
+                  ? _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-sm btn-warning",
+                        on: { click: function($event) {} }
+                      },
+                      [_vm._v("On Revision")]
+                    )
+                  : _vm._e()
               ])
             ]),
             _vm._v(" "),
@@ -77792,6 +77885,14 @@ var render = function() {
                           : _vm._e(),
                         _vm._v(" "),
                         order.status == 4
+                          ? _c(
+                              "span",
+                              { staticClass: "badge badge-pill badge-warning" },
+                              [_vm._v("Revision")]
+                            )
+                          : _vm._e(),
+                        _vm._v(" "),
+                        order.status == 5
                           ? _c(
                               "span",
                               { staticClass: "badge badge-pill badge-success" },
@@ -80623,7 +80724,56 @@ var render = function() {
                       0
                     )
                   ])
-                ])
+                ]),
+                _vm._v(" "),
+                _vm.$gate.isEditor()
+                  ? _c("div", { staticClass: "box" }, [
+                      _vm._m(25),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "box-body" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-success btn-sm",
+                            attrs: { type: "button" },
+                            on: {
+                              click: function($event) {
+                                return _vm.verify()
+                              }
+                            }
+                          },
+                          [_vm._v("Verify")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-warning btn-sm",
+                            attrs: { type: "button" }
+                          },
+                          [_vm._v("Revision")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-dark btn-sm",
+                            attrs: { type: "button" }
+                          },
+                          [_vm._v("Fine")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-danger btn-sm",
+                            attrs: { type: "button" }
+                          },
+                          [_vm._v("Reject")]
+                        )
+                      ])
+                    ])
+                  : _vm._e()
               ])
             ])
           ]),
@@ -80740,7 +80890,7 @@ var render = function() {
           { staticClass: "modal-dialog", attrs: { role: "document" } },
           [
             _c("div", { staticClass: "modal-content" }, [
-              _vm._m(25),
+              _vm._m(26),
               _vm._v(" "),
               _c(
                 "form",
@@ -80771,7 +80921,7 @@ var render = function() {
                     ])
                   ]),
                   _vm._v(" "),
-                  _vm._m(26)
+                  _vm._m(27)
                 ]
               )
             ])
@@ -81007,6 +81157,14 @@ var staticRenderFns = [
       _c("div", { staticClass: "info-box-content" }, [
         _c("span", { staticClass: "info-box-text" }, [_vm._v("Download")])
       ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "box-header" }, [
+      _c("h4", [_vm._v("Actions")])
     ])
   },
   function() {

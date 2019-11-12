@@ -125,14 +125,76 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             </p>
                         </router-link>
                     </li>
-                    <li class="nav-item">
-                        <router-link to="/users" class="nav-link">
-                            <i class="nav-icon fas fa-users yellow"></i>
-                            <p>
-                                Users
-                            </p>
-                        </router-link>
-                    </li>
+                    @can('isAdmin')
+                        <li class="nav-item">
+                            <router-link to="/users" class="nav-link">
+                                <i class="nav-icon fas fa-users yellow"></i>
+                                <p>
+                                    Users
+                                </p>
+                            </router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link to="/order" class="nav-link">
+                                <i class="nav-icon fas fa-cogs"></i>
+                                <p>
+                                    Order
+                                </p>
+                            </router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link to="/category" class="nav-link">
+                                <i class="nav-icon fas fa-cogs"></i>
+                                <p>
+                                    Writers' Category
+                                </p>
+                            </router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link to="/MyWriters" class="nav-link">
+                                <i class="nav-icon fas fa-user-tie teal"></i>
+                                <p>
+                                    MyWriters
+                                </p>
+                            </router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link to="/announcement" class="nav-link">
+                                <i class="nav-icon fas fa-bullhorn pink"></i>
+                                <p>
+                                    Announcements
+                                </p>
+                            </router-link>
+                        </li>
+                    @endcan
+                    @can('isWriter')
+                        <li class="nav-item">
+                            <router-link to="/myorder" class="nav-link">
+                                <i class="nav-icon fas fa-cogs"></i>
+                                <p>
+                                    My Orders
+                                </p>
+                            </router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link to="/Writer" class="nav-link">
+                                <i class="nav-icon fas fa-cogs"></i>
+                                <p>
+                                    Available Orders
+                                </p>
+                            </router-link>
+                        </li>
+                    @endcan
+                    @can('isEditor')
+                        <li class="nav-item">
+                            <router-link to="/order" class="nav-link">
+                                <i class="nav-icon fas fa-cogs"></i>
+                                <p>
+                                    Order
+                                </p>
+                            </router-link>
+                        </li>
+                    @endcan
                     <li class="nav-item">
                         <router-link to="/chat" class="nav-link">
                             <i class="nav-icon fas fa-comments green"></i>
@@ -142,46 +204,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         </router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link to="/category" class="nav-link">
-                            <i class="nav-icon fas fa-cogs"></i>
-                            <p>
-                                Writers' Category
-                            </p>
-                        </router-link>
-                    </li>
-                    <li class="nav-item">
-                    </li>
-                    <li class="nav-item">
-                        <router-link to="/order" class="nav-link">
-                            <i class="nav-icon fas fa-cogs"></i>
-                            <p>
-                                Order
-                            </p>
-                        </router-link>
-                    </li>
-                    <li class="nav-item">
-                        <router-link to="/myorder" class="nav-link">
-                            <i class="nav-icon fas fa-cogs"></i>
-                            <p>
-                                My Orders
-                            </p>
-                        </router-link>
-                    </li>
-                    <li class="nav-item">
-                        <router-link to="/MyWriters" class="nav-link">
-                            <i class="nav-icon fas fa-user-tie teal"></i>
-                            <p>
-                                MyWriters
-                            </p>
-                        </router-link>
-                    </li>
-                    <li class="nav-item">
-                        <router-link to="/announcement" class="nav-link">
-                            <i class="nav-icon fas fa-bullhorn pink"></i>
-                            <p>
-                                Announcements
-                            </p>
-                        </router-link>
                     </li>
                     <li class="nav-item">
                         <router-link to="/announcements" class="nav-link">

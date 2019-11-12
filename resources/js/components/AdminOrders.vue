@@ -7,7 +7,10 @@
                         <h3 class="card-title">Orders</h3>
 
                         <div class="card-tools">
-                            <button class="btn btn-sm btn-primary" @click="newModal">New Order</button>
+                            <button class="btn btn-sm btn-primary" @click="newModal" v-if="$gate.isAdmin()">New Order</button>
+                            <button class="btn btn-sm btn-primary" @click="getOrders" v-if="$gate.isEditor()">Pending</button>
+                            <button class="btn btn-sm btn-success" @click="getCompleted" v-if="$gate.isEditor()">Completed</button>
+                            <button class="btn btn-sm btn-warning" @click="" v-if="$gate.isEditor()">On Revision</button>
                         </div>
                     </div>
 
@@ -44,7 +47,8 @@
                                     <span class="badge badge-pill badge-info" v-if="order.status == 1">Assigned</span>
                                     <span class="badge badge-pill badge-dark"
                                           v-if="order.status == 3">Uploaded</span>
-                                    <span class="badge badge-pill badge-success" v-if="order.status == 4">Completed</span>
+                                    <span class="badge badge-pill badge-warning" v-if="order.status == 4">Revision</span>
+                                    <span class="badge badge-pill badge-success" v-if="order.status == 5">Completed</span>
                                 </td>
                                 <td>
                                     <span class="badge badge-dark" v-if="order.urgency == 1">Urgent</span>
@@ -294,6 +298,12 @@
             }
         },
         methods: {
+            getRevision(){
+                axios.get("/api/getrevision").then(({data}) => ([this.orders = data]));
+            },
+            getCompleted(){
+                axios.get("/api/getcompleted").then(({data}) => ([this.orders = data]));
+            },
             writerId(){
                 if (this.writer_obj) {
                     this.form.writer = this.writer_obj['id'];

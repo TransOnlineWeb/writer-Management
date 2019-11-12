@@ -89,4 +89,12 @@ class MoreOrdersController extends Controller
         $user = Order::where('id', $orderId)->value('assigned_user_id');
         return User::where('id', $user)->first();
     }
+
+    public function getCompleted(){
+        return Order::latest()->where('status', 5)->paginate(10);
+    }
+
+    public function getRevision(){
+        return Order::latest()->where('status', 4)->paginate(10);
+    }
 }

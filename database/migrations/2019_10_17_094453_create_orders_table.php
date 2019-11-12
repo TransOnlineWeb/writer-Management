@@ -17,7 +17,7 @@ class CreateOrdersTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('order_number');
             $table->string('title');
-            $table->text('description');
+            $table->longText('description');
             $table->dateTime('deadline');
             $table->integer('pages')->unsigned();
             $table->integer('status')->unsigned();
