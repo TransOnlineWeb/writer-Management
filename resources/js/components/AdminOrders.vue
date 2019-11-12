@@ -293,6 +293,9 @@
             }
         },
         methods: {
+            getRevision(){
+                axios.get("/api/getrevision").then(({data}) => ([this.orders = data]));
+            },
             getCompleted(){
                 axios.get("/api/getcompleted").then(({data}) => ([this.orders = data]));
             },

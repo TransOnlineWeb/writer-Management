@@ -2152,12 +2152,20 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
-    getCompleted: function getCompleted() {
+    getRevision: function getRevision() {
       var _this = this;
 
-      axios.get("/api/getcompleted").then(function (_ref) {
+      axios.get("/api/getrevision").then(function (_ref) {
         var data = _ref.data;
         return [_this.orders = data];
+      });
+    },
+    getCompleted: function getCompleted() {
+      var _this2 = this;
+
+      axios.get("/api/getcompleted").then(function (_ref2) {
+        var data = _ref2.data;
+        return [_this2.orders = data];
       });
     },
     writerId: function writerId() {
@@ -2168,19 +2176,19 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     getWriters: function getWriters() {
-      var _this2 = this;
+      var _this3 = this;
 
-      axios.get("/api/getwriters").then(function (_ref2) {
-        var data = _ref2.data;
-        return [_this2.writers = data];
+      axios.get("/api/getwriters").then(function (_ref3) {
+        var data = _ref3.data;
+        return [_this3.writers = data];
       });
     },
     getOrders: function getOrders() {
-      var _this3 = this;
+      var _this4 = this;
 
-      axios.get("/api/order").then(function (_ref3) {
-        var data = _ref3.data;
-        return [_this3.orders = data];
+      axios.get("/api/order").then(function (_ref4) {
+        var data = _ref4.data;
+        return [_this4.orders = data];
       });
     },
     validateForm: function validateForm() {
@@ -2248,7 +2256,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     submitOrder: function submitOrder() {
-      var _this4 = this;
+      var _this5 = this;
 
       for (var i = 0; i < this.attachments.length; i++) {
         this.formf.append('files[]', this.attachments[i]);
@@ -2276,7 +2284,7 @@ __webpack_require__.r(__webpack_exports__);
         $('#addnew').modal('hide');
         Fire.$emit('entry');
 
-        _this4.form.reset();
+        _this5.form.reset();
 
         swal.fire({
           type: 'success',
@@ -2315,12 +2323,12 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   created: function created() {
-    var _this5 = this;
+    var _this6 = this;
 
     this.getOrders();
     this.getWriters();
     Fire.$on('entry', function () {
-      _this5.getOrders();
+      _this6.getOrders();
     });
   }
 });

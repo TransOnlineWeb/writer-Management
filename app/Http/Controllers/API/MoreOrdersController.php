@@ -93,4 +93,8 @@ class MoreOrdersController extends Controller
     public function getCompleted(){
         return Order::latest()->where('status', 5)->paginate(10);
     }
+
+    public function getRevision(){
+        return Order::latest()->where('status', 4)->paginate(10);
+    }
 }
