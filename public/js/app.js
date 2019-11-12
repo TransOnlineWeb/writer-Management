@@ -2118,6 +2118,11 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
+      message: '',
+      typing: '',
+      users: {},
+      messages: [],
+      orderId: this.$route.params.orderId,
       now: moment().format(),
       e_deadline: '',
       e_spacing: '',
@@ -4059,23 +4064,45 @@ __webpack_require__.r(__webpack_exports__);
         return [_this9.filesCount = data];
       });
     },
-    getFiles: function getFiles() {
+    getUser: function getUser() {
       var _this10 = this;
 
-      axios.get("/api/getfiles/" + this.orderId).then(function (_ref6) {
-        var data = _ref6.data;
-        return [_this10.files = data];
+      if (this.$gate.isAdmin()) {
+        axios.get("/api/getUser/" + this.orderId).then(function (_ref6) {
+          var data = _ref6.data;
+          return [_this10.users = data];
+        });
+      }
+
+      if (this.$gate.isWriter()) {
+        axios.get("/api/getAdmin/").then(function (_ref7) {
+          var data = _ref7.data;
+          return [_this10.users = data];
+        });
+      }
+    },
+    getFiles: function getFiles() {
+      var _this11 = this;
+
+      axios.get("/api/getfiles/" + this.orderId).then(function (_ref8) {
+        var data = _ref8.data;
+        return [_this11.files = data];
       });
     },
     getCompletedFiles: function getCompletedFiles() {
-      var _this11 = this;
+      var _this12 = this;
 
-      axios.get("/api/getcompleted/" + this.orderId).then(function (_ref7) {
-        var data = _ref7.data;
-        return [_this11.completed = data];
+      axios.get("/api/getcompleted/" + this.orderId).then(function (_ref9) {
+        var data = _ref9.data;
+        return [_this12.completed = data];
       });
     },
-    getMessages: function getMessages() {// axios.get("/api/getMessage/" + this.orderId).then((response) => (this.messages = response.data));
+    getMessages: function getMessages() {
+      var _this13 = this;
+
+      axios.get("/api/getMessage/" + this.orderId).then(function (response) {
+        return _this13.messages = response.data;
+      });
     },
     setRating: function setRating(rating) {
       this.rating = rating;
@@ -4100,7 +4127,7 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   created: function created() {
-    var _this12 = this;
+    var _this14 = this;
 
     this.getDetails();
     this.getFilesCount();
@@ -4110,13 +4137,14 @@ __webpack_require__.r(__webpack_exports__);
     this.getRating();
     this.getRate();
     this.hasRated();
+    this.getUser();
     this.getCompletedFiles();
     Fire.$on('entry', function () {
-      _this12.getFiles();
+      _this14.getFiles();
 
-      _this12.getFilesCount();
+      _this14.getFilesCount();
 
-      _this12.hasRated();
+      _this14.hasRated();
     });
   }
 });
@@ -99729,8 +99757,8 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 window.Pusher = __webpack_require__(/*! pusher-js */ "./node_modules/pusher-js/dist/web/pusher.js");
 window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
   broadcaster: 'pusher',
-  key: "",
-  cluster: "mt1",
+  key: "2dd403e5b2da16c3ed2c",
+  cluster: "ap2",
   encrypted: true
 });
 
@@ -101176,8 +101204,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /opt/lampp/htdocs/Transonline/writer-Management/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /opt/lampp/htdocs/Transonline/writer-Management/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\xampp\htdocs\Writing-Management\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\Writing-Management\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

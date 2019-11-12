@@ -259,6 +259,11 @@
         },
         data() {
             return {
+                message: '',
+                typing: '',
+                users : {},
+                messages:[],
+                orderId: this.$route.params.orderId,
                 now: moment().format(),
                 e_deadline: '',
                 e_spacing: '',

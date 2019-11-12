@@ -43,7 +43,7 @@ Route::apiResources(['category' => 'API\WriterCategoryController']);
 
 Route::apiResources(['rating' => 'API\RatingController']);
 Route::get('rate/{orderId}','API\RatingController@getRate');
-Route::get('myRate/{orderId}', 'API\RAtingController@getMyRate');
+Route::get('myRate/{orderId}', 'API\RatingController@getMyRate');
 Route::get('writer/{orderId}', 'API\MoreOrdersController@getWriter');
 
 Route::apiResources(['bid' => 'API\BidsController']);
@@ -55,3 +55,12 @@ Route::apiResources(['Announcement' => 'API\AnnouncementController']);
 Route::get('announce','API\AnnouncementController@announce');
 
 Route::get('myorders','API\OrderController@getMyOrders');
+
+Route::apiResources(['messenger'=>'API\MessangerController']);
+Route::post('messenger/send','API\MessangerController@send');
+Route::get('receiver','API\MessangerController@index');
+Route::get('getMessage/{orderId}','API\MessangerController@getMessagesFor');
+
+Route::get('getUser/{orderId}','API\OrderController@user');
+Route::get('getAdmin','API\OrderController@admin');
+Route::get('getMessage/{orderId}','API\MessangerController@getMessagesFor');

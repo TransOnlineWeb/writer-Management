@@ -339,7 +339,7 @@
                 });
             },
             getRate(){
-               axios.get("/api/myRate/" + this.orderId).then(({data})=>([this.rating = data]));
+                    axios.get("/api/myRate/" + this.orderId).then(({data})=>([this.rating = data]));
             },
             getWriter(){
                 axios.get("/api/writer/" + this.orderId).then(({ data }) => ([this.writer = data]));
@@ -446,6 +446,15 @@
             getFilesCount(){
                 axios.get("/api/filescount/" + this.orderId).then(({ data }) => ([this.filesCount = data]));
             },
+            getUser(){
+                if (this.$gate.isAdmin()) {
+                    axios.get("/api/getUser/" + this.orderId).then(({ data }) => ([this.users = data]));
+                }
+                if (this.$gate.isWriter()) {
+                    axios.get("/api/getAdmin/").then(({ data }) => ([this.users = data]));
+                }
+
+            },
 
             getFiles(){
                 axios.get("/api/getfiles/" + this.orderId).then(({ data }) => ([this.files = data]));
@@ -454,7 +463,7 @@
                 axios.get("/api/getcompleted/" + this.orderId).then(({ data }) => ([this.completed = data]));
             },
             getMessages(){
-                // axios.get("/api/getMessage/" + this.orderId).then((response) => (this.messages = response.data));
+                 axios.get("/api/getMessage/" + this.orderId).then((response) => (this.messages = response.data));
             },
             setRating: function(rating){
                 this.rating= rating;
@@ -488,6 +497,7 @@
             this.getRating();
             this.getRate();
             this.hasRated();
+            this.getUser();
             this.getCompletedFiles();
             Fire.$on('entry', () =>{
                 this.getFiles();

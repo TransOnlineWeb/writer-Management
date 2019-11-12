@@ -2,12 +2,22 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Controllers\Controller;
-use App\Rating;
+use App\Events\ChatEvent;
+use App\Events\NewMessage;
+use App\Messenger;
+use App\Notifications\RepliedToThread;
+use App\User;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 
-class RatingController extends Controller
+class MessangerController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -15,24 +25,12 @@ class RatingController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    public function getRate($orderId)
-    {
-        return Rating::where('order_id',$orderId)->count();
 
     }
 
-    public function getMyRate($orderId)
-    {
-        $rate = Rating::where('order_id',$orderId)->count();
-        if($rate != 0){
-            return Rating::where('order_id', $orderId)->value('rating');
-        }else{
-            return 0;
-        }
-
+    public function getMessagesFor($orderId){
+        $messages = Messenger::where('Oder_id',$orderId)->get();
+        return response()->json($messages);
     }
     /**
      * Store a newly created resource in storage.
@@ -42,12 +40,7 @@ class RatingController extends Controller
      */
     public function store(Request $request)
     {
-       $rating = Rating::create([
-           'order_id' => $request->OrderId,
-           'user_id' => $request->UserId,
-           'rating' => $request ->Rating,
-       ]);
-        return response()->json($rating);
+        //
     }
 
     /**
@@ -56,6 +49,18 @@ class RatingController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    public function send(Request $request)
+    {
+        $message = Messenger::create([
+            'from'=> auth()->user()->id,
+            'to'=>$request->contact_id,
+            'text'=>$request->text,
+            'Oder_Id'=>$request->OrderId,
+        ]);
+        broadcast(new ChatEvent($message));
+        return response()->json($message);
+    }
+
     public function show($id)
     {
         //
