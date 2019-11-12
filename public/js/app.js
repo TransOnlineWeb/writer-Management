@@ -2600,10 +2600,45 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      announcement: {}
+      announcement: {},
+      form: new Form({
+        id: '',
+        title: '',
+        status: '',
+        message: ''
+      })
     };
   },
   methods: {
@@ -2614,6 +2649,10 @@ __webpack_require__.r(__webpack_exports__);
         var data = _ref.data;
         return _this.announcement = data.data;
       });
+    },
+    newModal: function newModal(ann) {
+      $('#CommunicationModal').modal('show');
+      this.form.fill(ann);
     }
   },
   created: function created() {
@@ -79489,7 +79528,7 @@ var render = function() {
                           attrs: { type: "button" },
                           on: {
                             click: function($event) {
-                              return _vm.editModal(_vm.mes)
+                              return _vm.newModal(ann)
                             }
                           }
                         },
@@ -79509,7 +79548,101 @@ var render = function() {
           ])
         ])
       ])
-    ])
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: "CommunicationModal",
+          tabindex: "-1",
+          role: "dialog",
+          "aria-labelledby": "exampleModalLabel",
+          "aria-hidden": "true"
+        }
+      },
+      [
+        _c(
+          "div",
+          {
+            staticClass: "modal-dialog modal-dialog-centered",
+            attrs: { role: "document" }
+          },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _vm._m(2),
+              _vm._v(" "),
+              _c("form", [
+                _c("div", { staticClass: "modal-body" }, [
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", { attrs: { for: "title" } }, [_vm._v("Title")]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.form.title,
+                          expression: "form.title"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        type: "text",
+                        name: "title",
+                        id: "title",
+                        disabled: "",
+                        placeholder: "Title"
+                      },
+                      domProps: { value: _vm.form.title },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.form, "title", $event.target.value)
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", { attrs: { for: "message" } }, [
+                      _vm._v("Message")
+                    ]),
+                    _vm._v(" "),
+                    _c("textarea", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.form.message,
+                          expression: "form.message"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: { id: "message", rows: "3", readonly: "" },
+                      domProps: { value: _vm.form.message },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.form, "message", $event.target.value)
+                        }
+                      }
+                    })
+                  ])
+                ]),
+                _vm._v(" "),
+                _vm._m(3)
+              ])
+            ])
+          ]
+        )
+      ]
+    )
   ])
 }
 var staticRenderFns = [
@@ -79534,6 +79667,42 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("span", [_c("i", { staticClass: "fas fa-clock" })])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c("h5", { staticClass: "modal-title" }, [_vm._v("Message")]),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-footer" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-danger",
+          attrs: { type: "button", "data-dismiss": "modal" }
+        },
+        [_vm._v("Close")]
+      )
+    ])
   }
 ]
 render._withStripped = true
