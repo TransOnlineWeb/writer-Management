@@ -83,9 +83,9 @@ class WalletTransactionsController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function showTransactions()
     {
-        //
+        return WalletTransaction::where('user_id', auth()->user()->id)->paginate(10);
     }
 
     /**
