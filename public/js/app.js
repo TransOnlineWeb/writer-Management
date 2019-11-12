@@ -2109,6 +2109,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 
@@ -2149,6 +2152,14 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
+    getCompleted: function getCompleted() {
+      var _this = this;
+
+      axios.get("/api/getcompleted").then(function (_ref) {
+        var data = _ref.data;
+        return [_this.orders = data];
+      });
+    },
     writerId: function writerId() {
       if (this.writer_obj) {
         this.form.writer = this.writer_obj['id'];
@@ -2157,19 +2168,19 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     getWriters: function getWriters() {
-      var _this = this;
+      var _this2 = this;
 
-      axios.get("/api/getwriters").then(function (_ref) {
-        var data = _ref.data;
-        return [_this.writers = data];
+      axios.get("/api/getwriters").then(function (_ref2) {
+        var data = _ref2.data;
+        return [_this2.writers = data];
       });
     },
     getOrders: function getOrders() {
-      var _this2 = this;
+      var _this3 = this;
 
-      axios.get("/api/order").then(function (_ref2) {
-        var data = _ref2.data;
-        return [_this2.orders = data];
+      axios.get("/api/order").then(function (_ref3) {
+        var data = _ref3.data;
+        return [_this3.orders = data];
       });
     },
     validateForm: function validateForm() {
@@ -2237,7 +2248,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     submitOrder: function submitOrder() {
-      var _this3 = this;
+      var _this4 = this;
 
       for (var i = 0; i < this.attachments.length; i++) {
         this.formf.append('files[]', this.attachments[i]);
@@ -2265,7 +2276,7 @@ __webpack_require__.r(__webpack_exports__);
         $('#addnew').modal('hide');
         Fire.$emit('entry');
 
-        _this3.form.reset();
+        _this4.form.reset();
 
         swal.fire({
           type: 'success',
@@ -2304,12 +2315,12 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   created: function created() {
-    var _this4 = this;
+    var _this5 = this;
 
     this.getOrders();
     this.getWriters();
     Fire.$on('entry', function () {
-      _this4.getOrders();
+      _this5.getOrders();
     });
   }
 });
@@ -77633,14 +77644,49 @@ var render = function() {
               _c("h3", { staticClass: "card-title" }, [_vm._v("Orders")]),
               _vm._v(" "),
               _c("div", { staticClass: "card-tools" }, [
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-sm btn-primary",
-                    on: { click: _vm.newModal }
-                  },
-                  [_vm._v("New Order")]
-                )
+                _vm.$gate.isAdmin()
+                  ? _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-sm btn-primary",
+                        on: { click: _vm.newModal }
+                      },
+                      [_vm._v("New Order")]
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.$gate.isEditor()
+                  ? _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-sm btn-primary",
+                        on: { click: _vm.getOrders }
+                      },
+                      [_vm._v("Pending")]
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.$gate.isEditor()
+                  ? _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-sm btn-success",
+                        on: { click: _vm.getCompleted }
+                      },
+                      [_vm._v("Completed")]
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.$gate.isEditor()
+                  ? _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-sm btn-warning",
+                        on: { click: function($event) {} }
+                      },
+                      [_vm._v("On Revision")]
+                    )
+                  : _vm._e()
               ])
             ]),
             _vm._v(" "),

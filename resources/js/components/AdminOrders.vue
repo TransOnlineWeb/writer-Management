@@ -7,7 +7,10 @@
                         <h3 class="card-title">Orders</h3>
 
                         <div class="card-tools">
-                            <button class="btn btn-sm btn-primary" @click="newModal">New Order</button>
+                            <button class="btn btn-sm btn-primary" @click="newModal" v-if="$gate.isAdmin()">New Order</button>
+                            <button class="btn btn-sm btn-primary" @click="getOrders" v-if="$gate.isEditor()">Pending</button>
+                            <button class="btn btn-sm btn-success" @click="getCompleted" v-if="$gate.isEditor()">Completed</button>
+                            <button class="btn btn-sm btn-warning" @click="" v-if="$gate.isEditor()">On Revision</button>
                         </div>
                     </div>
 
@@ -290,6 +293,9 @@
             }
         },
         methods: {
+            getCompleted(){
+                axios.get("/api/getcompleted").then(({data}) => ([this.orders = data]));
+            },
             writerId(){
                 if (this.writer_obj) {
                     this.form.writer = this.writer_obj['id'];
