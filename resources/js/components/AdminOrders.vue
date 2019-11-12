@@ -10,7 +10,7 @@
                             <button class="btn btn-sm btn-primary" @click="newModal" v-if="$gate.isAdmin()">New Order</button>
                             <button class="btn btn-sm btn-primary" @click="getOrders" v-if="$gate.isEditor()">Pending</button>
                             <button class="btn btn-sm btn-success" @click="getCompleted" v-if="$gate.isEditor()">Completed</button>
-                            <button class="btn btn-sm btn-warning" @click="" v-if="$gate.isEditor()">On Revision</button>
+                            <button class="btn btn-sm btn-warning" @click="getRevision" v-if="$gate.isEditor()">On Revision</button>
                         </div>
                     </div>
 

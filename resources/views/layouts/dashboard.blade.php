@@ -20,8 +20,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
           integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.9/sweetalert2.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.9/sweetalert2.min.js"></script>
+{{--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.9/sweetalert2.min.css">--}}
+{{--    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.9/sweetalert2.min.js"></script>--}}
     <script src="https://cdn.jsdelivr.net/momentjs/2.13.0/moment.min.js"></script>
 </head>
 <body class="hold-transition sidebar-mini">
@@ -180,7 +180,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             <router-link to="/Writer" class="nav-link">
                                 <i class="nav-icon fas fa-cogs"></i>
                                 <p>
-                                    Available Orders
+                                    New Orders
                                 </p>
                             </router-link>
                         </li>
