@@ -82477,9 +82477,7 @@ var render = function() {
     _c("div", { staticClass: "row justify-content-center" }, [
       _c("div", { staticClass: "col-md-12" }, [
         _c("div", { staticClass: "card" }, [
-          _c("div", { staticClass: "card-header" }, [
-            _vm._v("Example Component")
-          ]),
+          _c("div", { staticClass: "card-header" }, [_vm._v("Orders")]),
           _vm._v(" "),
           _c("div", { staticClass: "card-body" }, [
             _c("h3", [_vm._v("New Orders")]),
@@ -102011,8 +102009,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /opt/lampp/htdocs/Transonline/writer-Management/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /opt/lampp/htdocs/Transonline/writer-Management/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Users\mihz\Desktop\political\writer-Management\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Users\mihz\Desktop\political\writer-Management\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
