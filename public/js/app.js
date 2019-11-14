@@ -4260,7 +4260,7 @@ __webpack_require__.r(__webpack_exports__);
       $('#addnew').modal('show');
     },
     fineModal: function fineModal() {
-      // this.form.reset();
+      this.form.reset();
       $('#fineModal').modal('show');
     },
     handleIncoming: function handleIncoming(message) {
@@ -4724,14 +4724,43 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "WalletTransactions",
   data: function data() {
     return {
-      transactions: {}
+      transactions: {},
+      reason: ''
     };
   },
   methods: {
+    reasonModal: function reasonModal(reason) {
+      this.reason = reason;
+      $('#reasonModal').modal('show');
+    },
     getTransactions: function getTransactions() {
       var _this = this;
 
@@ -82662,11 +82691,37 @@ var render = function() {
                       ]),
                       _vm._v(" "),
                       _c("td", [
+                        trans.type == 1
+                          ? _c("span", [
+                              _vm._v(_vm._s(Math.trunc(trans.percentage)) + "%")
+                            ])
+                          : _vm._e()
+                      ]),
+                      _vm._v(" "),
+                      _c("td", [
                         _vm._v(
                           "\n                                Ksh. " +
                             _vm._s(Math.trunc(trans.amount)) +
                             "\n                            "
                         )
+                      ]),
+                      _vm._v(" "),
+                      _c("td", [
+                        trans.type == 1
+                          ? _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-warning btn-sm",
+                                attrs: { type: "button" },
+                                on: {
+                                  click: function($event) {
+                                    return _vm.reasonModal(trans.description)
+                                  }
+                                }
+                              },
+                              [_vm._v("Reason")]
+                            )
+                          : _vm._e()
                       ])
                     ])
                   }),
@@ -82676,6 +82731,37 @@ var render = function() {
             ])
           ])
         ])
+      ]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: "reasonModal",
+          tabindex: "-1",
+          role: "dialog",
+          "aria-labelledby": "addnewLabel",
+          "aria-hidden": "true"
+        }
+      },
+      [
+        _c(
+          "div",
+          { staticClass: "modal-dialog modal-sm", attrs: { role: "document" } },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _vm._m(2),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-body" }, [
+                _c("p", [_vm._v(_vm._s(_vm.reason))])
+              ]),
+              _vm._v(" "),
+              _vm._m(3)
+            ])
+          ]
+        )
       ]
     )
   ])
@@ -82703,8 +82789,50 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Type")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Amount")])
+        _c("th", [_vm._v("Percentage")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Amount")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Reason")])
       ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c("h5", { staticClass: "modal-title", attrs: { id: "addnewLabel" } }, [
+        _vm._v("Reason")
+      ]),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-footer" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-danger",
+          attrs: { type: "button", "data-dismiss": "modal" }
+        },
+        [_vm._v("Close")]
+      )
     ])
   }
 ]

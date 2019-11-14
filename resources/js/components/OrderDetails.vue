@@ -520,7 +520,7 @@
                 $('#addnew').modal('show');
             },
             fineModal(){
-                // this.form.reset();
+                this.form.reset();
                 $('#fineModal').modal('show');
             },
             handleIncoming(message) {
