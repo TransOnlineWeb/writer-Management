@@ -44,6 +44,7 @@
     "vue-spinner": "^1.0.3",
     "vue-star-rating": "^1.6.1",
     "vue2-editor": "^2.10.2",
+    "vue2-flip-countdown": "^0.9.3",
     "weekstart": "^1.0.0"
   }
 }

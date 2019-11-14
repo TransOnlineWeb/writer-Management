@@ -71,7 +71,7 @@ class WalletTransactionsController extends Controller
         $transaction->type = 0;
         $transaction->order_id = $orderId;
         $transaction->order_number = $order['order_number'];
-        $transaction-> amount = $order['total_amount'];
+        $transaction->amount = $order['total_amount'];
         $transaction->save();
 
         return response(['status' => 'success'], 200);
@@ -98,6 +98,45 @@ class WalletTransactionsController extends Controller
     public function update(Request $request, $id)
     {
         //
+    }
+
+    public function fine(Request $request)
+    {
+        $request->validate([
+            'percentage' => 'required',
+            'description' => 'required',
+        ]);
+
+        $theOrder = Order::findOrFail($request->orderId);
+        $totalAmount = $theOrder['total_amount'];
+        $fineAmount = ($request->percentage / 100) * $totalAmount;
+
+        $ifWalletExists = Wallet::where('user_id', $theOrder['assigned_user_id'])->count();
+        if ($ifWalletExists > 0) {
+            // Update wallet
+            $myWallet = Wallet::where('user_id', $theOrder['assigned_user_id'])->first();
+            $wallet = Wallet::findOrFail($myWallet['id']);
+            $wallet->amount = $wallet['amount'] - $fineAmount;
+            $wallet->update();
+        } elseif ($ifWalletExists == 0) {
+            // Create wallet as wallet does not exist
+            $wallet = new Wallet();
+            $wallet->user_id = $theOrder['assigned_user_id'];
+            $wallet->amount = -$fineAmount;
+            $wallet->save();
+        }
+
+        $transaction = new WalletTransaction();
+        $transaction->user_id = $theOrder['assigned_user_id'];
+        $transaction->type = 1;
+        $transaction->percentage = $request->percentage;
+        $transaction->order_id = $request->orderId;
+        $transaction->order_number = $theOrder['order_number'];
+        $transaction->description = $request->description;
+        $transaction->amount = -$fineAmount;
+        $transaction->save();
+
+        return response(['status' => 'success'], 200);
     }
 
     /**

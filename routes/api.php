@@ -70,3 +70,5 @@ Route::get('getAdmin','API\OrderController@admin');
 Route::get('getMessage/{orderId}','API\MessangerController@getMessagesFor');
 
 Route::post('verify_task/{orderId}','API\WalletTransactionsController@isVerified');
+
+Route::post('fine','API\WalletTransactionsController@fine');
