@@ -35,7 +35,9 @@ Route::get('download/{orderId}', 'API\MoreOrdersController@downloadFile');
 Route::post('addfiles/{orderId}', 'API\MoreOrdersController@addFiles');
 Route::get('getwriters', 'API\MoreOrdersController@getWriters');
 Route::post('uploadcomplete/{orderId}', 'API\MoreOrdersController@uploadCompleted');
+Route::post('uploadedited/{orderId}', 'API\MoreOrdersController@uploadEdited');
 Route::get('getcompleted/{orderId}', 'API\MoreOrdersController@getCompletedFiles');
+Route::get('getedited/{orderId}', 'API\MoreOrdersController@getEditedFiles');
 
 Route::get('MyWriters','API\UserController@profiles');
 

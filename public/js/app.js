@@ -2112,6 +2112,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -4220,6 +4221,32 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -4240,8 +4267,10 @@ __webpack_require__.r(__webpack_exports__);
       typing: '',
       users: {},
       isComplete: false,
+      isEdit: false,
       e_files: '',
       completed: {},
+      edited: {},
       messages: [],
       orderId: this.$route.params.orderId,
       details: {},
@@ -4317,6 +4346,10 @@ __webpack_require__.r(__webpack_exports__);
           });
         }
       });
+    },
+    isEdited: function isEdited() {
+      this.isEdit = true;
+      this.newModal();
     },
     isCompleted: function isCompleted() {
       this.isComplete = true;
@@ -4404,6 +4437,20 @@ __webpack_require__.r(__webpack_exports__);
             type: 'success',
             title: 'Submited!!',
             text: 'File(s) sent successfully'
+          });
+        })["catch"](function (response) {//error
+        });
+      } else if (this.isEdit) {
+        axios.post('/api/uploadedited/' + this.orderId, this.formf, config).then(function (response) {
+          Fire.$emit('entry');
+          $('#addnew').modal('hide');
+
+          _this7.form.reset();
+
+          Swal.fire({
+            type: 'success',
+            title: 'Submited!!',
+            text: 'File(s) uploaded successfully'
           });
         })["catch"](function (response) {//error
         });
@@ -4529,19 +4576,27 @@ __webpack_require__.r(__webpack_exports__);
         });
       }
     },
-    getCompletedFiles: function getCompletedFiles() {
+    getEditedFiles: function getEditedFiles() {
       var _this14 = this;
 
-      axios.get("/api/getcompleted/" + this.orderId).then(function (_ref9) {
+      axios.get("/api/getedited/" + this.orderId).then(function (_ref9) {
         var data = _ref9.data;
-        return [_this14.completed = data];
+        return [_this14.edited = data];
+      });
+    },
+    getCompletedFiles: function getCompletedFiles() {
+      var _this15 = this;
+
+      axios.get("/api/getcompleted/" + this.orderId).then(function (_ref10) {
+        var data = _ref10.data;
+        return [_this15.completed = data];
       });
     },
     getMessages: function getMessages() {
-      var _this15 = this;
+      var _this16 = this;
 
       axios.get("/api/getMessage/" + this.orderId).then(function (response) {
-        return _this15.messages = response.data;
+        return _this16.messages = response.data;
       });
     },
     setRating: function setRating(rating) {
@@ -4567,10 +4622,11 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   created: function created() {
-    var _this16 = this;
+    var _this17 = this;
 
     this.getDetails();
     this.getFilesCount();
+    this.getEditedFiles();
     this.getMessages();
     this.getFiles();
     this.getWriter();
@@ -4580,11 +4636,15 @@ __webpack_require__.r(__webpack_exports__);
     this.getUser();
     this.getCompletedFiles();
     Fire.$on('entry', function () {
-      _this16.getFiles();
+      _this17.getFiles();
 
-      _this16.getFilesCount();
+      _this17.getFilesCount();
 
-      _this16.hasRated();
+      _this17.hasRated();
+
+      _this17.getEditedFiles();
+
+      _this17.getCompletedFiles();
     });
   }
 });
@@ -78335,6 +78395,14 @@ var render = function() {
                               { staticClass: "badge badge-pill badge-success" },
                               [_vm._v("Completed")]
                             )
+                          : _vm._e(),
+                        _vm._v(" "),
+                        order.status == 6
+                          ? _c(
+                              "span",
+                              { staticClass: "badge badge-pill badge-success" },
+                              [_vm._v("Edited")]
+                            )
                           : _vm._e()
                       ]),
                       _vm._v(" "),
@@ -81718,9 +81786,68 @@ var render = function() {
                   ])
                 ]),
                 _vm._v(" "),
+                _c("hr"),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "box-body", staticStyle: { padding: "10px" } },
+                  [
+                    _vm.$gate.isEditor()
+                      ? _c("div", { staticClass: "box" }, [
+                          _c("div", { staticClass: "box-body" }, [
+                            _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-success btn-sm",
+                                attrs: { type: "button" },
+                                on: { click: _vm.isEdited }
+                              },
+                              [_vm._v("Upload edited task")]
+                            )
+                          ])
+                        ])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass: "row",
+                        staticStyle: { "margin-top": "10px" }
+                      },
+                      _vm._l(_vm.edited, function(edi) {
+                        return _c(
+                          "div",
+                          {
+                            key: edi.id,
+                            staticClass: "col-md-6 col-sm-6 col-xs-12"
+                          },
+                          [
+                            _c(
+                              "a",
+                              {
+                                on: {
+                                  click: function($event) {
+                                    $event.preventDefault()
+                                    return _vm.download(
+                                      _vm.com.id,
+                                      _vm.com.path
+                                    )
+                                  }
+                                }
+                              },
+                              [_vm._m(25, true)]
+                            )
+                          ]
+                        )
+                      }),
+                      0
+                    )
+                  ]
+                ),
+                _vm._v(" "),
                 _vm.$gate.isEditor()
                   ? _c("div", { staticClass: "box" }, [
-                      _vm._m(25),
+                      _vm._m(26),
                       _vm._v(" "),
                       _c("div", { staticClass: "box-body" }, [
                         _vm.details.status == 3 || _vm.details.status == 4
@@ -81885,7 +82012,21 @@ var render = function() {
           { staticClass: "modal-dialog modal-sm", attrs: { role: "document" } },
           [
             _c("div", { staticClass: "modal-content" }, [
-              _vm._m(26),
+              _c("div", { staticClass: "modal-header" }, [
+                _vm.isEdit
+                  ? _c("h5", { staticClass: "modal-title" }, [
+                      _vm._v("Upload Edited File")
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.isComplete
+                  ? _c("h5", { staticClass: "modal-title" }, [
+                      _vm._v("Upload Completed File")
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm._m(27)
+              ]),
               _vm._v(" "),
               _c(
                 "form",
@@ -81916,7 +82057,7 @@ var render = function() {
                     ])
                   ]),
                   _vm._v(" "),
-                  _vm._m(27)
+                  _vm._m(28)
                 ]
               )
             ])
@@ -81943,7 +82084,7 @@ var render = function() {
           { staticClass: "modal-dialog modal-sm", attrs: { role: "document" } },
           [
             _c("div", { staticClass: "modal-content" }, [
-              _vm._m(28),
+              _vm._m(29),
               _vm._v(" "),
               _c(
                 "form",
@@ -82050,7 +82191,7 @@ var render = function() {
                     )
                   ]),
                   _vm._v(" "),
-                  _vm._m(29)
+                  _vm._m(30)
                 ]
               )
             ])
@@ -82292,6 +82433,30 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "info-box" }, [
+      _c(
+        "span",
+        {
+          staticClass: "info-box-icon",
+          staticStyle: { "background-color": "#03807a" }
+        },
+        [
+          _c("i", {
+            staticClass: "fas fa-download",
+            staticStyle: { color: "white" }
+          })
+        ]
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "info-box-content" }, [
+        _c("span", { staticClass: "info-box-text" }, [_vm._v("Download")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
     return _c("div", { staticClass: "box-header" }, [
       _c("h4", [_vm._v("Actions")])
     ])
@@ -82300,22 +82465,18 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-header" }, [
-      _c("h5", { staticClass: "modal-title" }, [_vm._v("Add File(s)")]),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "close",
-          attrs: {
-            type: "button",
-            "data-dismiss": "modal",
-            "aria-label": "Close"
-          }
-        },
-        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
-      )
-    ])
+    return _c(
+      "button",
+      {
+        staticClass: "close",
+        attrs: {
+          type: "button",
+          "data-dismiss": "modal",
+          "aria-label": "Close"
+        }
+      },
+      [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+    )
   },
   function() {
     var _vm = this
@@ -101378,8 +101539,8 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 window.Pusher = __webpack_require__(/*! pusher-js */ "./node_modules/pusher-js/dist/web/pusher.js");
 window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
   broadcaster: 'pusher',
-  key: "2dd403e5b2da16c3ed2c",
-  cluster: "ap2",
+  key: "",
+  cluster: "mt1",
   encrypted: true
 });
 
@@ -103014,8 +103175,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\xampp\htdocs\Writing-Management\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\xampp\htdocs\Writing-Management\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /opt/lampp/htdocs/Transonline/writer-Management/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /opt/lampp/htdocs/Transonline/writer-Management/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
