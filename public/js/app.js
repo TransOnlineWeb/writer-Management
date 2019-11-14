@@ -4474,8 +4474,18 @@ __webpack_require__.r(__webpack_exports__);
         _this9.message = '';
       });
     },
-    download: function download(id) {
-      axios.get("/api/download/" + id).then();
+    download: function download(id, path) {
+      axios.get("/api/download/" + id, {
+        responseType: 'blob'
+      }).then(function (response) {
+        var fileURL = window.URL.createObjectURL(new Blob([response.data]));
+        var fileLink = document.createElement('a');
+        console.log(fileLink);
+        fileLink.href = fileURL;
+        fileLink.setAttribute('download', path.substring(8));
+        document.body.appendChild(fileLink);
+        fileLink.click();
+      });
     },
     getDetails: function getDetails() {
       var _this10 = this;
@@ -5230,7 +5240,7 @@ __webpack_require__.r(__webpack_exports__);
     // getFiles(order){
     //     axios.get("/api/getfiles/"+order.id).then(({ data }) => ([this.files = data]));
     // },
-    download: function download(id) {
+    download: function download(id, path) {
       axios.get("/api/download/" + id, {
         responseType: 'blob'
       }).then(function (response) {
@@ -5238,7 +5248,7 @@ __webpack_require__.r(__webpack_exports__);
         var fileLink = document.createElement('a');
         console.log(fileLink);
         fileLink.href = fileURL;
-        fileLink.setAttribute('download', 'filename.docx');
+        fileLink.setAttribute('download', path.substring(8));
         document.body.appendChild(fileLink);
         fileLink.click();
       });
@@ -12297,7 +12307,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.card-body .details {\n    max-height: 300px;\n    overflow: scroll;\n}\n.modal-dialog {\n    min-width: 60%;\n}\n", ""]);
+exports.push([module.i, "\n/*.card-body .details {*/\n/*    max-height: 300px;*/\n/*    overflow: scroll;*/\n/*}*/\n\n/*.modal-dialog {*/\n/*    min-width: 60%;*/\n/*}*/\n", ""]);
 
 // exports
 
@@ -81605,7 +81615,7 @@ var render = function() {
                                     on: {
                                       click: function($event) {
                                         $event.preventDefault()
-                                        return _vm.download(file.id)
+                                        return _vm.download(file.id, file.path)
                                       }
                                     }
                                   },
@@ -81750,7 +81760,7 @@ var render = function() {
                                 on: {
                                   click: function($event) {
                                     $event.preventDefault()
-                                    return _vm.download(com.id)
+                                    return _vm.download(com.id, com.path)
                                   }
                                 }
                               },
@@ -83431,266 +83441,297 @@ var render = function() {
       [
         _c(
           "div",
-          { staticClass: "modal-dialog", attrs: { role: "document" } },
+          { staticClass: "modal-dialog modal-lg", attrs: { role: "document" } },
           [
             _c("div", { staticClass: "modal-content" }, [
               _vm._m(1),
               _vm._v(" "),
-              _c("div", { staticClass: "row justify-content-center mt-4" }, [
-                _c("div", { staticClass: "col-md-12" }, [
-                  _c("div", { staticClass: "card" }, [
-                    _c("div", { staticClass: "card-header" }, [
-                      _c("h3", { staticClass: "card-title" }, [
-                        _vm._v("Order Details"),
-                        _vm.details.urgency == 0
-                          ? _c(
-                              "span",
-                              {
-                                staticClass: "badge badge-dark",
-                                staticStyle: { "margin-left": "4px" }
-                              },
-                              [_vm._v("Urgent")]
-                            )
-                          : _vm._e()
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "card-body" }, [
-                      _c("div", { staticClass: "row" }, [
-                        _c("div", { staticClass: "col-md-10" }, [
-                          _c("div", { staticClass: "box" }, [
-                            _c(
-                              "div",
-                              {
-                                staticClass:
-                                  "box-body no-padding table-responsive p-0"
-                              },
-                              [
+              _c(
+                "div",
+                {
+                  staticClass: "row justify-content-center mt-4 ml-auto mr-auto"
+                },
+                [
+                  _c("div", { staticClass: "col-md-12" }, [
+                    _c("div", { staticClass: "card" }, [
+                      _c("div", { staticClass: "card-header" }, [
+                        _c("h3", { staticClass: "card-title" }, [
+                          _vm._v("Order Details"),
+                          _vm.details.urgency == 0
+                            ? _c(
+                                "span",
+                                {
+                                  staticClass: "badge badge-dark",
+                                  staticStyle: { "margin-left": "4px" }
+                                },
+                                [_vm._v("Urgent")]
+                              )
+                            : _vm._e()
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "card-body" }, [
+                        _c(
+                          "div",
+                          { staticClass: "row justify-content-center" },
+                          [
+                            _c("div", { staticClass: "col-md-10" }, [
+                              _c("div", { staticClass: "box" }, [
                                 _c(
-                                  "table",
-                                  { staticClass: "table table-striped" },
+                                  "div",
+                                  {
+                                    staticClass:
+                                      "box-body no-padding table-responsive p-0"
+                                  },
                                   [
-                                    _c("tbody", [
-                                      _vm._m(2),
-                                      _vm._v(" "),
-                                      _c("tr", [
-                                        _c("td", [_vm._v("Order Number")]),
-                                        _vm._v(" "),
-                                        _c("td", [
-                                          _c("span", [
-                                            _vm._v(
-                                              "#" +
-                                                _vm._s(_vm.details.order_number)
-                                            )
-                                          ])
-                                        ])
-                                      ]),
-                                      _vm._v(" "),
-                                      _c("tr", [
-                                        _c("td", [_vm._v("Document's Title")]),
-                                        _vm._v(" "),
-                                        _c("td", [
-                                          _c("span", [
-                                            _vm._v(_vm._s(_vm.details.title))
-                                          ])
-                                        ])
-                                      ]),
-                                      _vm._v(" "),
-                                      _c("tr", [
-                                        _c("td", [_vm._v("Level")]),
-                                        _vm._v(" "),
-                                        _c("td", [
-                                          _c("span", [
-                                            _vm._v(
-                                              _vm._s(_vm.details.academic_level)
-                                            )
-                                          ])
-                                        ])
-                                      ]),
-                                      _vm._v(" "),
-                                      _c("tr", [
-                                        _c("td", [_vm._v("Discipline")]),
-                                        _vm._v(" "),
-                                        _c("td", [
-                                          _c("span", [
-                                            _vm._v(
-                                              _vm._s(_vm.details.discipline)
-                                            )
-                                          ])
-                                        ])
-                                      ]),
-                                      _vm._v(" "),
-                                      _c("tr", [
-                                        _c("td", [_vm._v("No. of Pages")]),
-                                        _vm._v(" "),
-                                        _c("td", [
-                                          _c("span", [
-                                            _vm._v(_vm._s(_vm.details.pages))
-                                          ])
-                                        ])
-                                      ]),
-                                      _vm._v(" "),
-                                      _c("tr", [
-                                        _c("td", [_vm._v("Deadline")]),
-                                        _vm._v(" "),
-                                        _c("td", [
-                                          _c(
-                                            "span",
-                                            { staticStyle: { color: "red" } },
-                                            [
-                                              _vm._v(
-                                                _vm._s(
-                                                  _vm._f("myDatetime")(
-                                                    _vm.details.deadline
+                                    _c(
+                                      "table",
+                                      { staticClass: "table table-striped" },
+                                      [
+                                        _c("tbody", [
+                                          _vm._m(2),
+                                          _vm._v(" "),
+                                          _c("tr", [
+                                            _c("td", [_vm._v("Order Number")]),
+                                            _vm._v(" "),
+                                            _c("td", [
+                                              _c("span", [
+                                                _vm._v(
+                                                  "#" +
+                                                    _vm._s(
+                                                      _vm.details.order_number
+                                                    )
+                                                )
+                                              ])
+                                            ])
+                                          ]),
+                                          _vm._v(" "),
+                                          _c("tr", [
+                                            _c("td", [
+                                              _vm._v("Document's Title")
+                                            ]),
+                                            _vm._v(" "),
+                                            _c("td", [
+                                              _c("span", [
+                                                _vm._v(
+                                                  _vm._s(_vm.details.title)
+                                                )
+                                              ])
+                                            ])
+                                          ]),
+                                          _vm._v(" "),
+                                          _c("tr", [
+                                            _c("td", [_vm._v("Level")]),
+                                            _vm._v(" "),
+                                            _c("td", [
+                                              _c("span", [
+                                                _vm._v(
+                                                  _vm._s(
+                                                    _vm.details.academic_level
                                                   )
                                                 )
+                                              ])
+                                            ])
+                                          ]),
+                                          _vm._v(" "),
+                                          _c("tr", [
+                                            _c("td", [_vm._v("Discipline")]),
+                                            _vm._v(" "),
+                                            _c("td", [
+                                              _c("span", [
+                                                _vm._v(
+                                                  _vm._s(_vm.details.discipline)
+                                                )
+                                              ])
+                                            ])
+                                          ]),
+                                          _vm._v(" "),
+                                          _c("tr", [
+                                            _c("td", [_vm._v("No. of Pages")]),
+                                            _vm._v(" "),
+                                            _c("td", [
+                                              _c("span", [
+                                                _vm._v(
+                                                  _vm._s(_vm.details.pages)
+                                                )
+                                              ])
+                                            ])
+                                          ]),
+                                          _vm._v(" "),
+                                          _c("tr", [
+                                            _c("td", [_vm._v("Deadline")]),
+                                            _vm._v(" "),
+                                            _c("td", [
+                                              _c(
+                                                "span",
+                                                {
+                                                  staticStyle: { color: "red" }
+                                                },
+                                                [
+                                                  _vm._v(
+                                                    _vm._s(
+                                                      _vm._f("myDatetime")(
+                                                        _vm.details.deadline
+                                                      )
+                                                    )
+                                                  )
+                                                ]
+                                              )
+                                            ])
+                                          ]),
+                                          _vm._v(" "),
+                                          _c("tr", [
+                                            _c("td", [_vm._v("Spacing")]),
+                                            _vm._v(" "),
+                                            _c("td", [
+                                              _c("span", [
+                                                _vm._v(
+                                                  _vm._s(_vm.details.spacing)
+                                                )
+                                              ])
+                                            ])
+                                          ]),
+                                          _vm._v(" "),
+                                          _c("tr", [
+                                            _c("td", [_vm._v("Paper Format")]),
+                                            _vm._v(" "),
+                                            _c("td", [
+                                              _c("span", [
+                                                _vm._v(
+                                                  _vm._s(
+                                                    _vm.details.paper_format
+                                                  )
+                                                )
+                                              ])
+                                            ])
+                                          ])
+                                        ])
+                                      ]
+                                    )
+                                  ]
+                                )
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "col-md-12" }, [
+                              _vm._m(3),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                {
+                                  staticClass: "collapse",
+                                  attrs: { id: "collapseExample" }
+                                },
+                                [
+                                  _c("div", { staticClass: "card card-body" }, [
+                                    _c("div", {
+                                      domProps: {
+                                        innerHTML: _vm._s(
+                                          _vm.details.description
+                                        )
+                                      }
+                                    })
+                                  ])
+                                ]
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "col-md-12" }, [
+                              _c("div", { staticClass: "box" }, [
+                                _vm._m(4),
+                                _vm._v(" "),
+                                this.filesCount > 0
+                                  ? _c("div", { staticClass: "box-body" }, [
+                                      _c(
+                                        "div",
+                                        { staticClass: "row" },
+                                        _vm._l(_vm.files, function(file) {
+                                          return _c(
+                                            "div",
+                                            {
+                                              key: file.id,
+                                              staticClass:
+                                                "col-md-6 col-sm-6 col-xs-12"
+                                            },
+                                            [
+                                              _c(
+                                                "a",
+                                                {
+                                                  on: {
+                                                    click: function($event) {
+                                                      $event.preventDefault()
+                                                      return _vm.download(
+                                                        file.id,
+                                                        file.path
+                                                      )
+                                                    }
+                                                  }
+                                                },
+                                                [_vm._m(5, true)]
                                               )
                                             ]
                                           )
-                                        ])
-                                      ]),
-                                      _vm._v(" "),
-                                      _c("tr", [
-                                        _c("td", [_vm._v("Spacing")]),
-                                        _vm._v(" "),
-                                        _c("td", [
-                                          _c("span", [
-                                            _vm._v(_vm._s(_vm.details.spacing))
-                                          ])
-                                        ])
-                                      ]),
-                                      _vm._v(" "),
-                                      _c("tr", [
-                                        _c("td", [_vm._v("Paper Format")]),
-                                        _vm._v(" "),
-                                        _c("td", [
-                                          _c("span", [
-                                            _vm._v(
-                                              _vm._s(_vm.details.paper_format)
-                                            )
-                                          ])
-                                        ])
-                                      ])
+                                        }),
+                                        0
+                                      )
                                     ])
+                                  : _vm._e()
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            this.filesCount == 0
+                              ? _c(
+                                  "div",
+                                  {
+                                    staticClass:
+                                      "alert alert-warning alert-dismissible"
+                                  },
+                                  [
+                                    _vm._m(6),
+                                    _vm._v(
+                                      "\n                                        No files attached!!\n                                    "
+                                    )
                                   ]
                                 )
-                              ]
-                            )
-                          ])
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col-md-12" }, [
-                          _vm._m(3),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            {
-                              staticClass: "collapse",
-                              attrs: { id: "collapseExample" }
-                            },
-                            [
-                              _c("div", { staticClass: "card card-body" }, [
-                                _c("div", {
-                                  domProps: {
-                                    innerHTML: _vm._s(_vm.details.description)
-                                  }
-                                })
-                              ])
-                            ]
-                          )
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col-md-12" }, [
-                          _c("div", { staticClass: "box" }, [
-                            _vm._m(4),
-                            _vm._v(" "),
-                            this.filesCount > 0
-                              ? _c("div", { staticClass: "box-body" }, [
-                                  _c(
-                                    "div",
-                                    { staticClass: "row" },
-                                    _vm._l(_vm.files, function(file) {
-                                      return _c(
-                                        "div",
-                                        {
-                                          key: file.id,
-                                          staticClass:
-                                            "col-md-6 col-sm-6 col-xs-12"
-                                        },
-                                        [
-                                          _c(
-                                            "a",
-                                            {
-                                              on: {
-                                                click: function($event) {
-                                                  $event.preventDefault()
-                                                  return _vm.download(file.id)
-                                                }
-                                              }
-                                            },
-                                            [_vm._m(5, true)]
-                                          )
-                                        ]
-                                      )
-                                    }),
-                                    0
-                                  )
-                                ])
                               : _vm._e()
-                          ])
-                        ]),
-                        _vm._v(" "),
-                        this.filesCount == 0
-                          ? _c(
-                              "div",
-                              {
-                                staticClass:
-                                  "alert alert-warning alert-dismissible"
-                              },
-                              [
-                                _vm._m(6),
-                                _vm._v(
-                                  "\n                                        No files attached!!\n                                    "
-                                )
-                              ]
-                            )
-                          : _vm._e()
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "card-footer" }, [
-                      _c("div", { staticClass: "row" }, [
-                        this.ifBid == 0
-                          ? _c(
-                              "button",
-                              {
-                                staticClass: "btn btn-success",
-                                attrs: { type: "button" },
-                                on: {
-                                  click: function($event) {
-                                    return _vm.placeBid()
+                          ]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "card-footer" }, [
+                        _c("div", { staticClass: "row" }, [
+                          this.ifBid == 0
+                            ? _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-success",
+                                  attrs: { type: "button" },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.placeBid()
+                                    }
                                   }
-                                }
-                              },
-                              [
-                                _c("i", { staticClass: "fas fa-thumbs-up" }),
-                                _vm._v(
-                                  "\n                                        Place Bid\n                                    "
-                                )
-                              ]
-                            )
-                          : _vm._e(),
-                        _vm._v(" "),
-                        this.ifBid > 0
-                          ? _c("span", { staticStyle: { color: "red" } }, [
-                              _vm._v("You already placed a bid!!")
-                            ])
-                          : _vm._e()
+                                },
+                                [
+                                  _c("i", { staticClass: "fas fa-thumbs-up" }),
+                                  _vm._v(
+                                    "\n                                        Place Bid\n                                    "
+                                  )
+                                ]
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          this.ifBid > 0
+                            ? _c("span", { staticStyle: { color: "red" } }, [
+                                _vm._v("You already placed a bid!!")
+                              ])
+                            : _vm._e()
+                        ])
                       ])
                     ])
                   ])
-                ])
-              ])
+                ]
+              )
             ])
           ]
         )

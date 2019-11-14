@@ -1,12 +1,12 @@
 <style>
-    .card-body .details {
-        max-height: 300px;
-        overflow: scroll;
-    }
+    /*.card-body .details {*/
+    /*    max-height: 300px;*/
+    /*    overflow: scroll;*/
+    /*}*/
 
-    .modal-dialog {
-        min-width: 60%;
-    }
+    /*.modal-dialog {*/
+    /*    min-width: 60%;*/
+    /*}*/
 </style>
 <template>
     <div class="container">
@@ -40,7 +40,7 @@
 
         <div class="modal fade" id="OrderDetails" tabindex="-1" role="dialog" aria-labelledby="AddNewLabel"
              aria-hidden="true">
-            <div class="modal-dialog" role="document">
+            <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -48,7 +48,7 @@
                         </button>
                     </div>
 
-                    <div class="row justify-content-center mt-4">
+                    <div class="row justify-content-center mt-4 ml-auto mr-auto">
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header">
@@ -59,7 +59,7 @@
                                 </div>
 
                                 <div class="card-body">
-                                    <div class="row">
+                                    <div class="row justify-content-center">
                                         <div class="col-md-10">
                                             <div class="box">
                                                 <!-- /.box-header -->
@@ -141,7 +141,7 @@
                                                     <div class="row">
                                                         <div class="col-md-6 col-sm-6 col-xs-12" v-for="file in files"
                                                              :key="file.id">
-                                                            <a @click.prevent="download(file.id)">
+                                                            <a @click.prevent="download(file.id, file.path)">
                                                                 <div class="info-box">
                                                                     <span class="info-box-icon"
                                                                           style="background-color: green;"><i
@@ -254,14 +254,14 @@
             // getFiles(order){
             //     axios.get("/api/getfiles/"+order.id).then(({ data }) => ([this.files = data]));
             // },
-            download(id) {
+            download(id, path) {
                 axios.get("/api/download/" + id, {responseType: 'blob'})
                     .then((response) => {
                         var fileURL = window.URL.createObjectURL(new Blob([response.data]));
                         var fileLink = document.createElement('a');
                         console.log(fileLink);
                         fileLink.href = fileURL;
-                        fileLink.setAttribute('download', 'filename.docx');
+                        fileLink.setAttribute('download', path.substring(8));
                         document.body.appendChild(fileLink);
 
                         fileLink.click();
