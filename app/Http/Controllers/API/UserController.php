@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Category;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 // use Illuminate\Foundation\Auth\User;
@@ -139,5 +140,11 @@ class UserController extends Controller
         $user->delete();
 
         return ['message' => 'User Deleted'];
+    }
+
+    public function getLevel(){
+        $levelId = auth()->user()->level_id;
+
+        return Category::where('id', $levelId)->value('title');
     }
 }

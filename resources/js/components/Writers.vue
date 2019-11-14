@@ -19,7 +19,7 @@
                         <h3>New Orders</h3>
                         <div class="row details">
                             <div class="col-md-6" v-for="order in orders" :key="order.id">
-                                <div class="info-box">
+                                <div class="info-box" v-if="order.viewers.includes(level)">
                                     <span class="info-box-icon bg-aqua"><i class="fas fa-envelope" style="color: green;"></i></span>
                                     <div class="info-box-content">
                                         <button class="btn btn-light info-box-number" @click="orderDetails(order)">Order
@@ -193,6 +193,7 @@
         data() {
             return {
                 id: '',
+                level: '',
                 orders: [],
                 message: '',
                 typing: '',
@@ -209,6 +210,12 @@
             }
         },
         methods: {
+            isVisible(){
+
+            },
+            getLevel(){
+                axios.get("/api/getLevel/").then(({data}) => ([this.level = data]));
+            },
             checkBid() {
                 axios.get("/api/checkbid/" + this.orderId).then(({data}) => ([this.ifBid = data]));
             },
@@ -229,7 +236,7 @@
                                 'Placed!',
                                 'Bid successfully placed!!',
                                 'success'
-                            )
+                            );
                             Fire.$emit('entry');
                         }).catch(error => {
                             this.errors = error.response.data.errors;
@@ -243,17 +250,10 @@
                     }
                 })
             },
-            // getDetails(){
-            //     axios.get("/api/order/" + this.orderId).then(({ data }) => ([this.details = data]));
-            // },
 
             getFilesCount(order) {
                 axios.get("/api/filescount/" + order.id).then(({data}) => ([this.filesCount = data]));
             },
-
-            // getFiles(order){
-            //     axios.get("/api/getfiles/"+order.id).then(({ data }) => ([this.files = data]));
-            // },
             download(id, path) {
                 axios.get("/api/download/" + id, {responseType: 'blob'})
                     .then((response) => {
@@ -266,10 +266,6 @@
 
                         fileLink.click();
                     });
-            },
-
-            downloadAll() {
-                axios.post('/api/downloadAll/' + this.orderId);
             },
             orderDetails(order) {
                 $('#OrderDetails').modal('show');
@@ -285,6 +281,7 @@
             },
         },
         created() {
+            this.getLevel();
             this.getOrders();
             // // this.getDetails();
             // this.getFiles();

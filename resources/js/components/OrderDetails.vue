@@ -515,6 +515,7 @@
                 console.log(this.attachments);
             },
             newModal(){
+                $("#files").val('');
                 this.form.reset();
                 this.attachments = [];
                 $('#addnew').modal('show');

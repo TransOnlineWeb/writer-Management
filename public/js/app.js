@@ -4255,6 +4255,7 @@ __webpack_require__.r(__webpack_exports__);
       console.log(this.attachments);
     },
     newModal: function newModal() {
+      $("#files").val('');
       this.form.reset();
       this.attachments = [];
       $('#addnew').modal('show');
@@ -4992,6 +4993,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       id: '',
+      level: '',
       orders: [],
       message: '',
       typing: '',
@@ -5008,16 +5010,25 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
-    checkBid: function checkBid() {
+    isVisible: function isVisible() {},
+    getLevel: function getLevel() {
       var _this = this;
 
-      axios.get("/api/checkbid/" + this.orderId).then(function (_ref) {
+      axios.get("/api/getLevel/").then(function (_ref) {
         var data = _ref.data;
-        return [_this.ifBid = data];
+        return [_this.level = data];
+      });
+    },
+    checkBid: function checkBid() {
+      var _this2 = this;
+
+      axios.get("/api/checkbid/" + this.orderId).then(function (_ref2) {
+        var data = _ref2.data;
+        return [_this2.ifBid = data];
       });
     },
     placeBid: function placeBid() {
-      var _this2 = this;
+      var _this3 = this;
 
       Swal.fire({
         title: 'Are you sure?',
@@ -5029,12 +5040,12 @@ __webpack_require__.r(__webpack_exports__);
         confirmButtonText: 'Yes, place it!'
       }).then(function (result) {
         if (result.value) {
-          axios.post("/api/makebid/" + _this2.orderId).then(function () {
+          axios.post("/api/makebid/" + _this3.orderId).then(function () {
             Fire.$emit('entry');
             Swal.fire('Placed!', 'Bid successfully placed!!', 'success');
             Fire.$emit('entry');
           })["catch"](function (error) {
-            _this2.errors = error.response.data.errors;
+            _this3.errors = error.response.data.errors;
             Swal.fire({
               type: 'error',
               title: 'Error!!',
@@ -5044,20 +5055,14 @@ __webpack_require__.r(__webpack_exports__);
         }
       });
     },
-    // getDetails(){
-    //     axios.get("/api/order/" + this.orderId).then(({ data }) => ([this.details = data]));
-    // },
     getFilesCount: function getFilesCount(order) {
-      var _this3 = this;
+      var _this4 = this;
 
-      axios.get("/api/filescount/" + order.id).then(function (_ref2) {
-        var data = _ref2.data;
-        return [_this3.filesCount = data];
+      axios.get("/api/filescount/" + order.id).then(function (_ref3) {
+        var data = _ref3.data;
+        return [_this4.filesCount = data];
       });
     },
-    // getFiles(order){
-    //     axios.get("/api/getfiles/"+order.id).then(({ data }) => ([this.files = data]));
-    // },
     download: function download(id, path) {
       axios.get("/api/download/" + id, {
         responseType: 'blob'
@@ -5071,46 +5076,44 @@ __webpack_require__.r(__webpack_exports__);
         fileLink.click();
       });
     },
-    downloadAll: function downloadAll() {
-      axios.post('/api/downloadAll/' + this.orderId);
-    },
     orderDetails: function orderDetails(order) {
-      var _this4 = this;
+      var _this5 = this;
 
       $('#OrderDetails').modal('show');
       this.orderId = order.id;
-      window.axios.get("/api/order/" + order.id).then(function (_ref3) {
-        var data = _ref3.data;
-        return [_this4.details = data];
-      });
-      window.axios.get("/api/getfiles/" + order.id).then(function (_ref4) {
+      window.axios.get("/api/order/" + order.id).then(function (_ref4) {
         var data = _ref4.data;
-        return [_this4.files = data];
+        return [_this5.details = data];
       });
-      window.axios.get("/api/filescount/" + order.id).then(function (_ref5) {
+      window.axios.get("/api/getfiles/" + order.id).then(function (_ref5) {
         var data = _ref5.data;
-        return [_this4.filesCount = data];
+        return [_this5.files = data];
+      });
+      window.axios.get("/api/filescount/" + order.id).then(function (_ref6) {
+        var data = _ref6.data;
+        return [_this5.filesCount = data];
       });
       this.checkBid();
     },
     getOrders: function getOrders() {
-      var _this5 = this;
+      var _this6 = this;
 
-      window.axios.get("api/order").then(function (_ref6) {
-        var data = _ref6.data;
-        return [_this5.orders = data.data];
+      window.axios.get("api/order").then(function (_ref7) {
+        var data = _ref7.data;
+        return [_this6.orders = data.data];
       });
     }
   },
   created: function created() {
-    var _this6 = this;
+    var _this7 = this;
 
+    this.getLevel();
     this.getOrders(); // // this.getDetails();
     // this.getFiles();
     // this.getFilesCount();
 
     Fire.$on('entry', function () {
-      _this6.checkBid();
+      _this7.checkBid();
     });
   }
 });
@@ -82881,45 +82884,47 @@ var render = function() {
               { staticClass: "row details" },
               _vm._l(_vm.orders, function(order) {
                 return _c("div", { key: order.id, staticClass: "col-md-6" }, [
-                  _c("div", { staticClass: "info-box" }, [
-                    _vm._m(0, true),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "info-box-content" }, [
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-light info-box-number",
-                          on: {
-                            click: function($event) {
-                              return _vm.orderDetails(order)
-                            }
-                          }
-                        },
-                        [
-                          _vm._v(
-                            "Order\n                                        Number: " +
-                              _vm._s(order.order_number) +
-                              "\n                                    "
-                          )
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c("span", { staticClass: "info-box-text" }, [
-                        _vm._v("Title: " + _vm._s(order.title))
-                      ]),
-                      _vm._v(" "),
-                      _c("span", { staticClass: "info-box-text" }, [
-                        _vm._v(
-                          "Deadline: " +
-                            _vm._s(_vm._f("myDatetime")(order.deadline))
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c("span", { staticClass: "info-box-text" }, [
-                        _vm._v("Discipline: " + _vm._s(order.discipline))
+                  order.viewers.includes(_vm.level)
+                    ? _c("div", { staticClass: "info-box" }, [
+                        _vm._m(0, true),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "info-box-content" }, [
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-light info-box-number",
+                              on: {
+                                click: function($event) {
+                                  return _vm.orderDetails(order)
+                                }
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "Order\n                                        Number: " +
+                                  _vm._s(order.order_number) +
+                                  "\n                                    "
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c("span", { staticClass: "info-box-text" }, [
+                            _vm._v("Title: " + _vm._s(order.title))
+                          ]),
+                          _vm._v(" "),
+                          _c("span", { staticClass: "info-box-text" }, [
+                            _vm._v(
+                              "Deadline: " +
+                                _vm._s(_vm._f("myDatetime")(order.deadline))
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("span", { staticClass: "info-box-text" }, [
+                            _vm._v("Discipline: " + _vm._s(order.discipline))
+                          ])
+                        ])
                       ])
-                    ])
-                  ])
+                    : _vm._e()
                 ])
               }),
               0
