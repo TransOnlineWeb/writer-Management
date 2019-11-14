@@ -2113,6 +2113,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -2158,20 +2159,28 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
-    getRevision: function getRevision() {
+    getEdited: function getEdited() {
       var _this = this;
 
-      axios.get("/api/getrevision").then(function (_ref) {
+      axios.get("/api/getedited").then(function (_ref) {
         var data = _ref.data;
         return [_this.orders = data];
       });
     },
-    getCompleted: function getCompleted() {
+    getRevision: function getRevision() {
       var _this2 = this;
 
-      axios.get("/api/getcompleted").then(function (_ref2) {
+      axios.get("/api/getrevision").then(function (_ref2) {
         var data = _ref2.data;
         return [_this2.orders = data];
+      });
+    },
+    getCompleted: function getCompleted() {
+      var _this3 = this;
+
+      axios.get("/api/getcompleted").then(function (_ref3) {
+        var data = _ref3.data;
+        return [_this3.orders = data];
       });
     },
     writerId: function writerId() {
@@ -2182,19 +2191,19 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     getWriters: function getWriters() {
-      var _this3 = this;
+      var _this4 = this;
 
-      axios.get("/api/getwriters").then(function (_ref3) {
-        var data = _ref3.data;
-        return [_this3.writers = data];
+      axios.get("/api/getwriters").then(function (_ref4) {
+        var data = _ref4.data;
+        return [_this4.writers = data];
       });
     },
     getOrders: function getOrders() {
-      var _this4 = this;
+      var _this5 = this;
 
-      axios.get("/api/order").then(function (_ref4) {
-        var data = _ref4.data;
-        return [_this4.orders = data];
+      axios.get("/api/order").then(function (_ref5) {
+        var data = _ref5.data;
+        return [_this5.orders = data];
       });
     },
     validateForm: function validateForm() {
@@ -2262,7 +2271,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     submitOrder: function submitOrder() {
-      var _this5 = this;
+      var _this6 = this;
 
       for (var i = 0; i < this.attachments.length; i++) {
         this.formf.append('files[]', this.attachments[i]);
@@ -2290,7 +2299,7 @@ __webpack_require__.r(__webpack_exports__);
         $('#addnew').modal('hide');
         Fire.$emit('entry');
 
-        _this5.form.reset();
+        _this6.form.reset();
 
         swal.fire({
           type: 'success',
@@ -2329,12 +2338,12 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   created: function created() {
-    var _this6 = this;
+    var _this7 = this;
 
     this.getOrders();
     this.getWriters();
     Fire.$on('entry', function () {
-      _this6.getOrders();
+      _this7.getOrders();
     });
   }
 });
@@ -3476,6 +3485,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
 //
 //
 //
@@ -78274,10 +78284,10 @@ var render = function() {
                   ? _c(
                       "button",
                       {
-                        staticClass: "btn btn-sm btn-success",
-                        on: { click: _vm.getCompleted }
+                        staticClass: "btn btn-sm btn-warning",
+                        on: { click: _vm.getRevision }
                       },
-                      [_vm._v("Completed")]
+                      [_vm._v("On Revision")]
                     )
                   : _vm._e(),
                 _vm._v(" "),
@@ -78285,10 +78295,21 @@ var render = function() {
                   ? _c(
                       "button",
                       {
-                        staticClass: "btn btn-sm btn-warning",
-                        on: { click: _vm.getRevision }
+                        staticClass: "btn btn-sm btn-success",
+                        on: { click: _vm.getEdited }
                       },
-                      [_vm._v("On Revision")]
+                      [_vm._v("Edited")]
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.$gate.isEditor()
+                  ? _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-sm btn-dark",
+                        on: { click: _vm.getCompleted }
+                      },
+                      [_vm._v("Completed")]
                     )
                   : _vm._e()
               ])
@@ -78384,7 +78405,7 @@ var render = function() {
                         order.status == 4
                           ? _c(
                               "span",
-                              { staticClass: "badge badge-pill badge-warning" },
+                              { staticClass: "badge badge-pill badge-danger" },
                               [_vm._v("Revision")]
                             )
                           : _vm._e(),
@@ -78392,7 +78413,7 @@ var render = function() {
                         order.status == 5
                           ? _c(
                               "span",
-                              { staticClass: "badge badge-pill badge-success" },
+                              { staticClass: "badge badge-pill badge-dark" },
                               [_vm._v("Completed")]
                             )
                           : _vm._e(),
@@ -81119,7 +81140,7 @@ var render = function() {
                         order.status == 4
                           ? _c(
                               "span",
-                              { staticClass: "badge badge-pill badge-dark" },
+                              { staticClass: "badge badge-pill badge-danger" },
                               [_vm._v("Revision")]
                             )
                           : _vm._e(),
@@ -81127,8 +81148,16 @@ var render = function() {
                         order.status == 5
                           ? _c(
                               "span",
-                              { staticClass: "badge badge-pill badge-success" },
+                              { staticClass: "badge badge-pill badge-dark" },
                               [_vm._v("Completed")]
+                            )
+                          : _vm._e(),
+                        _vm._v(" "),
+                        order.status == 6
+                          ? _c(
+                              "span",
+                              { staticClass: "badge badge-pill badge-success" },
+                              [_vm._v("Edited")]
                             )
                           : _vm._e()
                       ]),

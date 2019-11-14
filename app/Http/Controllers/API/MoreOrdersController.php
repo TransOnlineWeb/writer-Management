@@ -132,4 +132,8 @@ class MoreOrdersController extends Controller
     public function getRevision(){
         return Order::latest()->where('status', 4)->paginate(10);
     }
+
+    public function getEdited(){
+        return Order::latest()->where('status', 6)->paginate(10);
+    }
 }

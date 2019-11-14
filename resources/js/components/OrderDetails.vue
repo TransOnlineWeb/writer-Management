@@ -627,7 +627,6 @@
                 }
 
             },
-
             getEditedFiles(){
                 axios.get("/api/getedited/" + this.orderId).then(({ data }) => ([this.edited = data]));
             },
