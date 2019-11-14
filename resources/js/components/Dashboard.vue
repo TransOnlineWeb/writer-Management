@@ -80,7 +80,7 @@
                             <div class="icon">
                                 <i class="fas fa-wallet white"></i>
                             </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                            <router-link to="/walletTransactions" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></router-link>
                         </div>
                     </div>
                     <!-- ./col -->

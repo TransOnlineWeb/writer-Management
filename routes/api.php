@@ -48,6 +48,7 @@ Route::get('writer/{orderId}', 'API\MoreOrdersController@getWriter');
 Route::get('getcompleted', 'API\MoreOrdersController@getCompleted');
 Route::get('getrevision', 'API\MoreOrdersController@getRevision');
 Route::get('wallet', 'API\WalletTransactionsController@walletBalance');
+Route::get('transactions', 'API\WalletTransactionsController@showTransactions');
 
 Route::apiResources(['bid' => 'API\BidsController']);
 
@@ -69,3 +70,6 @@ Route::get('getAdmin','API\OrderController@admin');
 Route::get('getMessage/{orderId}','API\MessangerController@getMessagesFor');
 
 Route::post('verify_task/{orderId}','API\WalletTransactionsController@isVerified');
+
+Route::get('earnings','API\PaymentController@index');
+Route::get('myearnings/{userId}','API\PaymentController@myearnings');
