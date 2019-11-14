@@ -44,7 +44,9 @@ let routes = [
     {path: '/announcement', component: require('./components/Announcement.vue').default},
     { path: '/myorder', component: require('./components/MyOrders.vue').default },
     {path: '/announcements', component: require('./components/AnnouncementView.vue').default},
+    {path: '/earnings', component: require('./components/Earnings.vue').default},
     { path: '/walletTransactions', component: require('./components/WalletTransactions.vue').default },
+    { path: '/earningsdetails/:userId', component: require('./components/Earningsdetails.vue').default },
 ];
 
 const router = new VueRouter({
