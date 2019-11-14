@@ -73,3 +73,5 @@ Route::post('verify_task/{orderId}','API\WalletTransactionsController@isVerified
 
 Route::get('earnings','API\PaymentController@index');
 Route::get('myearnings/{userId}','API\PaymentController@myearnings');
+
+Route::post('fine','API\WalletTransactionsController@fine');

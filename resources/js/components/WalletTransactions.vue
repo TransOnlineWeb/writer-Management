@@ -18,7 +18,9 @@
                                 <th>Date</th>
                                 <th>Order#</th>
                                 <th>Type</th>
+                                <th>Percentage</th>
                                 <th>Amount</th>
+                                <th>Reason</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -33,13 +35,35 @@
                                     <span class="badge badge-pill badge-info" v-if="trans.type == 3">PayOut</span>
                                     <span class="badge badge-pill badge-success" v-if="trans.type == 0">Awarded</span>
                                 </td>
+                                <td><span v-if="trans.type == 1">{{Math.trunc(trans.percentage)}}%</span></td>
                                 <td>
                                     Ksh. {{Math.trunc(trans.amount)}}
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-warning btn-sm" v-if="trans.type == 1" @click="reasonModal(trans.description)">Reason</button>
                                 </td>
                             </tr>
                             </tbody>
                         </table>
                     </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="reasonModal" tabindex="-1" role="dialog" aria-labelledby="addnewLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addnewLabel">Reason</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                        <div class="modal-body">
+                            <p>{{reason}}</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        </div>
                 </div>
             </div>
         </div>
@@ -51,10 +75,15 @@
         name: "WalletTransactions",
         data(){
             return{
-                transactions:{}
+                transactions:{},
+                reason: ''
             }
         },
         methods:{
+            reasonModal(reason){
+                this.reason = reason;
+                $('#reasonModal').modal('show');
+            },
             getTransactions(){
                 if (this.$gate.isWriter()) {
                     axios.get('api/transactions/').then(({data}) => ([this.transactions = data]));

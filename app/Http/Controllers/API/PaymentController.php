@@ -35,7 +35,7 @@ class PaymentController extends Controller
         return['earning'=> $earn];
     }
     public function myearnings($userId){
-        $myearnings = WalletTransaction::where('user_id',$userId)->get();
+        $myearnings = WalletTransaction::where('user_id',$userId)->where('type',0)->get();
         $myearn = array();
          foreach ($myearnings as $myearning){
             $title = Order::where('id',$myearning['order_id'])->value('title');
@@ -44,6 +44,7 @@ class PaymentController extends Controller
             $pages = Order::where('id',$myearning['order_id'])->value('pages');
             $amount_payable = WalletTransaction::where('order_id',$myearning['order_id'])->where('type',0)->value('amount');
             $penalty = WalletTransaction::where('order_id',$myearning['order_id'])->where('type',1)->value('amount');
+            $earning = $amount_payable + $penalty;
             $earners =array(
                 'title' => $title,
                 'completed_time' => $completed,
@@ -51,6 +52,7 @@ class PaymentController extends Controller
                 'pages'=> $pages,
                 'amount_payable'=> $amount_payable,
                 'penalty'=> $penalty,
+                'earning' => $earning,
             );
             array_push($myearn,$earners);
         }

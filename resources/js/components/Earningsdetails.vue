@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-12">
-                <div class="card">
+                <div class="card mt-5">
                     <div class="card-header">Payment Report</div>
 
                     <div class="card-body">
@@ -15,8 +15,7 @@
                                     <th>N.O Pages</th>
                                     <th>Amount payable</th>
                                     <th>Penalty</th>
-                                    <th>Payment status</th>
-                                    <th>Action</th>
+                                    <th>Earnings</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -25,14 +24,8 @@
                                     <td>{{ earn['orderId'] }}</td>
                                     <td>{{ earn['pages'] }}</td>
                                     <td>Ksh{{ earn['amount_payable'] }}</td>
-                                    <td>Ksh{{ earn['penalty'] }}</td>
-                                    <th>unpaid</th>
-                                    <td>
-                                        <router-link :to="{path:'/earningsdetails/'+ earn['user_id']}" type="button"
-                                                     class="btn btn-primary btn-sm">pay
-                                        </router-link>
-
-                                    </td>
+                                    <td><span class="badge badge-pill badge-danger">Ksh{{ earn['penalty'] }}</span></td>
+                                    <td>Ksh{{ earn['earning'] }}</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -50,6 +43,7 @@
             return{
                 userId : this.$route.params.userId,
                 earns : {},
+
             }
         },
         methods : {

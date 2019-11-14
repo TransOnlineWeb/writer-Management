@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Order;
 use App\User;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class MoreOrdersController extends Controller
 {
@@ -75,6 +76,7 @@ class MoreOrdersController extends Controller
 
             $order = Order::findOrFail($orderId);
             $order->status = 3;
+            $order->completed_time = Carbon::now();
             $order->update();
             return response(['status' => 'success'], 200);
         }

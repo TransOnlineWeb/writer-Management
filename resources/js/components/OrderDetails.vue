@@ -10,6 +10,8 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6">
+<!--                                <flip-countdown :deadline="details.deadline"></flip-countdown>-->
+                                <hr>
                                 <div class="box">
                                     <div class="box-header">
                                         <h4 class="box-title">Writer's Details</h4>
@@ -206,9 +208,9 @@
                                         <h4>Actions</h4>
                                     </div>
                                     <div class="box-body">
-                                        <button type="button" class="btn btn-success btn-sm" @click="verify()">Verify</button>
+                                        <button type="button" class="btn btn-success btn-sm" @click="verify()" v-if="details.status == 3 || details.status == 4">Verify</button>
                                         <button type="button" class="btn btn-warning btn-sm">Revision</button>
-                                        <button type="button" class="btn btn-dark btn-sm">Fine</button>
+                                        <button type="button" class="btn btn-dark btn-sm" @click="fineModal">Fine</button>
                                         <button type="button" class="btn btn-danger btn-sm">Reject</button>
                                     </div>
                                 </div>
@@ -245,10 +247,10 @@
             </div>
         </div>
         <div class="modal fade" id="addnew" tabindex="-1" role="dialog" aria-labelledby="addnewLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
+            <div class="modal-dialog modal-sm" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="addnewLabel">Add File(s)</h5>
+                        <h5 class="modal-title">Add File(s)</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -272,11 +274,48 @@
                 </div>
             </div>
         </div>
+        <div class="modal fade" id="fineModal" tabindex="-1" role="dialog" aria-labelledby="addnewLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addnewLabel">Execute Fine</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form @submit.prevent="fine()">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="percentage">Percentage</label>
+                                <input v-model="form.percentage" type="number" class="form-control" id="percentage"
+                                       placeholder="percentage" :class="{ 'is-invalid': form.errors.has('percentage') }">
+                                <has-error :form="form" field="percentage"></has-error>
+                            </div>
+                            <div class="form-group">
+                                <label for="description">Reason</label>
+                                <textarea v-model="form.description" class="form-control" id="description" rows="3"
+                                          :class="{ 'is-invalid': form.errors.has('description') }"></textarea>
+                                <has-error :form="form" field="description"></has-error>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-save"></i>
+                                Complete
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
+    import FlipCountdown from 'vue2-flip-countdown';
     export default {
+        components: { FlipCountdown },
         props:{
             user: {
                 type: Object,
@@ -303,6 +342,9 @@
                 attachments:[],
                 formf: new FormData(),
                 form: new Form({
+                    percentage: '',
+                    description: '',
+                    orderId: this.$route.params.orderId,
                 })
             }
         },
@@ -320,6 +362,28 @@
                 });
         },
         methods:{
+            fine(){
+                this.form.post('/api/fine')
+                    .then(() => {
+                        Fire.$emit('entry');
+                        Swal.fire(
+                            'Fined!',
+                            'Fine administered!!',
+                            'success'
+                        )
+                        this.form.reset();
+                        $('#fineModal').modal('hide');
+                    })
+                    .catch(error => {
+                        this.errors = error.response.data.errors;
+                        swal.fire({
+                            type: 'error',
+                            title: 'Error!!',
+                            text: error.response.data.msg,
+
+                        })
+                    })
+            },
             verify(){
                 Swal.fire({
                     title: 'Are you sure?',
@@ -454,6 +518,10 @@
                 this.form.reset();
                 this.attachments = [];
                 $('#addnew').modal('show');
+            },
+            fineModal(){
+                this.form.reset();
+                $('#fineModal').modal('show');
             },
             handleIncoming(message) {
                 this.messages.push(message);
