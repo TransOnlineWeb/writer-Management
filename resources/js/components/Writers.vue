@@ -1,13 +1,3 @@
-<style>
-    /*.card-body .details {*/
-    /*    max-height: 300px;*/
-    /*    overflow: scroll;*/
-    /*}*/
-
-    /*.modal-dialog {*/
-    /*    min-width: 60%;*/
-    /*}*/
-</style>
 <template>
     <div class="container">
         <div class="row justify-content-center">
