@@ -127,7 +127,7 @@
                                     <div class="box-body" v-if="this.filesCount > 0">
                                         <div class="row">
                                             <div class="col-md-6 col-sm-6 col-xs-12" v-for="file in files" :key="file.id">
-                                                <a @click.prevent="download(file.id)">
+                                                <a @click.prevent="download(file.id, file.path)">
                                                     <div class="info-box">
                                                         <span class="info-box-icon" style="background-color: green;"><i class="fas fa-download" style="color: white;"></i></span>
 
@@ -187,7 +187,7 @@
                                     <div class="box-body">
                                         <div class="row">
                                             <div class="col-md-6 col-sm-6 col-xs-12" v-for="com in completed" :key="com.id">
-                                                <a @click.prevent="download(com.id)">
+                                                <a @click.prevent="download(com.id, com.path)">
                                                     <div class="info-box">
                                                         <span class="info-box-icon" style="background-color: purple;"><i class="fas fa-download" style="color: white;"></i></span>
 
@@ -545,8 +545,18 @@
                     this.message = '';
                 })
             },
-            download(id){
-                axios.get("/api/download/" + id).then();
+            download(id, path) {
+                axios.get("/api/download/" + id, {responseType: 'blob'})
+                    .then((response) => {
+                        var fileURL = window.URL.createObjectURL(new Blob([response.data]));
+                        var fileLink = document.createElement('a');
+                        console.log(fileLink);
+                        fileLink.href = fileURL;
+                        fileLink.setAttribute('download', path.substring(8));
+                        document.body.appendChild(fileLink);
+
+                        fileLink.click();
+                    });
             },
             getDetails(){
                 axios.get("/api/order/" + this.orderId).then(({ data }) => ([this.details = data]));
