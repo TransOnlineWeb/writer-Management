@@ -62,8 +62,8 @@
 						<ul class="fh5co-social-icons">
 							<li><a href="#"><i class="icon-facebook"></i></a></li>
 							<li><a href="#"><i class="icon-twitter"></i></a></li>
-							<li><a href="#"><i class="icon-dribbble"></i></a></li>
-							<li><a href="#"><i class="icon-github"></i></a></li>
+						
+							
 						</ul>
 					</div>
 				</div>
@@ -76,8 +76,7 @@
 						<ul class="fh5co-social-icons">
 							<li><a href="#"><i class="icon-facebook"></i></a></li>
 							<li><a href="#"><i class="icon-twitter"></i></a></li>
-							<li><a href="#"><i class="icon-dribbble"></i></a></li>
-							<li><a href="#"><i class="icon-github"></i></a></li>
+						
 						</ul>
 					</div>
 				</div>
@@ -90,8 +89,7 @@
 						<ul class="fh5co-social-icons">
 							<li><a href="#"><i class="icon-facebook"></i></a></li>
 							<li><a href="#"><i class="icon-twitter"></i></a></li>
-							<li><a href="#"><i class="icon-dribbble"></i></a></li>
-							<li><a href="#"><i class="icon-github"></i></a></li>
+						
 						</ul>
 					</div>
 				</div>
