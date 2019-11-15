@@ -3154,19 +3154,28 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
-    getWalletBalance: function getWalletBalance() {
+    getDashboard: function getDashboard() {
       var _this = this;
 
+      axios.get("api/dashboard").then(function (_ref) {
+        var data = _ref.data;
+        return [_this.dash = data['data']];
+      });
+    },
+    getWalletBalance: function getWalletBalance() {
+      var _this2 = this;
+
       if (this.$gate.isWriter()) {
-        axios.get('api/wallet/').then(function (_ref) {
-          var data = _ref.data;
-          return [_this.walletBalance = data];
+        axios.get('api/wallet/').then(function (_ref2) {
+          var data = _ref2.data;
+          return [_this2.walletBalance = data];
         });
       }
     }
   },
   created: function created() {
     this.getWalletBalance();
+    this.getDashboard();
   }
 });
 
@@ -3251,27 +3260,59 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "earnings",
   data: function data() {
     return {
       earnings: {},
       form: new Form({
-        amount: ''
+        id: '',
+        amount: '',
+        Paymethod: ''
       })
     };
   },
   methods: {
-    newModal: function newModal(earn) {
-      $('#CommunicationModal').modal('show');
-      this.form.fill(earn);
+    newModal: function newModal(userId) {
+      this.form.id = userId;
+      $('#PayModal').modal('show');
+    },
+    pay: function pay() {
+      var _this = this;
+
+      this.form.post('api/pay/').then(function () {
+        Fire.$emit('entry');
+        Swal.fire('Paid!', 'Payment !!', 'success');
+
+        _this.form.reset();
+
+        $('#PayModal').modal('hide');
+      })["catch"](function (error) {
+        _this.errors = error.response.data.errors;
+        swal.fire({
+          type: 'error',
+          title: 'Error!!',
+          text: error.response.data.msg
+        });
+      });
     },
     getEarnings: function getEarnings() {
-      var _this = this;
+      var _this2 = this;
 
       axios.get("api/earnings").then(function (_ref) {
         var data = _ref.data;
-        return _this.earnings = data['earning'];
+        return _this2.earnings = data['earning'];
       });
     }
   },
@@ -3861,6 +3902,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "writers",
   data: function data() {
@@ -3883,7 +3925,7 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.get("api/MyWriters").then(function (_ref) {
         var data = _ref.data;
-        return _this2.users = data;
+        return [_this2.users = data['rate']];
       });
     },
     getProfilePhoto: function getProfilePhoto(img) {
@@ -80387,7 +80429,127 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
     _vm.$gate.isAdmin()
-      ? _c("div", { staticClass: "row justify-content-center" }, [_vm._m(0)])
+      ? _c("div", { staticClass: "row justify-content-center" }, [
+          _c("div", { staticClass: "col-md-12" }, [
+            _c("div", { staticClass: "row mt-5" }, [
+              _c("div", { staticClass: "col-lg-3 col-6" }, [
+                _c(
+                  "div",
+                  { staticClass: "small-box bg-info" },
+                  [
+                    _c("div", { staticClass: "inner" }, [
+                      _c("h3", [_vm._v(_vm._s(_vm.dash["pending"]))]),
+                      _vm._v(" "),
+                      _c("p", [_vm._v("Pending approval")])
+                    ]),
+                    _vm._v(" "),
+                    _vm._m(0),
+                    _vm._v(" "),
+                    _c(
+                      "router-link",
+                      {
+                        staticClass: "small-box-footer",
+                        attrs: { to: "/order" }
+                      },
+                      [
+                        _vm._v("More info "),
+                        _c("i", { staticClass: "fas fa-arrow-circle-right" })
+                      ]
+                    )
+                  ],
+                  1
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-lg-3 col-6" }, [
+                _c(
+                  "div",
+                  { staticClass: "small-box bg-success" },
+                  [
+                    _c("div", { staticClass: "inner" }, [
+                      _c("h3", [_vm._v(_vm._s(_vm.dash["active"]))]),
+                      _vm._v(" "),
+                      _c("p", [_vm._v("Active orders")])
+                    ]),
+                    _vm._v(" "),
+                    _vm._m(1),
+                    _vm._v(" "),
+                    _c(
+                      "router-link",
+                      {
+                        staticClass: "small-box-footer",
+                        attrs: { to: "/order" }
+                      },
+                      [
+                        _vm._v("More info "),
+                        _c("i", { staticClass: "fas fa-arrow-circle-right" })
+                      ]
+                    )
+                  ],
+                  1
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-lg-3 col-6" }, [
+                _c(
+                  "div",
+                  { staticClass: "small-box bg-warning" },
+                  [
+                    _c("div", { staticClass: "inner" }, [
+                      _c("h3", [_vm._v(_vm._s(_vm.dash["completed"]))]),
+                      _vm._v(" "),
+                      _c("p", [_vm._v("Completed orders")])
+                    ]),
+                    _vm._v(" "),
+                    _vm._m(2),
+                    _vm._v(" "),
+                    _c(
+                      "router-link",
+                      {
+                        staticClass: "small-box-footer",
+                        attrs: { to: "/order" }
+                      },
+                      [
+                        _vm._v("More info "),
+                        _c("i", { staticClass: "fas fa-arrow-circle-right" })
+                      ]
+                    )
+                  ],
+                  1
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-lg-3 col-6" }, [
+                _c(
+                  "div",
+                  { staticClass: "small-box bg-danger" },
+                  [
+                    _c("div", { staticClass: "inner" }, [
+                      _c("h3", [_vm._v(_vm._s(_vm.dash["revision"]))]),
+                      _vm._v(" "),
+                      _c("p", [_vm._v("Revisions")])
+                    ]),
+                    _vm._v(" "),
+                    _vm._m(3),
+                    _vm._v(" "),
+                    _c(
+                      "router-link",
+                      {
+                        staticClass: "small-box-footer",
+                        attrs: { to: "/order" }
+                      },
+                      [
+                        _vm._v("More info "),
+                        _c("i", { staticClass: "fas fa-arrow-circle-right" })
+                      ]
+                    )
+                  ],
+                  1
+                )
+              ])
+            ])
+          ])
+        ])
       : _vm._e(),
     _vm._v(" "),
     _vm.$gate.isWriter()
@@ -80409,7 +80571,7 @@ var render = function() {
                       _c("p", [_vm._v("My Wallet")])
                     ]),
                     _vm._v(" "),
-                    _vm._m(1),
+                    _vm._m(4),
                     _vm._v(" "),
                     _c(
                       "router-link",
@@ -80427,11 +80589,11 @@ var render = function() {
                 )
               ]),
               _vm._v(" "),
-              _vm._m(2),
+              _vm._m(5),
               _vm._v(" "),
-              _vm._m(3),
+              _vm._m(6),
               _vm._v(" "),
-              _vm._m(4)
+              _vm._m(7)
             ])
           ])
         ])
@@ -80443,84 +80605,32 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-md-12" }, [
-      _c("div", { staticClass: "row mt-5" }, [
-        _c("div", { staticClass: "col-lg-3 col-6" }, [
-          _c("div", { staticClass: "small-box bg-info" }, [
-            _c("div", { staticClass: "inner" }, [
-              _c("h3", [_vm._v("111")]),
-              _vm._v(" "),
-              _c("p", [_vm._v("Pending approval")])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "icon" }, [
-              _c("i", { staticClass: "fas fa-hourglass-start white" })
-            ]),
-            _vm._v(" "),
-            _c("a", { staticClass: "small-box-footer", attrs: { href: "#" } }, [
-              _vm._v("More info "),
-              _c("i", { staticClass: "fas fa-arrow-circle-right" })
-            ])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-lg-3 col-6" }, [
-          _c("div", { staticClass: "small-box bg-success" }, [
-            _c("div", { staticClass: "inner" }, [
-              _c("h3", [_vm._v("112")]),
-              _vm._v(" "),
-              _c("p", [_vm._v("Active orders")])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "icon" }, [
-              _c("i", { staticClass: "fas fa-clock white" })
-            ]),
-            _vm._v(" "),
-            _c("a", { staticClass: "small-box-footer", attrs: { href: "#" } }, [
-              _vm._v("More info "),
-              _c("i", { staticClass: "fas fa-arrow-circle-right" })
-            ])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-lg-3 col-6" }, [
-          _c("div", { staticClass: "small-box bg-warning" }, [
-            _c("div", { staticClass: "inner" }, [
-              _c("h3", [_vm._v("1342")]),
-              _vm._v(" "),
-              _c("p", [_vm._v("Completed orders")])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "icon" }, [
-              _c("i", { staticClass: "fas fa-clipboard-list white" })
-            ]),
-            _vm._v(" "),
-            _c("a", { staticClass: "small-box-footer", attrs: { href: "#" } }, [
-              _vm._v("More info "),
-              _c("i", { staticClass: "fas fa-arrow-circle-right" })
-            ])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-lg-3 col-6" }, [
-          _c("div", { staticClass: "small-box bg-danger" }, [
-            _c("div", { staticClass: "inner" }, [
-              _c("h3", [_vm._v("1324")]),
-              _vm._v(" "),
-              _c("p", [_vm._v("Revisions")])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "icon" }, [
-              _c("i", { staticClass: "fas fa-comment-alt white" })
-            ]),
-            _vm._v(" "),
-            _c("a", { staticClass: "small-box-footer", attrs: { href: "#" } }, [
-              _vm._v("More info "),
-              _c("i", { staticClass: "fas fa-arrow-circle-right" })
-            ])
-          ])
-        ])
-      ])
+    return _c("div", { staticClass: "icon" }, [
+      _c("i", { staticClass: "fas fa-hourglass-start white" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "icon" }, [
+      _c("i", { staticClass: "fas fa-clock white" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "icon" }, [
+      _c("i", { staticClass: "fas fa-clipboard-list white" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "icon" }, [
+      _c("i", { staticClass: "fas fa-undo white" })
     ])
   },
   function() {
@@ -80674,12 +80784,12 @@ var render = function() {
                           attrs: { type: "button" },
                           on: {
                             click: function($event) {
-                              return _vm.newModal(earn)
+                              return _vm.newModal(earn.user_id)
                             }
                           }
                         },
                         [
-                          _c("i", { staticClass: "fas fa-eye" }),
+                          _c("i", { staticClass: "fab fa-amazon-pay" }),
                           _vm._v(
                             "\n                               Pay\n                                 "
                           )
@@ -80701,7 +80811,7 @@ var render = function() {
       {
         staticClass: "modal fade ",
         attrs: {
-          id: "CommunicationModal",
+          id: "PayModal",
           tabindex: "-1",
           role: "dialog",
           "aria-labelledby": "exampleModalLabel",
@@ -80719,49 +80829,130 @@ var render = function() {
             _c("div", { staticClass: "modal-content" }, [
               _vm._m(1),
               _vm._v(" "),
-              _c("form", [
-                _c("div", { staticClass: "modal-body" }, [
-                  _c(
-                    "div",
-                    { staticClass: "form-group" },
-                    [
-                      _c("label", { attrs: { for: "title" } }, [
-                        _vm._v("Amount")
-                      ]),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.form.amount,
-                            expression: "form.amount"
-                          }
-                        ],
-                        staticClass: "form-control",
-                        class: { "is-invalid": _vm.form.errors.has("amount") },
-                        attrs: { type: "text", name: "amount", id: "amount" },
-                        domProps: { value: _vm.form.amount },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
+              _c(
+                "form",
+                {
+                  on: {
+                    submit: function($event) {
+                      $event.preventDefault()
+                      return _vm.pay()
+                    }
+                  }
+                },
+                [
+                  _c("div", { staticClass: "modal-body" }, [
+                    _c(
+                      "div",
+                      { staticClass: "form-group" },
+                      [
+                        _c("label", { attrs: { for: "amount" } }, [
+                          _vm._v("Amount")
+                        ]),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form.amount,
+                              expression: "form.amount"
                             }
-                            _vm.$set(_vm.form, "amount", $event.target.value)
+                          ],
+                          staticClass: "form-control",
+                          class: {
+                            "is-invalid": _vm.form.errors.has("amount")
+                          },
+                          attrs: { type: "text", name: "amount", id: "amount" },
+                          domProps: { value: _vm.form.amount },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(_vm.form, "amount", $event.target.value)
+                            }
                           }
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("has-error", {
-                        attrs: { form: _vm.form, field: "amount" }
-                      })
-                    ],
-                    1
-                  )
-                ]),
-                _vm._v(" "),
-                _vm._m(2)
-              ])
+                        }),
+                        _vm._v(" "),
+                        _c("has-error", {
+                          attrs: { form: _vm.form, field: "amount" }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "form-group" },
+                      [
+                        _c(
+                          "select",
+                          {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.form.Paymethod,
+                                expression: "form.Paymethod"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            class: {
+                              "is-invalid": _vm.form.errors.has("Paymethod")
+                            },
+                            attrs: { name: "Paymethod", id: "Paymethod" },
+                            on: {
+                              change: function($event) {
+                                var $$selectedVal = Array.prototype.filter
+                                  .call($event.target.options, function(o) {
+                                    return o.selected
+                                  })
+                                  .map(function(o) {
+                                    var val = "_value" in o ? o._value : o.value
+                                    return val
+                                  })
+                                _vm.$set(
+                                  _vm.form,
+                                  "Paymethod",
+                                  $event.target.multiple
+                                    ? $$selectedVal
+                                    : $$selectedVal[0]
+                                )
+                              }
+                            }
+                          },
+                          [
+                            _c(
+                              "option",
+                              { attrs: { selected: "", value: "" } },
+                              [_vm._v("--Select payment Method--")]
+                            ),
+                            _vm._v(" "),
+                            _c("option", { attrs: { value: "mpesa" } }, [
+                              _vm._v("Mpesa")
+                            ]),
+                            _vm._v(" "),
+                            _c("option", { attrs: { value: "bank account" } }, [
+                              _vm._v("Bank Account")
+                            ]),
+                            _vm._v(" "),
+                            _c("option", { attrs: { value: "cash" } }, [
+                              _vm._v("Cash")
+                            ])
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c("has-error", {
+                          attrs: { form: _vm.form, field: "Paymethod" }
+                        })
+                      ],
+                      1
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _vm._m(2)
+                ]
+              )
             ])
           ]
         )
@@ -80791,7 +80982,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "modal-header" }, [
-      _c("h5", { staticClass: "modal-title" }, [_vm._v("Pay")]),
+      _c("h5", { staticClass: "modal-title" }, [_vm._v("Make Payment")]),
       _vm._v(" "),
       _c(
         "button",
@@ -80812,6 +81003,12 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "modal-footer" }, [
+      _c(
+        "button",
+        { staticClass: "btn btn-success", attrs: { type: "submit" } },
+        [_c("i", { staticClass: "fab fa-amazon-pay" })]
+      ),
+      _vm._v(" "),
       _c(
         "button",
         {
@@ -81258,14 +81455,14 @@ var render = function() {
     _c(
       "div",
       { staticClass: "row mt-4" },
-      _vm._l(_vm.users.data, function(user) {
+      _vm._l(_vm.users, function(user) {
         return _c("div", { key: user.id, staticClass: "col-md-4 " }, [
           _c("div", { staticClass: "card hovercard" }, [
             _c("div", { staticClass: "cardheader" }),
             _vm._v(" "),
             _c("div", { staticClass: "avatar" }, [
               _c("img", {
-                attrs: { alt: "", src: _vm.getProfilePhoto(user.photo) }
+                attrs: { alt: "", src: _vm.getProfilePhoto(user["photo"]) }
               })
             ]),
             _vm._v(" "),
@@ -81278,9 +81475,9 @@ var render = function() {
                     attrs: {
                       increment: 0.5,
                       "read-only": true,
-                      "star-size": 30
-                    },
-                    on: { "rating-selected": _vm.setRating }
+                      "star-size": 30,
+                      rating: user["total_rating"]
+                    }
                   })
                 ],
                 1
@@ -81288,19 +81485,61 @@ var render = function() {
               _vm._v(" "),
               _c("h2", [
                 _c("div", { staticClass: "title" }, [
-                  _c("a", [_vm._v(_vm._s(user.name))])
+                  _c("a", [_vm._v(_vm._s(user["level"]))])
                 ])
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "desc" }, [
-                _c("b", [_vm._v(_vm._s(user.email))])
+              _c("div", { staticClass: "title" }, [
+                _c("a", [_vm._v(_vm._s(user["name"]))])
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "desc" }, [
-                _c("b", [_vm._v(_vm._s(user.phone_number))])
+                _c("b", [_vm._v(_vm._s(user["email"]))])
               ]),
               _vm._v(" "),
-              _vm._m(0, true)
+              _c("div", { staticClass: "desc" }, [
+                _c("b", [_vm._v(_vm._s(user["phone"]))])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "card-footer" }, [
+                _c("div", { staticClass: "row" }, [
+                  _c("div", { staticClass: "col-sm-4 border-right" }, [
+                    _c("div", { staticClass: "description-block" }, [
+                      _c("h5", { staticClass: "description-header" }, [
+                        _vm._v(_vm._s(user["finished"]))
+                      ]),
+                      _vm._v(" "),
+                      _c("span", { staticClass: "description-text" }, [
+                        _vm._v("finished")
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-sm-4 border-right" }, [
+                    _c("div", { staticClass: "description-block" }, [
+                      _c("h5", { staticClass: "description-header" }, [
+                        _vm._v(_vm._s(user["uncompleted"]))
+                      ]),
+                      _vm._v(" "),
+                      _c("span", { staticClass: "description-text" }, [
+                        _vm._v("Not Finished")
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-sm-4" }, [
+                    _c("div", { staticClass: "description-block" }, [
+                      _c("h5", { staticClass: "description-header" }, [
+                        _vm._v(_vm._s(user["review"]))
+                      ]),
+                      _vm._v(" "),
+                      _c("span", { staticClass: "description-text" }, [
+                        _vm._v("Reviews")
+                      ])
+                    ])
+                  ])
+                ])
+              ])
             ])
           ])
         ])
@@ -81309,44 +81548,7 @@ var render = function() {
     )
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-footer" }, [
-      _c("div", { staticClass: "row" }, [
-        _c("div", { staticClass: "col-sm-4 border-right" }, [
-          _c("div", { staticClass: "description-block" }, [
-            _c("h5", { staticClass: "description-header" }, [_vm._v("200")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "description-text" }, [
-              _vm._v("Finished")
-            ])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-sm-4 border-right" }, [
-          _c("div", { staticClass: "description-block" }, [
-            _c("h5", { staticClass: "description-header" }, [_vm._v("10")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "description-text" }, [
-              _vm._v("Not Finished")
-            ])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-sm-4" }, [
-          _c("div", { staticClass: "description-block" }, [
-            _c("h5", { staticClass: "description-header" }, [_vm._v("35")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "description-text" }, [_vm._v("Reviews")])
-          ])
-        ])
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -101568,8 +101770,8 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 window.Pusher = __webpack_require__(/*! pusher-js */ "./node_modules/pusher-js/dist/web/pusher.js");
 window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
   broadcaster: 'pusher',
-  key: "",
-  cluster: "mt1",
+  key: "2dd403e5b2da16c3ed2c",
+  cluster: "ap2",
   encrypted: true
 });
 
@@ -103204,8 +103406,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\mihz\Desktop\political\writer-Management - Copy (2)\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\mihz\Desktop\political\writer-Management - Copy (2)\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\xampp\htdocs\Writing-Management\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\Writing-Management\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

@@ -39,7 +39,7 @@ Route::post('uploadedited/{orderId}', 'API\MoreOrdersController@uploadEdited');
 Route::get('getcompleted/{orderId}', 'API\MoreOrdersController@getCompletedFiles');
 Route::get('getedited/{orderId}', 'API\MoreOrdersController@getEditedFiles');
 
-Route::get('MyWriters','API\UserController@profiles');
+Route::get('MyWriters','API\RatingController@index');
 
 Route::apiResources(['category' => 'API\WriterCategoryController']);
 
@@ -78,5 +78,7 @@ Route::get('earnings','API\PaymentController@index');
 Route::get('myearnings/{userId}','API\PaymentController@myearnings');
 
 Route::post('fine','API\WalletTransactionsController@fine');
+Route::post('pay','API\WalletTransactionsController@pay');
 
 Route::get('getLevel','API\UserController@getLevel');
+Route::get('dashboard','API\DashboardController@index');
