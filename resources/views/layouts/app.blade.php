@@ -128,7 +128,7 @@
                 <div class="container">
                     <div class="row animate-box">
                         <div class="col-md-8 col-md-offset-2 text-center fh5co-heading">
-                            <h2>Lets Get Started</h2>
+                            <h2>Join And Be An Expert</h2>
                             <p>Dignissimos asperiores vitae velit veniam totam fuga molestias accusamus alias autem provident. Odit ab aliquam dolor eius.</p>
                         </div>
                     </div>
