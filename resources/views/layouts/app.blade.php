@@ -1,43 +1,84 @@
-<!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<!DOCTYPE html>
+<html lang="en">
 
-    <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Writter</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <meta name="description" content="Free HTML5 Website Template by freehtml5.co" />
+            <meta name="keywords" content="responsive" />
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+            <!-- Facebook and Twitter integration -->
+            <meta property="og:title" content=""/>
+            <meta property="og:image" content=""/>
+            <meta property="og:url" content=""/>
+            <meta property="og:site_name" content=""/>
+            <meta property="og:description" content=""/>
+            <meta name="twitter:title" content="" />
+            <meta name="twitter:image" content="" />
+            <meta name="twitter:url" content="" />
+            <meta name="twitter:card" content="" />
 
-    <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+            <link href="https://fonts.googleapis.com/css?family=Work+Sans:300,400,500,700,800" rel="stylesheet">
 
-    <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-</head>
-<body>
-    <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-            <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
-                </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+            <!-- Animate.css -->
+            <!--<link rel="stylesheet" href="{{ URL::asset('css/animate.css') }}c">-->
+            <!-- Icomoon Icon Fonts-->
+            <link rel="stylesheet" href="{{ URL::asset('front/css/icomoon.css') }}">
+            <!-- Bootstrap  -->
+            <link rel="stylesheet" href="{{ URL::asset('front/css/bootstrap.css') }}">
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav mr-auto">
+            <!-- Owl Carousel  -->
+            <link rel="stylesheet" href="{{ URL::asset('front/css/owl.carousel.min.css') }}">
+            <link rel="stylesheet" href="{{ URL::asset('front/css/owl.theme.default.min.css') }}">
 
-                    </ul>
+            <!-- Theme style  -->
+            <link rel="stylesheet" href="{{ URL::asset('front/css/style.css') }}">
 
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ml-auto">
+            <!-- Modernizr JS -->
+            <!--<script src="{{ URL::asset('js/modernizr-2.6.2.min.js') }}"></script>-->
+            <!-- FOR IE9 below -->
+            <!--[if lt IE 9]>
+            <script src="js/respond.min.js"></script>
+            <![endif]-->
+
+    </head>
+
+
+    <body>
+
+        <div class="fh5co-loader"></div>
+
+        <div id="page">
+
+            <nav class="fh5co-nav" role="navigation">
+           
+                <div class="top-menu">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-xs-2">
+                                <div id="fh5co-logo"><a href="index.html">Smart<span>.Writters</span></a></div>
+                            </div>
+                            <div class="col-xs-10 text-right menu-1">
+                                <ul>
+                                    <!-- <li class="active"><a href="index.html">Home</a></li> -->
+                                    <li><a href="{{URL::to('/')}}">Home</a></li>
+                                    <li><a href="{{URL::to('/about')}}">About</a></li>
+                                    <li class="has-dropdown">
+                                        <a href="{{URL::to('/services')}}">Services</a>
+<!--                                        <ul class="dropdown">
+                                            <li><a href="#">Web Design</a></li>
+                                            <li><a href="#">eCommerce</a></li>
+                                            <li><a href="#">Branding</a></li>
+                                            <li><a href="#">API</a></li>
+                                        </ul>-->
+                                    </li>
+                                    <li><a href="{{URL::to('/contact')}}">Contact</a></li>
+                                    <!--<li class="btn-cta"><a href="#"><span>Login</span></a></li>-->
+
+
                         <!-- Authentication Links -->
                         @guest
                             <li class="nav-item">
@@ -67,14 +108,106 @@
                                 </div>
                             </li>
                         @endguest
-                    </ul>
-                </div>
-            </div>
-        </nav>
+                   
+                                </ul>
 
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </nav>
+
+            
+
+            
         <main class="py-4">
             @yield('content')
         </main>
-    </div>
+   <div id="fh5co-started">
+                <div class="container">
+                    <div class="row animate-box">
+                        <div class="col-md-8 col-md-offset-2 text-center fh5co-heading">
+                            <h2>Lets Get Started</h2>
+                            <p>Dignissimos asperiores vitae velit veniam totam fuga molestias accusamus alias autem provident. Odit ab aliquam dolor eius.</p>
+                        </div>
+                    </div>
+                    <div class="row animate-box">
+                        <div class="col-md-8 col-md-offset-2 text-center">
+                            <p><a href="#" class="btn btn-default btn-lg">Get in Touch</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <footer id="fh5co-footer" role="contentinfo">
+                <div class="container">
+                    <div class="row row-pb-md">
+                        <div class="col-md-4 fh5co-widget">
+                            <h3>A Little About Us.</h3>
+                            <p>Facilis ipsum reprehenderit nemo molestias. Aut cum mollitia reprehenderit. Eos cumque dicta adipisci architecto culpa amet.</p>
+                            <p><a class="btn btn-primary btn-outline with-arrow" href="#">Learn More <i class="icon-arrow-right"></i></a></p>
+                        </div>
+                        <div class="col-md-2 col-sm-4 col-xs-6 col-md-push-1">
+                            <ul class="fh5co-footer-links">
+                                <li><a href="#">About</a></li>
+                                <li><a href="#">Contact</a></li>
+                                <li><a href="#">Terms</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="col-md-2 col-sm-4 col-xs-6 col-md-push-1">
+                            <ul class="fh5co-footer-links">
+                                <li><a href="#">Privacy</a></li>
+                                <li><a href="#">Testimonials</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="col-md-2 col-sm-4 col-xs-6 col-md-push-1">
+                            <ul class="fh5co-footer-links">
+                                <li><a href="#">Teams</a></li>
+                              
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="row copyright">
+                        <div class="col-md-12 text-center">
+                            <p>
+                                 &copy; 2017-<?php echo date("Y"); ?> All Rights Reserved.
+                            </p>
+                            <p>
+                            <ul class="fh5co-social-icons">
+                                <li><a href="#"><i class="icon-twitter"></i></a></li>
+                                <li><a href="#"><i class="icon-facebook"></i></a></li>
+                                <li><a href="#"><i class="icon-linkedin"></i></a></li>
+                                <li><a href="#"><i class="icon-dribbble"></i></a></li>
+                            </ul>
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </footer>
+        </div>
+
+        <div class="gototop js-top">
+            <a href="#" class="js-gotop"><i class="icon-arrow-up"></i></a>
+        </div>
+
+        <!-- jQuery -->
+        <script src="front/js/jquery.min.js"></script>
+        <!-- jQuery Easing -->
+        <script src="front/js/jquery.easing.1.3.js"></script>
+        <!-- Bootstrap -->
+        <script src="front/js/bootstrap.min.js"></script>
+        <!-- Waypoints -->
+        <script src="front/js/jquery.waypoints.min.js"></script>
+        <!-- Stellar Parallax -->
+        <script src="front/js/jquery.stellar.min.js"></script>
+        <!-- Carousel -->
+        <script src="front/js/owl.carousel.min.js"></script>
+        <!-- Main -->
+        <script src="front/js/main.js"></script>
 </body>
 </html>

@@ -1,8 +1,8 @@
-@extends('layouts.master')
+@extends('layouts.app')
 
 @section('content')
 
-<header id="fh5co-header" class="fh5co-cover fh5co-cover-sm" role="banner" style="background-image:url(images/img_bg_2.jpg);">
+<header id="fh5co-header" class="fh5co-cover fh5co-cover-sm" role="banner" style="background-image:url(front/images/img_bg_2.jpg);">
     <div class="overlay"></div>
     <div class="container">
         <div class="row">
@@ -10,7 +10,6 @@
                 <div class="display-t">
                     <div class="display-tc animate-box" data-animate-effect="fadeIn">
                         <h1>Services</h1>
-                        <h2>This is developed by <a href="http://sonusindhu.com" target="_blank">Sonu Sindhu</a></h2>
                     </div>
                 </div>
             </div>

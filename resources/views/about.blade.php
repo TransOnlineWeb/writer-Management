@@ -1,9 +1,9 @@
-@extends('layouts.master')
+@extends('layouts.app')
 
 @section('content')
 
 
-<header id="fh5co-header" class="fh5co-cover fh5co-cover-sm" role="banner" style="background-image:url(images/img_bg_2.jpg);" data-stellar-background-ratio="0.5">
+<header id="fh5co-header" class="fh5co-cover fh5co-cover-sm" role="banner" style="background-image:url(front/images/img_bg_2.jpg);" data-stellar-background-ratio="0.5">
 		<div class="overlay"></div>
 		<div class="container">
 			<div class="row">
@@ -11,7 +11,7 @@
 					<div class="display-t">
 						<div class="display-tc animate-box" data-animate-effect="fadeIn">
 							<h1>About Us</h1>
-							<h2>This is developed by <a href="http://sonusindhu.com" target="_blank">Sonu Sindhu</a></h2>
+							
 						</div>
 					</div>
 				</div>
@@ -25,7 +25,7 @@
 			<div class="about-content">
 				<div class="row animate-box">
 					<div class="col-md-6 col-md-push-6">
-						<img class="img-responsive" src="images/img_bg_1.jpg" alt="about">
+						<img class="img-responsive" src="front/images/img_bg_1.jpg" alt="about">
 					</div>
 					<div class="col-md-6 col-md-pull-6">
 						<div class="desc">
@@ -55,7 +55,7 @@
 			<div class="row">
 				<div class="col-md-4 col-sm-4 animate-box" data-animate-effect="fadeIn">
 					<div class="fh5co-staff">
-						<img src="images/person_1.jpg" alt="Free HTML5 Templates by gettemplates.co">
+						<img src="front/images/person_1.jpg" alt="Free HTML5 Templates by gettemplates.co">
 						<h3>Jean Smith</h3>
 						<strong class="role">Web Designer</strong>
 						<p>Quos quia provident consequuntur culpa facere ratione maxime commodi voluptates id repellat velit eaque aspernatur expedita. Possimus itaque adipisci.</p>
@@ -69,7 +69,7 @@
 				</div>
 				<div class="col-md-4 col-sm-4 animate-box" data-animate-effect="fadeIn">
 					<div class="fh5co-staff">
-						<img src="images/person_2.jpg" alt="Free HTML5 Templates by gettemplates.co">
+						<img src="front/images/person_2.jpg" alt="Free HTML5 Templates by gettemplates.co">
 						<h3>Hush Raven</h3>
 						<strong class="role">Front-end Developer</strong>
 						<p>Quos quia provident consequuntur culpa facere ratione maxime commodi voluptates id repellat velit eaque aspernatur expedita. Possimus itaque adipisci.</p>
@@ -83,7 +83,7 @@
 				</div>
 				<div class="col-md-4 col-sm-4 animate-box" data-animate-effect="fadeIn">
 					<div class="fh5co-staff">
-						<img src="images/person_3.jpg" alt="Free HTML5 Templates by gettemplates.co">
+						<img src="front/images/person_3.jpg" alt="Free HTML5 Templates by gettemplates.co">
 						<h3>Alex King</h3>
 						<strong class="role">Back-end Developer</strong>
 						<p>Quos quia provident consequuntur culpa facere ratione maxime commodi voluptates id repellat velit eaque aspernatur expedita. Possimus itaque adipisci.</p>
