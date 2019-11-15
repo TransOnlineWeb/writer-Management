@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Order;
 use App\Rating;
 use Illuminate\Http\Request;
+use App\User;
 
 class RatingController extends Controller
 {
@@ -15,7 +17,33 @@ class RatingController extends Controller
      */
     public function index()
     {
-        //
+        $ratings = User::where('role','writer')->get();
+        $rates = array();
+        foreach ($ratings as $rating){
+            $name = $rating['name'];
+            $email = $rating['email'];
+            $photo = $rating['photo'];
+            $level = $rating['level_id'];
+            $phone = $rating['phone_number'];
+            $review = Rating::where('user_id',$rating['id'])->count();
+            $finished = Order::where('assigned_user_id',$rating['id'])->where('completed_time', Null)->count();
+            $uncompleted = Order::where('assigned_user_id',$rating['id'])->where('completed_time', !Null)->count();
+            $myratings = Rating::where('user_id',$rating['id'])->get();
+            $total_rating = collect($myratings)->sum('rating');
+            $rate = array(
+                'name'=> $name,
+                'email'=>$email,
+                'phone'=>$phone,
+                'photo'=>$photo,
+                'level'=>$level,
+                'review' => $review,
+                'finished' => $finished,
+                'uncompleted' => $uncompleted,
+                'total_rating' => $total_rating,
+            );
+            array_push($rates,$rate);
+    }
+        return ['rating'=>$rate];
     }
 
     public function getRate($orderId)

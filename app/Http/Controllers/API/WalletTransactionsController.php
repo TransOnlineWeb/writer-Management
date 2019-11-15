@@ -99,7 +99,25 @@ class WalletTransactionsController extends Controller
     {
         //
     }
+    public function pay(Request $request){
+     $request->validate([
+            'amount'=> 'required',
+            'Paymethod' => 'required',
+        ]);
+     $myWallet = Wallet::WHERE('user_id',$request->id)->first();
+     $wallet = Wallet::findOrFail($myWallet['id']);
+     $wallet->amount = $myWallet['amount'] - $request->amount;
+     $wallet->save();
 
+     $transaction = new WalletTransaction();
+     $transaction -> user_id = $request->id;
+     $transaction -> Payment_method = $request->Paymethod;
+     $transaction -> amount = $request->amount;
+     $transaction -> type = 2;
+     $transaction-> save();
+
+        return response(['status' => 'success'], 200);
+    }
     public function fine(Request $request)
     {
         $request->validate([

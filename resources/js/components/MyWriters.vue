@@ -227,34 +227,34 @@
 <template>
     <div class="container-fluid">
         <div class="row mt-4">
-            <div class="col-md-4 " v-for="user in users.data" :key="user.id">
+            <div class="col-md-4 " v-for="user in users" :key="user.id">
 
                 <div class="card hovercard">
                     <div class="cardheader">
                     </div>
                     <div class="avatar">
-                        <img alt=""  :src="getProfilePhoto(user.photo)">
+                        <img alt=""  :src="getProfilePhoto(user['photo'])">
                     </div>
                     <div class="info">
                         <div class="row justify-content-center">
-                            <star-rating v-bind:increment="0.5" :read-only="true" v-bind:star-size="30" @rating-selected ="setRating"></star-rating>
+                            <star-rating v-bind:increment="0.5" :read-only="true" v-bind:star-size="30" ></star-rating>
                         </div>
-                        <h2><div class="title"><a>{{user.name}}</a></div></h2>
-                        <div class="desc"><b>{{user.email}}</b></div>
-                        <div class="desc"><b>{{user.phone_number}}</b></div>
+                        <h2><div class="title"><a>{{user['name']}}</a></div></h2>
+                        <div class="desc"><b>{{user['email']}}</b></div>
+                        <div class="desc"><b>{{user['phone']}}</b></div>
                         <div class="card-footer">
                             <div class="row">
                                 <div class="col-sm-4 border-right">
                                     <div class="description-block">
-                                        <h5 class="description-header">200</h5>
-                                        <span class="description-text">Finished</span>
+                                        <h5 class="description-header">{{user['finished']}}</h5>
+                                        <span class="description-text">finished</span>
                                     </div>
                                     <!-- /.description-block -->
                                 </div>
                                 <!-- /.col -->
                                 <div class="col-sm-4 border-right">
                                     <div class="description-block">
-                                        <h5 class="description-header">10</h5>
+                                        <h5 class="description-header">{{user['uncompleted']}}</h5>
                                         <span class="description-text">Not Finished</span>
                                     </div>
                                     <!-- /.description-block -->
@@ -262,7 +262,7 @@
                                 <!-- /.col -->
                                 <div class="col-sm-4">
                                     <div class="description-block">
-                                        <h5 class="description-header">35</h5>
+                                        <h5 class="description-header">{{user['review']}}</h5>
                                         <span class="description-text">Reviews</span>
                                     </div>
                                     <!-- /.description-block -->
@@ -299,7 +299,7 @@
                     });
             },
             loadUsers() {
-                axios.get("api/MyWriters").then(({data}) => (this.users = data));
+                axios.get("api/MyWriters").then(({data}) => (this.users = data['rating']));
             },
             getProfilePhoto(img) {
                 let photo = "img/profile/" + img;
