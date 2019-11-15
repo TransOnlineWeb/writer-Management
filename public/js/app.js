@@ -2487,7 +2487,7 @@ __webpack_require__.r(__webpack_exports__);
       this.form.put('/api/Announcement/' + this.form.id).then(function () {
         Fire.$emit('AfterCreate');
         $('#CommunicationModal').modal('hide');
-        swal.fire('Updated!', 'The message has been updated.', 'success');
+        Swal.fire('Updated!', 'The message has been updated.', 'success');
         his.$Progress.finish();
       })["catch"](function () {
         _this.$Progress.fail();
@@ -2507,7 +2507,7 @@ __webpack_require__.r(__webpack_exports__);
     deleteMessage: function deleteMessage(id) {
       var _this2 = this;
 
-      swal.fire({
+      Swal.fire({
         title: 'Are you sure?',
         text: "You won't be able to revert this!",
         type: 'warning',
@@ -2518,10 +2518,10 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (result) {
         if (result.value) {
           _this2.form["delete"]('api/Announcement/' + id).then(function () {
-            swal.fire('Deleted!', 'Your file has been deleted.', 'success');
+            Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
             Fire.$emit('AfterCreate');
           })["catch"](function () {
-            swal.fire('Failed!', 'An error occurred.', 'warning');
+            Swal.fire('Failed!', 'An error occurred.', 'warning');
           });
         }
       });
@@ -3147,6 +3147,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    user: {
+      type: Object,
+      required: true
+    }
+  },
   data: function data() {
     return {
       walletBalance: '',
@@ -3157,17 +3163,26 @@ __webpack_require__.r(__webpack_exports__);
     getDashboard: function getDashboard() {
       var _this = this;
 
-      axios.get("api/dashboard").then(function (_ref) {
-        var data = _ref.data;
-        return [_this.dash = data['data']];
-      });
+      if (this.$gate.isAdminOrisEditor()) {
+        axios.get("api/dashboard").then(function (_ref) {
+          var data = _ref.data;
+          return [_this.dash = data['data']];
+        });
+      }
+
+      if (this.$gate.isWriter()) {
+        axios.get("api/myDashboard/" + this.user.id).then(function (_ref2) {
+          var data = _ref2.data;
+          return [_this.dash = data['data']];
+        });
+      }
     },
     getWalletBalance: function getWalletBalance() {
       var _this2 = this;
 
       if (this.$gate.isWriter()) {
-        axios.get('api/wallet/').then(function (_ref2) {
-          var data = _ref2.data;
+        axios.get('api/wallet/').then(function (_ref3) {
+          var data = _ref3.data;
           return [_this2.walletBalance = data];
         });
       }
@@ -80428,7 +80443,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
-    _vm.$gate.isAdmin()
+    _vm.$gate.isAdminOrisEditor()
       ? _c("div", { staticClass: "row justify-content-center" }, [
           _c("div", { staticClass: "col-md-12" }, [
             _c("div", { staticClass: "row mt-5" }, [
@@ -80564,7 +80579,7 @@ var render = function() {
                     _c("div", { staticClass: "inner" }, [
                       _c("h4", [
                         _vm._v(
-                          "Ksh. " + _vm._s(Math.trunc(_vm.walletBalance.amount))
+                          "Ksh." + _vm._s(Math.trunc(_vm.walletBalance.amount))
                         )
                       ]),
                       _vm._v(" "),
@@ -80589,11 +80604,92 @@ var render = function() {
                 )
               ]),
               _vm._v(" "),
-              _vm._m(5),
+              _c("div", { staticClass: "col-lg-3 col-6" }, [
+                _c(
+                  "div",
+                  { staticClass: "small-box bg-success" },
+                  [
+                    _c("div", { staticClass: "inner" }, [
+                      _c("h4", [_vm._v(_vm._s(_vm.dash["active"]))]),
+                      _vm._v(" "),
+                      _c("p", [_vm._v("Active orders")])
+                    ]),
+                    _vm._v(" "),
+                    _vm._m(5),
+                    _vm._v(" "),
+                    _c(
+                      "router-link",
+                      {
+                        staticClass: "small-box-footer",
+                        attrs: { to: "/myorder" }
+                      },
+                      [
+                        _vm._v("More info "),
+                        _c("i", { staticClass: "fas fa-arrow-circle-right" })
+                      ]
+                    )
+                  ],
+                  1
+                )
+              ]),
               _vm._v(" "),
-              _vm._m(6),
+              _c("div", { staticClass: "col-lg-3 col-6" }, [
+                _c(
+                  "div",
+                  { staticClass: "small-box bg-warning" },
+                  [
+                    _c("div", { staticClass: "inner" }, [
+                      _c("h4", [_vm._v(_vm._s(_vm.dash["completed"]))]),
+                      _vm._v(" "),
+                      _c("p", [_vm._v("Completed orders")])
+                    ]),
+                    _vm._v(" "),
+                    _vm._m(6),
+                    _vm._v(" "),
+                    _c(
+                      "router-link",
+                      {
+                        staticClass: "small-box-footer",
+                        attrs: { to: "/myorder" }
+                      },
+                      [
+                        _vm._v("More info "),
+                        _c("i", { staticClass: "fas fa-arrow-circle-right" })
+                      ]
+                    )
+                  ],
+                  1
+                )
+              ]),
               _vm._v(" "),
-              _vm._m(7)
+              _c("div", { staticClass: "col-lg-3 col-6" }, [
+                _c(
+                  "div",
+                  { staticClass: "small-box bg-danger" },
+                  [
+                    _c("div", { staticClass: "inner" }, [
+                      _c("h4", [_vm._v(_vm._s(_vm.dash["revision"]))]),
+                      _vm._v(" "),
+                      _c("p", [_vm._v("Revisions")])
+                    ]),
+                    _vm._v(" "),
+                    _vm._m(7),
+                    _vm._v(" "),
+                    _c(
+                      "router-link",
+                      {
+                        staticClass: "small-box-footer",
+                        attrs: { to: "/myorder" }
+                      },
+                      [
+                        _vm._v("More info "),
+                        _c("i", { staticClass: "fas fa-arrow-circle-right" })
+                      ]
+                    )
+                  ],
+                  1
+                )
+              ])
             ])
           ])
         ])
@@ -80645,69 +80741,24 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-lg-3 col-6" }, [
-      _c("div", { staticClass: "small-box bg-success" }, [
-        _c("div", { staticClass: "inner" }, [
-          _c("h3", [_vm._v("112")]),
-          _vm._v(" "),
-          _c("p", [_vm._v("Active orders")])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "icon" }, [
-          _c("i", { staticClass: "fas fa-clock white" })
-        ]),
-        _vm._v(" "),
-        _c("a", { staticClass: "small-box-footer", attrs: { href: "#" } }, [
-          _vm._v("More info "),
-          _c("i", { staticClass: "fas fa-arrow-circle-right" })
-        ])
-      ])
+    return _c("div", { staticClass: "icon" }, [
+      _c("i", { staticClass: "fas fa-clock white" })
     ])
   },
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-lg-3 col-6" }, [
-      _c("div", { staticClass: "small-box bg-warning" }, [
-        _c("div", { staticClass: "inner" }, [
-          _c("h3", [_vm._v("1342")]),
-          _vm._v(" "),
-          _c("p", [_vm._v("Completed orders")])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "icon" }, [
-          _c("i", { staticClass: "fas fa-clipboard-list white" })
-        ]),
-        _vm._v(" "),
-        _c("a", { staticClass: "small-box-footer", attrs: { href: "#" } }, [
-          _vm._v("More info "),
-          _c("i", { staticClass: "fas fa-arrow-circle-right" })
-        ])
-      ])
+    return _c("div", { staticClass: "icon" }, [
+      _c("i", { staticClass: "fas fa-clipboard-list white" })
     ])
   },
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-lg-3 col-6" }, [
-      _c("div", { staticClass: "small-box bg-danger" }, [
-        _c("div", { staticClass: "inner" }, [
-          _c("h3", [_vm._v("1324")]),
-          _vm._v(" "),
-          _c("p", [_vm._v("Revisions")])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "icon" }, [
-          _c("i", { staticClass: "fas fa-comment-alt white" })
-        ]),
-        _vm._v(" "),
-        _c("a", { staticClass: "small-box-footer", attrs: { href: "#" } }, [
-          _vm._v("More info "),
-          _c("i", { staticClass: "fas fa-arrow-circle-right" })
-        ])
-      ])
+    return _c("div", { staticClass: "icon" }, [
+      _c("i", { staticClass: "fas fa-undo white" })
     ])
   }
 ]

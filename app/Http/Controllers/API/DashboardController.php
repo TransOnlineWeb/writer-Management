@@ -27,7 +27,17 @@ class DashboardController extends Controller
         );
         return['data'=>$data];
     }
-
+    public function myDashboard($id){
+        $completed = Order::Where('status',5)->where('assigned_user_id',$id)->count();
+        $revision = Order::where('status',4)->where('assigned_user_id',$id)->count();
+        $active  = Order::where('status',1)->where('assigned_user_id',$id)->count();
+        $data = array(
+            'completed'=>$completed,
+            'revision'=>$revision,
+            'active'=>$active,
+        );
+        return['data'=>$data];
+    }
     /**
      * Store a newly created resource in storage.
      *

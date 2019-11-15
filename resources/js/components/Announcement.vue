@@ -125,7 +125,7 @@
                 this.form.put('/api/Announcement/' + this.form.id).then(() => {
                     Fire.$emit('AfterCreate');
                     $('#CommunicationModal').modal('hide');
-                    swal.fire(
+                    Swal.fire(
                         'Updated!',
                         'The message has been updated.',
                         'success'
@@ -147,7 +147,7 @@
                 this.form.fill(mes);
             },
             deleteMessage(id) {
-                swal.fire({
+                Swal.fire({
                     title: 'Are you sure?',
                     text: "You won't be able to revert this!",
                     type: 'warning',
@@ -158,7 +158,7 @@
                 }).then((result) => {
                     if (result.value) {
                         this.form.delete('api/Announcement/' + id).then(() => {
-                            swal.fire(
+                            Swal.fire(
                                 'Deleted!',
                                 'Your file has been deleted.',
                                 'success'
@@ -166,7 +166,7 @@
                             Fire.$emit('AfterCreate');
 
                         }).catch(() => {
-                            swal.fire(
+                            Swal.fire(
                                 'Failed!',
                                 'An error occurred.',
                                 'warning'

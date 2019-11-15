@@ -127,34 +127,26 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     </li>
                     @can('isAdmin')
                         <li class="nav-item">
-                            <router-link to="/users" class="nav-link">
-                                <i class="nav-icon fas fa-users yellow"></i>
-                                <p>
-                                    Users
-                                </p>
-                            </router-link>
-                        </li>
-                        <li class="nav-item">
-                            <router-link to="/order" class="nav-link">
-                                <i class="nav-icon fas fa-cogs"></i>
-                                <p>
-                                    Order
-                                </p>
-                            </router-link>
-                        </li>
-                        <li class="nav-item">
                             <router-link to="/category" class="nav-link">
-                                <i class="nav-icon fas fa-cogs"></i>
+                                <i class="nav-icon fas fa-th-list white"></i>
                                 <p>
                                     Writers' Category
                                 </p>
                             </router-link>
                         </li>
                         <li class="nav-item">
-                            <router-link to="/MyWriters" class="nav-link">
-                                <i class="nav-icon fas fa-user-tie teal"></i>
+                            <router-link to="/order" class="nav-link">
+                                <i class="nav-icon fas fa-folder-open orange"></i>
                                 <p>
-                                    MyWriters
+                                    Order
+                                </p>
+                            </router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link to="/earnings" class="nav-link">
+                                <i class="nav-icon fas fa-wallet indigo"></i>
+                                <p>
+                                    Earnings
                                 </p>
                             </router-link>
                         </li>
@@ -167,10 +159,18 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             </router-link>
                         </li>
                         <li class="nav-item">
-                            <router-link to="/earnings" class="nav-link">
-                                <i class="nav-icon fas fa-wallet indigo"></i>
+                            <router-link to="/users" class="nav-link">
+                                <i class="nav-icon fas fa-users yellow"></i>
                                 <p>
-                                    Earnings
+                                    Users
+                                </p>
+                            </router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link to="/MyWriters" class="nav-link">
+                                <i class="nav-icon fas fa-user-tie teal"></i>
+                                <p>
+                                    MyWriters
                                 </p>
                             </router-link>
                         </li>
@@ -178,7 +178,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     @can('isWriter')
                         <li class="nav-item">
                             <router-link to="/myorder" class="nav-link">
-                                <i class="nav-icon fas fa-cogs"></i>
+                                <i class="nav-icon fas fa-shopping-basket teal"></i>
                                 <p>
                                     My Orders
                                 </p>
@@ -186,7 +186,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         </li>
                         <li class="nav-item">
                             <router-link to="/Writer" class="nav-link">
-                                <i class="nav-icon fas fa-cogs"></i>
+                                <i class="nav-icon fas fa-sign-in-alt white"></i>
                                 <p>
                                     New Orders
                                 </p>
@@ -196,7 +196,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     @can('isEditor')
                         <li class="nav-item">
                             <router-link to="/order" class="nav-link">
-                                <i class="nav-icon fas fa-cogs"></i>
+                                <i class="nav-icon fas fa-folder-open teal"></i>
                                 <p>
                                     Order
                                 </p>
