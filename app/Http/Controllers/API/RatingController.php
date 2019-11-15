@@ -26,10 +26,10 @@ class RatingController extends Controller
             $level = $rating['level_id'];
             $phone = $rating['phone_number'];
             $review = Rating::where('user_id',$rating['id'])->count();
-            $finished = Order::where('assigned_user_id',$rating['id'])->where('completed_time', Null)->count();
-            $uncompleted = Order::where('assigned_user_id',$rating['id'])->where('completed_time', !Null)->count();
+            $finished = Order::where('assigned_user_id',$rating['id'])->where('completed_time', '!=', '')->count();
+            $uncompleted = Order::where('assigned_user_id',$rating['id'])->where('completed_time', Null)->count();
             $myratings = Rating::where('user_id',$rating['id'])->get();
-            $total_rating = collect($myratings)->sum('rating');
+            $total_rating = collect($myratings)->avg('rating');
             $rate = array(
                 'name'=> $name,
                 'email'=>$email,
@@ -43,7 +43,7 @@ class RatingController extends Controller
             );
             array_push($rates,$rate);
     }
-        return ['rating'=>$rate];
+        return ['rate'=>$rates];
     }
 
     public function getRate($orderId)

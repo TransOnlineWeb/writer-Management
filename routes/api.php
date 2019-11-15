@@ -35,7 +35,9 @@ Route::get('download/{orderId}', 'API\MoreOrdersController@downloadFile');
 Route::post('addfiles/{orderId}', 'API\MoreOrdersController@addFiles');
 Route::get('getwriters', 'API\MoreOrdersController@getWriters');
 Route::post('uploadcomplete/{orderId}', 'API\MoreOrdersController@uploadCompleted');
+Route::post('uploadedited/{orderId}', 'API\MoreOrdersController@uploadEdited');
 Route::get('getcompleted/{orderId}', 'API\MoreOrdersController@getCompletedFiles');
+Route::get('getedited/{orderId}', 'API\MoreOrdersController@getEditedFiles');
 
 Route::get('MyWriters','API\RatingController@index');
 
@@ -47,6 +49,7 @@ Route::get('myRate/{orderId}', 'API\RatingController@getMyRate');
 Route::get('writer/{orderId}', 'API\MoreOrdersController@getWriter');
 Route::get('getcompleted', 'API\MoreOrdersController@getCompleted');
 Route::get('getrevision', 'API\MoreOrdersController@getRevision');
+Route::get('getedited', 'API\MoreOrdersController@getEdited');
 Route::get('wallet', 'API\WalletTransactionsController@walletBalance');
 Route::get('transactions', 'API\WalletTransactionsController@showTransactions');
 
@@ -76,3 +79,5 @@ Route::get('myearnings/{userId}','API\PaymentController@myearnings');
 
 Route::post('fine','API\WalletTransactionsController@fine');
 Route::post('pay','API\WalletTransactionsController@pay');
+
+Route::get('getLevel','API\UserController@getLevel');

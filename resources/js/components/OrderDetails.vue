@@ -203,6 +203,30 @@
                                         </div>
                                     </div>
                                 </div>
+                                <hr>
+                                <div class="box-body" style="padding: 10px;">
+                                    <div class="box" v-if="$gate.isEditor()">
+                                        <div class="box-body">
+                                            <button type="button" class="btn btn-success btn-sm" @click="isEdited">Upload edited task</button>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="margin-top: 10px">
+                                        <div class="col-md-6 col-sm-6 col-xs-12" v-for="edi in edited" :key="edi.id">
+                                            <a @click.prevent="download(com.id, com.path)">
+                                                <div class="info-box">
+                                                    <span class="info-box-icon" style="background-color: #03807a;"><i class="fas fa-download" style="color: white;"></i></span>
+
+                                                    <div class="info-box-content">
+                                                        <span class="info-box-text">Download</span>
+                                                    </div>
+                                                    <!-- /.info-box-content -->
+                                                </div>
+                                            </a>
+                                            <!-- /.info-box -->
+                                        </div>
+                                        <!--                                            <button type="button" class="btn btn-primary" @click="downloadAll">Download all files</button>-->
+                                    </div>
+                                </div>
                                 <div class="box" v-if="$gate.isEditor()">
                                     <div class="box-header">
                                         <h4>Actions</h4>
@@ -250,7 +274,9 @@
             <div class="modal-dialog modal-sm" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Add File(s)</h5>
+<!--                        <h5 class="modal-title">Add File(s)</h5>-->
+                        <h5 class="modal-title" v-if="isEdit">Upload Edited File</h5>
+                        <h5 class="modal-title" v-if="isComplete">Upload Completed File</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -331,8 +357,10 @@
                 typing: '',
                 users : {},
                 isComplete: false,
+                isEdit: false,
                 e_files: '',
                 completed: {},
+                edited: {},
                 messages:[],
                 orderId: this.$route.params.orderId,
                 details: {},
@@ -415,6 +443,10 @@
                     }
                 })
             },
+            isEdited(){
+                this.isEdit = true;
+                this.newModal();
+            },
             isCompleted(){
                 this.isComplete = true;
                 this.newModal();
@@ -486,6 +518,23 @@
                         .catch(response=>{
                             //error
                         });
+                }else if (this.isEdit){
+                    axios.post('/api/uploadedited/' + this.orderId,this.formf,config).then(response=>{
+                        Fire.$emit('entry');
+                        $('#addnew').modal('hide');
+                        this.form.reset();
+                        Swal.fire({
+                            type: 'success',
+                            title: 'Submited!!',
+                            text: 'File(s) uploaded successfully',
+
+                        })
+
+                    })
+                        .catch(response=>{
+                            //error
+                        });
+
                 } else {
                     axios.post('/api/addfiles/' + this.orderId,this.formf,config).then(response=>{
                         Fire.$emit('entry');
@@ -515,6 +564,7 @@
                 console.log(this.attachments);
             },
             newModal(){
+                $("#files").val('');
                 this.form.reset();
                 this.attachments = [];
                 $('#addnew').modal('show');
@@ -577,8 +627,9 @@
                 }
 
             },
-
-
+            getEditedFiles(){
+                axios.get("/api/getedited/" + this.orderId).then(({ data }) => ([this.edited = data]));
+            },
             getCompletedFiles(){
                 axios.get("/api/getcompleted/" + this.orderId).then(({ data }) => ([this.completed = data]));
             },
@@ -611,6 +662,7 @@
         created() {
             this.getDetails();
             this.getFilesCount();
+            this.getEditedFiles();
             this.getMessages();
             this.getFiles();
             this.getWriter();
@@ -623,6 +675,8 @@
                 this.getFiles();
                 this.getFilesCount();
                 this.hasRated();
+                this.getEditedFiles();
+                this.getCompletedFiles();
             })
         }
     }

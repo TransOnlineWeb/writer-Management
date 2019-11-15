@@ -237,7 +237,7 @@
                     </div>
                     <div class="info">
                         <div class="row justify-content-center">
-                            <star-rating v-bind:increment="0.5" :read-only="true" v-bind:star-size="30" ></star-rating>
+                            <star-rating v-bind:increment="0.5" :read-only="true" v-bind:star-size="30" :rating="user['total_rating']" ></star-rating>
                         </div>
                         <h2><div class="title"><a>{{user['name']}}</a></div></h2>
                         <div class="desc"><b>{{user['email']}}</b></div>
@@ -299,7 +299,7 @@
                     });
             },
             loadUsers() {
-                axios.get("api/MyWriters").then(({data}) => (this.users = data['rating']));
+                axios.get("api/MyWriters").then(({data}) => ([this.users = data['rate']]));
             },
             getProfilePhoto(img) {
                 let photo = "img/profile/" + img;
