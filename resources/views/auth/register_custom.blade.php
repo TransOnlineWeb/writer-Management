@@ -86,6 +86,7 @@
                             <div class="form-group form-button">
                                 <input type="submit" name="signup" id="signup" class="form-submit" value="Register"/>
                             </div>
+                            
                         </form>
                     </div>
                     <div class="signup-image">
