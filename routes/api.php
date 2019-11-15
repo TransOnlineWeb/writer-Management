@@ -81,3 +81,4 @@ Route::post('fine','API\WalletTransactionsController@fine');
 Route::post('pay','API\WalletTransactionsController@pay');
 
 Route::get('getLevel','API\UserController@getLevel');
+Route::get('dashboard','API\DashboardController@index');

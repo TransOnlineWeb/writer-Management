@@ -3154,19 +3154,28 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
-    getWalletBalance: function getWalletBalance() {
+    getDashboard: function getDashboard() {
       var _this = this;
 
+      axios.get("api/dashboard").then(function (_ref) {
+        var data = _ref.data;
+        return [_this.dash = data['data']];
+      });
+    },
+    getWalletBalance: function getWalletBalance() {
+      var _this2 = this;
+
       if (this.$gate.isWriter()) {
-        axios.get('api/wallet/').then(function (_ref) {
-          var data = _ref.data;
-          return [_this.walletBalance = data];
+        axios.get('api/wallet/').then(function (_ref2) {
+          var data = _ref2.data;
+          return [_this2.walletBalance = data];
         });
       }
     }
   },
   created: function created() {
     this.getWalletBalance();
+    this.getDashboard();
   }
 });
 
@@ -3611,6 +3620,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
 //
 //
 //
@@ -80419,7 +80429,127 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
     _vm.$gate.isAdmin()
-      ? _c("div", { staticClass: "row justify-content-center" }, [_vm._m(0)])
+      ? _c("div", { staticClass: "row justify-content-center" }, [
+          _c("div", { staticClass: "col-md-12" }, [
+            _c("div", { staticClass: "row mt-5" }, [
+              _c("div", { staticClass: "col-lg-3 col-6" }, [
+                _c(
+                  "div",
+                  { staticClass: "small-box bg-info" },
+                  [
+                    _c("div", { staticClass: "inner" }, [
+                      _c("h3", [_vm._v(_vm._s(_vm.dash["pending"]))]),
+                      _vm._v(" "),
+                      _c("p", [_vm._v("Pending approval")])
+                    ]),
+                    _vm._v(" "),
+                    _vm._m(0),
+                    _vm._v(" "),
+                    _c(
+                      "router-link",
+                      {
+                        staticClass: "small-box-footer",
+                        attrs: { to: "/order" }
+                      },
+                      [
+                        _vm._v("More info "),
+                        _c("i", { staticClass: "fas fa-arrow-circle-right" })
+                      ]
+                    )
+                  ],
+                  1
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-lg-3 col-6" }, [
+                _c(
+                  "div",
+                  { staticClass: "small-box bg-success" },
+                  [
+                    _c("div", { staticClass: "inner" }, [
+                      _c("h3", [_vm._v(_vm._s(_vm.dash["active"]))]),
+                      _vm._v(" "),
+                      _c("p", [_vm._v("Active orders")])
+                    ]),
+                    _vm._v(" "),
+                    _vm._m(1),
+                    _vm._v(" "),
+                    _c(
+                      "router-link",
+                      {
+                        staticClass: "small-box-footer",
+                        attrs: { to: "/order" }
+                      },
+                      [
+                        _vm._v("More info "),
+                        _c("i", { staticClass: "fas fa-arrow-circle-right" })
+                      ]
+                    )
+                  ],
+                  1
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-lg-3 col-6" }, [
+                _c(
+                  "div",
+                  { staticClass: "small-box bg-warning" },
+                  [
+                    _c("div", { staticClass: "inner" }, [
+                      _c("h3", [_vm._v(_vm._s(_vm.dash["completed"]))]),
+                      _vm._v(" "),
+                      _c("p", [_vm._v("Completed orders")])
+                    ]),
+                    _vm._v(" "),
+                    _vm._m(2),
+                    _vm._v(" "),
+                    _c(
+                      "router-link",
+                      {
+                        staticClass: "small-box-footer",
+                        attrs: { to: "/order" }
+                      },
+                      [
+                        _vm._v("More info "),
+                        _c("i", { staticClass: "fas fa-arrow-circle-right" })
+                      ]
+                    )
+                  ],
+                  1
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-lg-3 col-6" }, [
+                _c(
+                  "div",
+                  { staticClass: "small-box bg-danger" },
+                  [
+                    _c("div", { staticClass: "inner" }, [
+                      _c("h3", [_vm._v(_vm._s(_vm.dash["revision"]))]),
+                      _vm._v(" "),
+                      _c("p", [_vm._v("Revisions")])
+                    ]),
+                    _vm._v(" "),
+                    _vm._m(3),
+                    _vm._v(" "),
+                    _c(
+                      "router-link",
+                      {
+                        staticClass: "small-box-footer",
+                        attrs: { to: "/order" }
+                      },
+                      [
+                        _vm._v("More info "),
+                        _c("i", { staticClass: "fas fa-arrow-circle-right" })
+                      ]
+                    )
+                  ],
+                  1
+                )
+              ])
+            ])
+          ])
+        ])
       : _vm._e(),
     _vm._v(" "),
     _vm.$gate.isWriter()
@@ -80441,7 +80571,7 @@ var render = function() {
                       _c("p", [_vm._v("My Wallet")])
                     ]),
                     _vm._v(" "),
-                    _vm._m(1),
+                    _vm._m(4),
                     _vm._v(" "),
                     _c(
                       "router-link",
@@ -80459,11 +80589,11 @@ var render = function() {
                 )
               ]),
               _vm._v(" "),
-              _vm._m(2),
+              _vm._m(5),
               _vm._v(" "),
-              _vm._m(3),
+              _vm._m(6),
               _vm._v(" "),
-              _vm._m(4)
+              _vm._m(7)
             ])
           ])
         ])
@@ -80475,84 +80605,32 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-md-12" }, [
-      _c("div", { staticClass: "row mt-5" }, [
-        _c("div", { staticClass: "col-lg-3 col-6" }, [
-          _c("div", { staticClass: "small-box bg-info" }, [
-            _c("div", { staticClass: "inner" }, [
-              _c("h3", [_vm._v("111")]),
-              _vm._v(" "),
-              _c("p", [_vm._v("Pending approval")])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "icon" }, [
-              _c("i", { staticClass: "fas fa-hourglass-start white" })
-            ]),
-            _vm._v(" "),
-            _c("a", { staticClass: "small-box-footer", attrs: { href: "#" } }, [
-              _vm._v("More info "),
-              _c("i", { staticClass: "fas fa-arrow-circle-right" })
-            ])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-lg-3 col-6" }, [
-          _c("div", { staticClass: "small-box bg-success" }, [
-            _c("div", { staticClass: "inner" }, [
-              _c("h3", [_vm._v("112")]),
-              _vm._v(" "),
-              _c("p", [_vm._v("Active orders")])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "icon" }, [
-              _c("i", { staticClass: "fas fa-clock white" })
-            ]),
-            _vm._v(" "),
-            _c("a", { staticClass: "small-box-footer", attrs: { href: "#" } }, [
-              _vm._v("More info "),
-              _c("i", { staticClass: "fas fa-arrow-circle-right" })
-            ])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-lg-3 col-6" }, [
-          _c("div", { staticClass: "small-box bg-warning" }, [
-            _c("div", { staticClass: "inner" }, [
-              _c("h3", [_vm._v("1342")]),
-              _vm._v(" "),
-              _c("p", [_vm._v("Completed orders")])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "icon" }, [
-              _c("i", { staticClass: "fas fa-clipboard-list white" })
-            ]),
-            _vm._v(" "),
-            _c("a", { staticClass: "small-box-footer", attrs: { href: "#" } }, [
-              _vm._v("More info "),
-              _c("i", { staticClass: "fas fa-arrow-circle-right" })
-            ])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-lg-3 col-6" }, [
-          _c("div", { staticClass: "small-box bg-danger" }, [
-            _c("div", { staticClass: "inner" }, [
-              _c("h3", [_vm._v("1324")]),
-              _vm._v(" "),
-              _c("p", [_vm._v("Revisions")])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "icon" }, [
-              _c("i", { staticClass: "fas fa-comment-alt white" })
-            ]),
-            _vm._v(" "),
-            _c("a", { staticClass: "small-box-footer", attrs: { href: "#" } }, [
-              _vm._v("More info "),
-              _c("i", { staticClass: "fas fa-arrow-circle-right" })
-            ])
-          ])
-        ])
-      ])
+    return _c("div", { staticClass: "icon" }, [
+      _c("i", { staticClass: "fas fa-hourglass-start white" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "icon" }, [
+      _c("i", { staticClass: "fas fa-clock white" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "icon" }, [
+      _c("i", { staticClass: "fas fa-clipboard-list white" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "icon" }, [
+      _c("i", { staticClass: "fas fa-undo white" })
     ])
   },
   function() {
@@ -81407,8 +81485,12 @@ var render = function() {
               _vm._v(" "),
               _c("h2", [
                 _c("div", { staticClass: "title" }, [
-                  _c("a", [_vm._v(_vm._s(user["name"]))])
+                  _c("a", [_vm._v(_vm._s(user["level"]))])
                 ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "title" }, [
+                _c("a", [_vm._v(_vm._s(user["name"]))])
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "desc" }, [

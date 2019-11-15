@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Category;
 use App\Http\Controllers\Controller;
 use App\Order;
 use App\Rating;
@@ -25,6 +26,7 @@ class RatingController extends Controller
             $photo = $rating['photo'];
             $level = $rating['level_id'];
             $phone = $rating['phone_number'];
+            $mylevel = Category::where('id',$level)->value('title');
             $review = Rating::where('user_id',$rating['id'])->count();
             $finished = Order::where('assigned_user_id',$rating['id'])->where('completed_time', '!=', '')->count();
             $uncompleted = Order::where('assigned_user_id',$rating['id'])->where('completed_time', Null)->count();
@@ -35,7 +37,7 @@ class RatingController extends Controller
                 'email'=>$email,
                 'phone'=>$phone,
                 'photo'=>$photo,
-                'level'=>$level,
+                'level'=>$mylevel,
                 'review' => $review,
                 'finished' => $finished,
                 'uncompleted' => $uncompleted,

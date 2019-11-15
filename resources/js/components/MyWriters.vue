@@ -239,7 +239,8 @@
                         <div class="row justify-content-center">
                             <star-rating v-bind:increment="0.5" :read-only="true" v-bind:star-size="30" :rating="user['total_rating']" ></star-rating>
                         </div>
-                        <h2><div class="title"><a>{{user['name']}}</a></div></h2>
+                        <h2><div class="title"><a>{{user['level']}}</a></div></h2>
+                       <div class="title"><a>{{user['name']}}</a></div>
                         <div class="desc"><b>{{user['email']}}</b></div>
                         <div class="desc"><b>{{user['phone']}}</b></div>
                         <div class="card-footer">
