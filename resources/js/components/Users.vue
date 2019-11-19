@@ -9,18 +9,18 @@
 </style>
 <template>
     <div class="container">
-        <div class="row mt-4">
+        <div class="row mt-5">
         <div class="col-md-12">
-          <div class="box">
-            <div class="box-header">
-              <h3 class="box-title">Users</h3>
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Users</h3>
 
-              <div class="box-tools ml-auto">
+              <div class="card-tools ml-auto">
                 <button class="btn btn-success" @click="newUser">Add New User</button>
               </div>
             </div>
             <!-- /.box-header -->
-            <div class="box-body table-responsive no-padding">
+            <div class="card-body table-responsive no-padding">
               <table class="table table-hover">
                 <tbody><tr>
                   <th>ID</th>

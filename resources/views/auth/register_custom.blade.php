@@ -50,21 +50,23 @@
                                 @enderror
                             </div>
 
-                            <div class="form-group">
-                                <label for="role"><i class="zmdi zmdi-lock"></i></label>
-                                <select name="role" id="role" class="form-control @error('role') is-invalid @enderror" value="{{ old('role') }}" required autocomplete="role">
-                                    <option value="writer">Writer</option>
-                                    <option value="editor">Editor</option>
-                                </select>
-
-                                @error('role')
+                            <div class="form-group row">
+                                <label for="role" class="mr-3"><i class="zmdi zmdi-triangle-down"></i></label>
+                                <div class="col-md-6">
+                                    <select name="role" id="role" class="form-control @error('role') is-invalid @enderror" value="{{ old('role') }}" required autocomplete="role">
+                                        <option value="writer">Writer</option>
+                                        <option value="editor">Editor</option>
+                                    </select>
+                                    @error('role')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
-                                @enderror
+                                    @enderror
+                                </div>
+
                             </div>
-                              
-                            
+
+
                             <div class="form-group">
                                 <label for="password"><i class="zmdi zmdi-lock"></i></label>
                                 <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password" placeholder="Password">
@@ -75,7 +77,7 @@
                             @enderror
 
                             </div>
-                             
+
                             <div class="form-group">
                                 <label for="password-confirm"><i class="zmdi zmdi-lock-outline"></i></label>
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password" placeholder="Confirm Password">
@@ -100,7 +102,7 @@
             </div>
         </section>
 
-        
+
 
     </div>
 

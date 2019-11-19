@@ -17,9 +17,23 @@
 
     <div class="main">
 
-       
-                  
-                
+        <div class="flash-message">
+
+            @foreach (['danger', 'warning', 'success', 'info'] as $msg)
+
+                @if(Session::has('alert-' . $msg))
+
+
+
+                    <p class="alert alert-{{ $msg }}">{{ Session::get('alert-' . $msg) }} <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a></p>
+
+                @endif
+
+            @endforeach
+
+        </div> <!-- end .flash-message -->
+
+
 
         <!-- Sing in  Form -->
         <section class="sign-in">
@@ -34,6 +48,14 @@
                         <h2 class="form-title">Sign In</h2>
                         <form method="POST" class="register-form" action="{{ route('login') }}">
                             @csrf
+                            @if(Session::has('message'))
+                                <div class="alert alert-success">
+                                    {{ Session::get('message') }}
+                                    @php
+                                        Session::forget('message');
+                                    @endphp
+                                </div>
+                            @endif
                             <div class="form-group">
                                 <label for="your_Email"><i class="zmdi zmdi-account material-icons-name"></i></label>
                                 <input id="email" type="email" class="form-control @error('email') is-invalid @enderror"
@@ -58,7 +80,7 @@
                             <div class="form-group">
                                 <input type="checkbox" name="remember" id="remember-me" class="form-check-input">
                                 <label for="remember-me" class="label-agree-term">
-                                         
+
                                     <span><span></span></span>Remember me</label>
                             </div>
                             <div class="form-group form-button">
@@ -74,7 +96,7 @@
                             </div>
                         </div>
                         </form>
-                       
+
                     </div>
                 </div>
             </div>

@@ -10,7 +10,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6">
-<!--                                <flip-countdown :deadline="details.deadline"></flip-countdown>-->
+                                <flip-countdown  :deadline="this.deadline"></flip-countdown>
                                 <hr>
                                 <div class="box">
                                     <div class="box-header">
@@ -139,7 +139,7 @@
                                                 </a>
                                                 <!-- /.info-box -->
                                             </div>
-<!--                                            <button type="button" class="btn btn-primary" @click="downloadAll">Download all files</button>-->
+                                            <!--                                            <button type="button" class="btn btn-primary" @click="downloadAll">Download all files</button>-->
                                         </div>
                                     </div>
                                     <div class="alert alert-warning alert-dismissible" v-if="this.filesCount == 0">
@@ -274,7 +274,7 @@
             <div class="modal-dialog modal-sm" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-<!--                        <h5 class="modal-title">Add File(s)</h5>-->
+                        <!--                        <h5 class="modal-title">Add File(s)</h5>-->
                         <h5 class="modal-title" v-if="isEdit">Upload Edited File</h5>
                         <h5 class="modal-title" v-if="isComplete">Upload Completed File</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -346,7 +346,8 @@
             user: {
                 type: Object,
                 required: true
-            }
+            },
+
         },
         data(){
             return{
@@ -354,6 +355,7 @@
                 rated:'',
                 myRate: false,
                 message: '',
+                deadline:'',
                 typing: '',
                 users : {},
                 isComplete: false,
@@ -377,6 +379,8 @@
             }
         },
         mounted() {
+            console.log(this.deadline);
+
             Echo.private(`message.${this.user.id}`)
                 .listen('ChatEvent',(e)=>{
                     this.messages.push(e.message);
@@ -408,7 +412,6 @@
                             type: 'error',
                             title: 'Error!!',
                             text: error.response.data.msg,
-
                         })
                     })
             },
@@ -437,7 +440,6 @@
                                 type: 'error',
                                 title: 'Error!!',
                                 text: error.response.data.msg,
-
                             })
                         });
                     }
@@ -469,28 +471,30 @@
                         type: 'success',
                         title: 'Rating Submited!!',
                         text: 'Order rated successfully',
-
                     })
                 }).catch(response=>{
                     //error
                 });
             },
             getRate(){
-                    axios.get("/api/myRate/" + this.orderId).then(({data})=>([this.rating = data]));
+                axios.get("/api/myRate/" + this.orderId).then(({data})=>([this.rating = data]));
             },
             getWriter(){
                 axios.get("/api/writer/" + this.orderId).then(({ data }) => ([this.writer = data]));
+            },
+            getMyDeadline(){
+                axios.get("/api/deadline/" + this.orderId).then(({ data }) => ([this.deadline = data]));
             },
             getRating(){
                 axios.get("/api/rate/" + this.orderId).then(({data})=>([this.rated = data]));
             },
             validate(){
-              if (this.attachments.length == 0){
-                  this.e_files = 'This field is required';
-                  return false;
-              }else {
-                  this.submit();
-              }
+                if (this.attachments.length == 0){
+                    this.e_files = 'This field is required';
+                    return false;
+                }else {
+                    this.submit();
+                }
             },
             downloadAll(){
                 axios.post('/api/downloadAll/' + this.orderId);
@@ -499,9 +503,7 @@
                 for(let i=0; i<this.attachments.length;i++){
                     this.formf.append('files[]',this.attachments[i]);
                 }
-
                 const config = { headers: { 'Content-Type': 'multipart/form-data' } };
-
                 if (this.isComplete){
                     axios.post('/api/uploadcomplete/' + this.orderId,this.formf,config).then(response=>{
                         Fire.$emit('entry');
@@ -511,9 +513,7 @@
                             type: 'success',
                             title: 'Submited!!',
                             text: 'File(s) sent successfully',
-
                         })
-
                     })
                         .catch(response=>{
                             //error
@@ -527,14 +527,11 @@
                             type: 'success',
                             title: 'Submited!!',
                             text: 'File(s) uploaded successfully',
-
                         })
-
                     })
                         .catch(response=>{
                             //error
                         });
-
                 } else {
                     axios.post('/api/addfiles/' + this.orderId,this.formf,config).then(response=>{
                         Fire.$emit('entry');
@@ -544,9 +541,7 @@
                             type: 'success',
                             title: 'Submited!!',
                             text: 'Files added successfully',
-
                         })
-
                     })
                         .catch(response=>{
                             //error
@@ -604,14 +599,12 @@
                         fileLink.href = fileURL;
                         fileLink.setAttribute('download', path.substring(8));
                         document.body.appendChild(fileLink);
-
                         fileLink.click();
                     });
             },
             getDetails(){
                 axios.get("/api/order/" + this.orderId).then(({ data }) => ([this.details = data]));
             },
-
             getFilesCount(){
                 axios.get("/api/filescount/" + this.orderId).then(({ data }) => ([this.filesCount = data]));
             },
@@ -625,7 +618,6 @@
                 if (this.$gate.isWriter()) {
                     axios.get("/api/getAdmin/").then(({ data }) => ([this.users = data]));
                 }
-
             },
             getEditedFiles(){
                 axios.get("/api/getedited/" + this.orderId).then(({ data }) => ([this.edited = data]));
@@ -634,7 +626,7 @@
                 axios.get("/api/getcompleted/" + this.orderId).then(({ data }) => ([this.completed = data]));
             },
             getMessages(){
-                 axios.get("/api/getMessage/" + this.orderId).then((response) => (this.messages = response.data));
+                axios.get("/api/getMessage/" + this.orderId).then((response) => (this.messages = response.data));
             },
             setRating: function(rating){
                 this.rating= rating;
@@ -670,6 +662,7 @@
             this.getRate();
             this.hasRated();
             this.getUser();
+            this.getMyDeadline();
             this.getCompletedFiles();
             Fire.$on('entry', () =>{
                 this.getFiles();

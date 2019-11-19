@@ -47,6 +47,7 @@ Route::apiResources(['rating' => 'API\RatingController']);
 Route::get('rate/{orderId}','API\RatingController@getRate');
 Route::get('myRate/{orderId}', 'API\RatingController@getMyRate');
 Route::get('writer/{orderId}', 'API\MoreOrdersController@getWriter');
+Route::get('deadline/{orderId}', 'API\MoreOrdersController@deadline');
 Route::get('getcompleted', 'API\MoreOrdersController@getCompleted');
 Route::get('getrevision', 'API\MoreOrdersController@getRevision');
 Route::get('getedited', 'API\MoreOrdersController@getEdited');

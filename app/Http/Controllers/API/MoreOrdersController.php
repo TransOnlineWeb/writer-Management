@@ -20,7 +20,9 @@ class MoreOrdersController extends Controller
     {
         return File::where('order_id', $orderId)->where('isComplete', 0)->get();
     }
-
+    public function deadline($orderId){
+        return Order::where('id',$orderId)->value('deadline');
+    }
     public function getCompletedFiles($orderId)
     {
         return File::where('order_id', $orderId)->where('isComplete', 1)->get();

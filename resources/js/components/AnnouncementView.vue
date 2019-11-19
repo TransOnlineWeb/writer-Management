@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <div class="row justify-content-center">
+        <div class="row justify-content-center mt-5">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">Announcements</div>

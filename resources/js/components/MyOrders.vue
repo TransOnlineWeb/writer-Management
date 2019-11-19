@@ -70,7 +70,7 @@
         methods:{
             getMyOrders(){
                 axios.get("/api/myorders").then(({data}) => ([this.orders = data]));
-            }
+            },
         },
         created() {
             this.getMyOrders();

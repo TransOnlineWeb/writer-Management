@@ -54,7 +54,7 @@
         <div id="page">
 
             <nav class="fh5co-nav" role="navigation">
-           
+
                 <div class="top-menu">
                     <div class="container">
                         <div class="row">
@@ -65,10 +65,14 @@
                                 <ul>
                                    
                                     <li><a href="{{URL::to('/')}}">Home</a></li>
+<<<<<<< HEAD
                                     <li><a href="{{URL::to('/about')}}">About</a></li>
                                     <li class="has-dropdown">
                                         <a href="{{URL::to('/services')}}">Services</a>
                                     </li>
+=======
+                                   {{-- <li><a href="{{URL::to('/about')}}">About</a></li>--}}
+>>>>>>> 9c53ac42e6fd6088ecef8c262e2a430a578f853c
                                     <li><a href="{{URL::to('/contact')}}">Contact</a></li>
                                    
 
@@ -101,7 +105,7 @@
                                 </div>
                             </li>
                         @endguest
-                   
+
                                 </ul>
 
                             </div>
@@ -111,21 +115,36 @@
                 </div>
             </nav>
 
-            
 
-            
+
+
         <main class="py-4">
             @yield('content')
         </main>
-   
+   <div id="fh5co-started">
+                <div class="container">
+                    <div class="row animate-box">
+                        <div class="col-md-8 col-md-offset-2 text-center fh5co-heading">
+                            <h2>Lets Get Started</h2>
+                            <p>Efficient article content and writer management - without the headaches.</p>
+                        </div>
+                    </div>
+                    <div class="row animate-box">
+                        <div class="col-md-8 col-md-offset-2 text-center">
+                            <p><a href="#" class="btn btn-default btn-lg">Get in Touch</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
 
             <footer id="fh5co-footer" role="contentinfo">
                 <div class="container">
                     <div class="row row-pb-md">
                         <div class="col-md-4 fh5co-widget">
                             <h3>A Little About Us.</h3>
-                            <p>Facilis ipsum reprehenderit nemo molestias. Aut cum mollitia reprehenderit. Eos cumque dicta adipisci architecto culpa amet.</p>
-                            <p><a class="btn btn-primary btn-outline with-arrow" href="#">Learn More <i class="icon-arrow-right"></i></a></p>
+                            <p>Managing content writers should help give you MORE free time - and unless you have an efficient system in place, you're still wasting your (and your writers) time unproductively.</p>
+                           {{-- <p><a class="btn btn-primary btn-outline with-arrow" href="#">Learn More <i class="icon-arrow-right"></i></a></p>--}}
                         </div>
                         <div class="col-md-2 col-sm-4 col-xs-6 col-md-push-1">
                             <ul class="fh5co-footer-links">
@@ -152,7 +171,9 @@
                                   <li class="menu-1"><h3>RESOURCES</h3></li>
 
                                 <li><a href="#">Testimonials</a></li>
-                              
+
+                                <li><a href="#">Teams</a></li>
+
                             </ul>
                         </div>
                     </div>
