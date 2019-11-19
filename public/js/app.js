@@ -4331,6 +4331,7 @@ __webpack_require__.r(__webpack_exports__);
       rated: '',
       myRate: false,
       message: '',
+      deadline: '',
       typing: '',
       users: {},
       isComplete: false,
@@ -4356,6 +4357,7 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     var _this = this;
 
+    console.log(this.deadline);
     Echo["private"]("message.".concat(this.user.id)).listen('ChatEvent', function (e) {
       _this.messages.push(e.message);
     }).listenForWhisper('typing', function (e) {
@@ -4461,12 +4463,20 @@ __webpack_require__.r(__webpack_exports__);
         return [_this5.writer = data];
       });
     },
-    getRating: function getRating() {
+    getMyDeadline: function getMyDeadline() {
       var _this6 = this;
 
-      axios.get("/api/rate/" + this.orderId).then(function (_ref3) {
+      axios.get("/api/deadline/" + this.orderId).then(function (_ref3) {
         var data = _ref3.data;
-        return [_this6.rated = data];
+        return [_this6.deadline = data];
+      });
+    },
+    getRating: function getRating() {
+      var _this7 = this;
+
+      axios.get("/api/rate/" + this.orderId).then(function (_ref4) {
+        var data = _ref4.data;
+        return [_this7.rated = data];
       });
     },
     validate: function validate() {
@@ -4481,7 +4491,7 @@ __webpack_require__.r(__webpack_exports__);
       axios.post('/api/downloadAll/' + this.orderId);
     },
     submit: function submit() {
-      var _this7 = this;
+      var _this8 = this;
 
       for (var i = 0; i < this.attachments.length; i++) {
         this.formf.append('files[]', this.attachments[i]);
@@ -4498,7 +4508,7 @@ __webpack_require__.r(__webpack_exports__);
           Fire.$emit('entry');
           $('#addnew').modal('hide');
 
-          _this7.form.reset();
+          _this8.form.reset();
 
           Swal.fire({
             type: 'success',
@@ -4512,7 +4522,7 @@ __webpack_require__.r(__webpack_exports__);
           Fire.$emit('entry');
           $('#addnew').modal('hide');
 
-          _this7.form.reset();
+          _this8.form.reset();
 
           Swal.fire({
             type: 'success',
@@ -4526,7 +4536,7 @@ __webpack_require__.r(__webpack_exports__);
           Fire.$emit('entry');
           $('#addnew').modal('hide');
 
-          _this7.form.reset();
+          _this8.form.reset();
 
           Swal.fire({
             type: 'success',
@@ -4564,14 +4574,14 @@ __webpack_require__.r(__webpack_exports__);
       this.messages.push(message);
     },
     scrollToBottom: function scrollToBottom() {
-      var _this8 = this;
+      var _this9 = this;
 
       setTimeout(function () {
-        _this8.$refs.feed.scrollTop = _this8.$refs.feed.scrollHeight - _this8.$refs.feed.clientHeight;
+        _this9.$refs.feed.scrollTop = _this9.$refs.feed.scrollHeight - _this9.$refs.feed.clientHeight;
       }, 50);
     },
     sendMessage: function sendMessage() {
-      var _this9 = this;
+      var _this10 = this;
 
       console.log(this.orderId);
 
@@ -4584,9 +4594,9 @@ __webpack_require__.r(__webpack_exports__);
         OrderId: this.orderId,
         contact_id: this.users
       }).then(function (response) {
-        _this9.messages.push(response.data);
+        _this10.messages.push(response.data);
 
-        _this9.message = '';
+        _this10.message = '';
       });
     },
     download: function download(id, path) {
@@ -4603,67 +4613,67 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     getDetails: function getDetails() {
-      var _this10 = this;
+      var _this11 = this;
 
-      axios.get("/api/order/" + this.orderId).then(function (_ref4) {
-        var data = _ref4.data;
-        return [_this10.details = data];
+      axios.get("/api/order/" + this.orderId).then(function (_ref5) {
+        var data = _ref5.data;
+        return [_this11.details = data];
       });
     },
     getFilesCount: function getFilesCount() {
-      var _this11 = this;
+      var _this12 = this;
 
-      axios.get("/api/filescount/" + this.orderId).then(function (_ref5) {
-        var data = _ref5.data;
-        return [_this11.filesCount = data];
+      axios.get("/api/filescount/" + this.orderId).then(function (_ref6) {
+        var data = _ref6.data;
+        return [_this12.filesCount = data];
       });
     },
     getFiles: function getFiles() {
-      var _this12 = this;
+      var _this13 = this;
 
-      axios.get("/api/getfiles/" + this.orderId).then(function (_ref6) {
-        var data = _ref6.data;
-        return [_this12.files = data];
+      axios.get("/api/getfiles/" + this.orderId).then(function (_ref7) {
+        var data = _ref7.data;
+        return [_this13.files = data];
       });
     },
     getUser: function getUser() {
-      var _this13 = this;
+      var _this14 = this;
 
       if (this.$gate.isAdmin()) {
-        axios.get("/api/getUser/" + this.orderId).then(function (_ref7) {
-          var data = _ref7.data;
-          return [_this13.users = data];
+        axios.get("/api/getUser/" + this.orderId).then(function (_ref8) {
+          var data = _ref8.data;
+          return [_this14.users = data];
         });
       }
 
       if (this.$gate.isWriter()) {
-        axios.get("/api/getAdmin/").then(function (_ref8) {
-          var data = _ref8.data;
-          return [_this13.users = data];
+        axios.get("/api/getAdmin/").then(function (_ref9) {
+          var data = _ref9.data;
+          return [_this14.users = data];
         });
       }
     },
     getEditedFiles: function getEditedFiles() {
-      var _this14 = this;
+      var _this15 = this;
 
-      axios.get("/api/getedited/" + this.orderId).then(function (_ref9) {
-        var data = _ref9.data;
-        return [_this14.edited = data];
+      axios.get("/api/getedited/" + this.orderId).then(function (_ref10) {
+        var data = _ref10.data;
+        return [_this15.edited = data];
       });
     },
     getCompletedFiles: function getCompletedFiles() {
-      var _this15 = this;
+      var _this16 = this;
 
-      axios.get("/api/getcompleted/" + this.orderId).then(function (_ref10) {
-        var data = _ref10.data;
-        return [_this15.completed = data];
+      axios.get("/api/getcompleted/" + this.orderId).then(function (_ref11) {
+        var data = _ref11.data;
+        return [_this16.completed = data];
       });
     },
     getMessages: function getMessages() {
-      var _this16 = this;
+      var _this17 = this;
 
       axios.get("/api/getMessage/" + this.orderId).then(function (response) {
-        return _this16.messages = response.data;
+        return _this17.messages = response.data;
       });
     },
     setRating: function setRating(rating) {
@@ -4689,7 +4699,7 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   created: function created() {
-    var _this17 = this;
+    var _this18 = this;
 
     this.getDetails();
     this.getFilesCount();
@@ -4701,17 +4711,18 @@ __webpack_require__.r(__webpack_exports__);
     this.getRate();
     this.hasRated();
     this.getUser();
+    this.getMyDeadline();
     this.getCompletedFiles();
     Fire.$on('entry', function () {
-      _this17.getFiles();
+      _this18.getFiles();
 
-      _this17.getFilesCount();
+      _this18.getFilesCount();
 
-      _this17.hasRated();
+      _this18.hasRated();
 
-      _this17.getEditedFiles();
+      _this18.getEditedFiles();
 
-      _this17.getCompletedFiles();
+      _this18.getCompletedFiles();
     });
   }
 });
@@ -5726,6 +5737,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -5735,7 +5747,8 @@ __webpack_require__.r(__webpack_exports__);
         email: '',
         phone_number: '',
         password: '',
-        photo: ''
+        photo: '',
+        level_id: ''
       })
     };
   },
@@ -79870,7 +79883,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
-    _c("div", { staticClass: "row justify-content-center" }, [
+    _c("div", { staticClass: "row justify-content-center mt-5" }, [
       _c("div", { staticClass: "col-md-12" }, [
         _c("div", { staticClass: "card" }, [
           _c("div", { staticClass: "card-header" }, [_vm._v("Announcements")]),
@@ -81643,221 +81656,238 @@ var render = function() {
           _vm._v(" "),
           _c("div", { staticClass: "card-body" }, [
             _c("div", { staticClass: "row" }, [
-              _c("div", { staticClass: "col-md-6" }, [
-                _c("hr"),
-                _vm._v(" "),
-                _c("div", { staticClass: "box" }, [
-                  _vm._m(0),
+              _c(
+                "div",
+                { staticClass: "col-md-6" },
+                [
+                  _c("flip-countdown", { attrs: { deadline: this.deadline } }),
                   _vm._v(" "),
-                  _c(
-                    "div",
-                    { staticClass: "box-body no-padding table-responsive p-0" },
-                    [
-                      _c("table", { staticClass: "table" }, [
-                        _c("tbody", [
-                          _vm._m(1),
-                          _vm._v(" "),
-                          _vm.$gate.isAdminOrisEditor()
-                            ? _c("tr", [
-                                _vm._m(2),
-                                _vm._v(" "),
-                                _c("td", [
-                                  _c("span", [_vm._v(_vm._s(_vm.writer.name))]),
-                                  _vm._v(" "),
-                                  !this.writer
-                                    ? _c(
-                                        "span",
-                                        {
-                                          staticStyle: {
-                                            color: "rebeccapurple"
-                                          }
-                                        },
-                                        [_vm._v("No writer assigned")]
-                                      )
-                                    : _vm._e()
-                                ])
-                              ])
-                            : _vm._e(),
-                          _vm._v(" "),
-                          _vm.$gate.isAdminOrisEditor()
-                            ? _c("tr", [
-                                _vm._m(3),
-                                _vm._v(" "),
-                                _c("td", [
-                                  _c("span", [
-                                    _vm._v(_vm._s(_vm.writer.phone_number))
-                                  ]),
-                                  _vm._v(" "),
-                                  !this.writer
-                                    ? _c(
-                                        "span",
-                                        {
-                                          staticStyle: {
-                                            color: "rebeccapurple"
-                                          }
-                                        },
-                                        [_vm._v("No writer assigned")]
-                                      )
-                                    : _vm._e()
-                                ])
-                              ])
-                            : _vm._e(),
-                          _vm._v(" "),
-                          _vm.$gate.isAdminOrisEditor()
-                            ? _c("tr", [
-                                _vm._m(4),
-                                _vm._v(" "),
-                                _c("td", [
-                                  _c("span", [
-                                    _vm._v(_vm._s(_vm.writer.email))
-                                  ]),
-                                  _vm._v(" "),
-                                  !this.writer
-                                    ? _c(
-                                        "span",
-                                        {
-                                          staticStyle: {
-                                            color: "rebeccapurple"
-                                          }
-                                        },
-                                        [_vm._v("No writer assigned")]
-                                      )
-                                    : _vm._e()
-                                ])
-                              ])
-                            : _vm._e(),
-                          _vm._v(" "),
-                          _c("tr", [
-                            _vm._m(5),
-                            _vm._v(" "),
-                            _c("td", [
-                              _c("span", [
-                                _vm._v("Ksh. " + _vm._s(_vm.details.amount))
-                              ])
-                            ])
-                          ]),
-                          _vm._v(" "),
-                          _c("tr", [
-                            _vm._m(6),
-                            _vm._v(" "),
-                            _c("td", [
-                              _c("span", [
-                                _vm._v(
-                                  "Ksh. " + _vm._s(_vm.details.total_amount)
-                                )
-                              ])
-                            ])
-                          ])
-                        ])
-                      ])
-                    ]
-                  )
-                ]),
-                _vm._v(" "),
-                _c("hr"),
-                _vm._v(" "),
-                _c("div", { staticClass: "box" }, [
-                  _vm._m(7),
+                  _c("hr"),
                   _vm._v(" "),
-                  _c(
-                    "div",
-                    { staticClass: "box-body no-padding table-responsive p-0" },
-                    [
-                      _c("table", { staticClass: "table table-striped" }, [
-                        _c("tbody", [
-                          _vm._m(8),
-                          _vm._v(" "),
-                          _c("tr", [
-                            _vm._m(9),
+                  _c("div", { staticClass: "box" }, [
+                    _vm._m(0),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass: "box-body no-padding table-responsive p-0"
+                      },
+                      [
+                        _c("table", { staticClass: "table" }, [
+                          _c("tbody", [
+                            _vm._m(1),
                             _vm._v(" "),
-                            _c("td", [
-                              _c("span", [
-                                _vm._v("#" + _vm._s(_vm.details.order_number))
+                            _vm.$gate.isAdminOrisEditor()
+                              ? _c("tr", [
+                                  _vm._m(2),
+                                  _vm._v(" "),
+                                  _c("td", [
+                                    _c("span", [
+                                      _vm._v(_vm._s(_vm.writer.name))
+                                    ]),
+                                    _vm._v(" "),
+                                    !this.writer
+                                      ? _c(
+                                          "span",
+                                          {
+                                            staticStyle: {
+                                              color: "rebeccapurple"
+                                            }
+                                          },
+                                          [_vm._v("No writer assigned")]
+                                        )
+                                      : _vm._e()
+                                  ])
+                                ])
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _vm.$gate.isAdminOrisEditor()
+                              ? _c("tr", [
+                                  _vm._m(3),
+                                  _vm._v(" "),
+                                  _c("td", [
+                                    _c("span", [
+                                      _vm._v(_vm._s(_vm.writer.phone_number))
+                                    ]),
+                                    _vm._v(" "),
+                                    !this.writer
+                                      ? _c(
+                                          "span",
+                                          {
+                                            staticStyle: {
+                                              color: "rebeccapurple"
+                                            }
+                                          },
+                                          [_vm._v("No writer assigned")]
+                                        )
+                                      : _vm._e()
+                                  ])
+                                ])
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _vm.$gate.isAdminOrisEditor()
+                              ? _c("tr", [
+                                  _vm._m(4),
+                                  _vm._v(" "),
+                                  _c("td", [
+                                    _c("span", [
+                                      _vm._v(_vm._s(_vm.writer.email))
+                                    ]),
+                                    _vm._v(" "),
+                                    !this.writer
+                                      ? _c(
+                                          "span",
+                                          {
+                                            staticStyle: {
+                                              color: "rebeccapurple"
+                                            }
+                                          },
+                                          [_vm._v("No writer assigned")]
+                                        )
+                                      : _vm._e()
+                                  ])
+                                ])
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _c("tr", [
+                              _vm._m(5),
+                              _vm._v(" "),
+                              _c("td", [
+                                _c("span", [
+                                  _vm._v("Ksh. " + _vm._s(_vm.details.amount))
+                                ])
                               ])
-                            ])
-                          ]),
-                          _vm._v(" "),
-                          _c("tr", [
-                            _vm._m(10),
+                            ]),
                             _vm._v(" "),
-                            _c("td", [
-                              _c("span", [_vm._v(_vm._s(_vm.details.title))])
-                            ])
-                          ]),
-                          _vm._v(" "),
-                          _c("tr", [
-                            _vm._m(11),
-                            _vm._v(" "),
-                            _c("td", [
-                              _c("span", [
-                                _vm._v(_vm._s(_vm.details.academic_level))
-                              ])
-                            ])
-                          ]),
-                          _vm._v(" "),
-                          _c("tr", [
-                            _vm._m(12),
-                            _vm._v(" "),
-                            _c("td", [
-                              _c("span", [
-                                _vm._v(_vm._s(_vm.details.discipline))
-                              ])
-                            ])
-                          ]),
-                          _vm._v(" "),
-                          _c("tr", [
-                            _vm._m(13),
-                            _vm._v(" "),
-                            _c("td", [
-                              _c("span", [_vm._v(_vm._s(_vm.details.viewers))])
-                            ])
-                          ]),
-                          _vm._v(" "),
-                          _c("tr", [
-                            _vm._m(14),
-                            _vm._v(" "),
-                            _c("td", [
-                              _c("span", [_vm._v(_vm._s(_vm.details.pages))])
-                            ])
-                          ]),
-                          _vm._v(" "),
-                          _c("tr", [
-                            _vm._m(15),
-                            _vm._v(" "),
-                            _c("td", [
-                              _c("span", { staticStyle: { color: "red" } }, [
-                                _vm._v(
-                                  _vm._s(
-                                    _vm._f("myDatetime")(_vm.details.deadline)
+                            _c("tr", [
+                              _vm._m(6),
+                              _vm._v(" "),
+                              _c("td", [
+                                _c("span", [
+                                  _vm._v(
+                                    "Ksh. " + _vm._s(_vm.details.total_amount)
                                   )
-                                )
-                              ])
-                            ])
-                          ]),
-                          _vm._v(" "),
-                          _c("tr", [
-                            _vm._m(16),
-                            _vm._v(" "),
-                            _c("td", [
-                              _c("span", [_vm._v(_vm._s(_vm.details.spacing))])
-                            ])
-                          ]),
-                          _vm._v(" "),
-                          _c("tr", [
-                            _vm._m(17),
-                            _vm._v(" "),
-                            _c("td", [
-                              _c("span", [
-                                _vm._v(_vm._s(_vm.details.paper_format))
+                                ])
                               ])
                             ])
                           ])
                         ])
-                      ])
-                    ]
-                  )
-                ])
-              ]),
+                      ]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("hr"),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "box" }, [
+                    _vm._m(7),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass: "box-body no-padding table-responsive p-0"
+                      },
+                      [
+                        _c("table", { staticClass: "table table-striped" }, [
+                          _c("tbody", [
+                            _vm._m(8),
+                            _vm._v(" "),
+                            _c("tr", [
+                              _vm._m(9),
+                              _vm._v(" "),
+                              _c("td", [
+                                _c("span", [
+                                  _vm._v("#" + _vm._s(_vm.details.order_number))
+                                ])
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("tr", [
+                              _vm._m(10),
+                              _vm._v(" "),
+                              _c("td", [
+                                _c("span", [_vm._v(_vm._s(_vm.details.title))])
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("tr", [
+                              _vm._m(11),
+                              _vm._v(" "),
+                              _c("td", [
+                                _c("span", [
+                                  _vm._v(_vm._s(_vm.details.academic_level))
+                                ])
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("tr", [
+                              _vm._m(12),
+                              _vm._v(" "),
+                              _c("td", [
+                                _c("span", [
+                                  _vm._v(_vm._s(_vm.details.discipline))
+                                ])
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("tr", [
+                              _vm._m(13),
+                              _vm._v(" "),
+                              _c("td", [
+                                _c("span", [
+                                  _vm._v(_vm._s(_vm.details.viewers))
+                                ])
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("tr", [
+                              _vm._m(14),
+                              _vm._v(" "),
+                              _c("td", [
+                                _c("span", [_vm._v(_vm._s(_vm.details.pages))])
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("tr", [
+                              _vm._m(15),
+                              _vm._v(" "),
+                              _c("td", [
+                                _c("span", { staticStyle: { color: "red" } }, [
+                                  _vm._v(
+                                    _vm._s(
+                                      _vm._f("myDatetime")(_vm.details.deadline)
+                                    )
+                                  )
+                                ])
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("tr", [
+                              _vm._m(16),
+                              _vm._v(" "),
+                              _c("td", [
+                                _c("span", [
+                                  _vm._v(_vm._s(_vm.details.spacing))
+                                ])
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("tr", [
+                              _vm._m(17),
+                              _vm._v(" "),
+                              _c("td", [
+                                _c("span", [
+                                  _vm._v(_vm._s(_vm.details.paper_format))
+                                ])
+                              ])
+                            ])
+                          ])
+                        ])
+                      ]
+                    )
+                  ])
+                ],
+                1
+              ),
               _vm._v(" "),
               _c("div", { staticClass: "col-md-6" }, [
                 _c("div", { staticClass: "box" }, [
@@ -81881,7 +81911,7 @@ var render = function() {
                               },
                               [
                                 _vm._v(
-                                  "\n                                                Add more files\n                                            "
+                                  "\n                                            Add more files\n                                        "
                                 )
                               ]
                             )
@@ -81945,7 +81975,7 @@ var render = function() {
                           _vm._v(" "),
                           _vm._m(20),
                           _vm._v(
-                            "\n                                        No files attached!!\n                                    "
+                            "\n                                    No files attached!!\n                                "
                           )
                         ]
                       )
@@ -82673,7 +82703,7 @@ var staticRenderFns = [
         [
           _c("i", { staticClass: "fas fa-eye" }),
           _vm._v(
-            "\n                                                View\n                                            "
+            "\n                                            View\n                                        "
           )
         ]
       )
@@ -82780,7 +82810,7 @@ var staticRenderFns = [
         [
           _c("i", { staticClass: "fas fa-cloud-upload-alt" }),
           _vm._v(
-            "\n                                Upload\n                            "
+            "\n                            Upload\n                        "
           )
         ]
       )
@@ -82829,7 +82859,7 @@ var staticRenderFns = [
         [
           _c("i", { staticClass: "fas fa-save" }),
           _vm._v(
-            "\n                                Complete\n                            "
+            "\n                            Complete\n                        "
           )
         ]
       )
@@ -82858,13 +82888,13 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
-    _c("div", { staticClass: "row mt-4" }, [
+    _c("div", { staticClass: "row mt-5" }, [
       _c("div", { staticClass: "col-md-12" }, [
-        _c("div", { staticClass: "box" }, [
-          _c("div", { staticClass: "box-header" }, [
-            _c("h3", { staticClass: "box-title" }, [_vm._v("Users")]),
+        _c("div", { staticClass: "card" }, [
+          _c("div", { staticClass: "card-header" }, [
+            _c("h3", { staticClass: "card-title" }, [_vm._v("Users")]),
             _vm._v(" "),
-            _c("div", { staticClass: "box-tools ml-auto" }, [
+            _c("div", { staticClass: "card-tools ml-auto" }, [
               _c(
                 "button",
                 { staticClass: "btn btn-success", on: { click: _vm.newUser } },
@@ -82873,7 +82903,7 @@ var render = function() {
             ])
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "box-body table-responsive no-padding" }, [
+          _c("div", { staticClass: "card-body table-responsive no-padding" }, [
             _c("table", { staticClass: "table table-hover" }, [
               _c(
                 "tbody",
@@ -84609,14 +84639,38 @@ var render = function() {
                 ])
               ]),
               _vm._v(" "),
-              _vm._m(0)
+              _c("div", { staticClass: "col-sm-4" }, [
+                _c("div", { staticClass: "description-block" }, [
+                  this.form.level_id == 2
+                    ? _c("h5", { staticClass: "description-header" }, [
+                        _vm._v("Junior")
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  this.form.level_id == 1
+                    ? _c("h5", { staticClass: "description-header" }, [
+                        _vm._v("Starter")
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  this.form.level_id == 3
+                    ? _c("h5", { staticClass: "description-header" }, [
+                        _vm._v("Senior")
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "description-text" }, [
+                    _vm._v("Level")
+                  ])
+                ])
+              ])
             ])
           ])
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "col-md-12" }, [
           _c("div", { staticClass: "card" }, [
-            _vm._m(1),
+            _vm._m(0),
             _vm._v(" "),
             _c("div", { staticClass: "card-body" }, [
               _c("div", { staticClass: "tab-content" }, [
@@ -84907,18 +84961,6 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-sm-4" }, [
-      _c("div", { staticClass: "description-block" }, [
-        _c("h5", { staticClass: "description-header" }, [_vm._v("Starter")]),
-        _vm._v(" "),
-        _c("span", { staticClass: "description-text" }, [_vm._v("Level")])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
     return _c("div", { staticClass: "card-header p-2" }, [
       _c("ul", { staticClass: "nav nav-pills" }, [
         _c("li", { staticClass: "active" }, [
@@ -84929,17 +84971,6 @@ var staticRenderFns = [
               attrs: { href: "#settings", "data-toggle": "tab" }
             },
             [_vm._v("Settings")]
-          )
-        ]),
-        _vm._v(" "),
-        _c("li", { staticClass: "nav-item" }, [
-          _c(
-            "a",
-            {
-              staticClass: "nav-link",
-              attrs: { href: "#timeline", "data-toggle": "tab" }
-            },
-            [_vm._v("My Ratings")]
           )
         ])
       ])
@@ -101821,8 +101852,8 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 window.Pusher = __webpack_require__(/*! pusher-js */ "./node_modules/pusher-js/dist/web/pusher.js");
 window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
   broadcaster: 'pusher',
-  key: "",
-  cluster: "mt1",
+  key: "2dd403e5b2da16c3ed2c",
+  cluster: "ap2",
   encrypted: true
 });
 
@@ -103457,8 +103488,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\mihz\Desktop\political\writer-Management - Copy (2)\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\mihz\Desktop\political\writer-Management - Copy (2)\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\xampp\htdocs\Writing-Management\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\Writing-Management\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

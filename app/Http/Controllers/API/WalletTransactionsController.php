@@ -113,7 +113,7 @@ class WalletTransactionsController extends Controller
      $transaction -> user_id = $request->id;
      $transaction -> Payment_method = $request->Paymethod;
      $transaction -> amount = $request->amount;
-     $transaction -> type = 2;
+     $transaction -> type = 3;
      $transaction-> save();
 
         return response(['status' => 'success'], 200);

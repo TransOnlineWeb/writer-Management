@@ -344,6 +344,33 @@ input {
     input:focus:-moz-placeholder {
       color: #222; }
 
+select {
+    width: 100%;
+    display: block;
+    border: none;
+    border-bottom: 1px solid #999;
+    padding: 6px 30px;
+    font-family: Poppins;
+    box-sizing: border-box; }
+select::-webkit-input-placeholder {
+    color: #999; }
+select::-moz-placeholder {
+    color: #999; }
+select:-ms-input-placeholder {
+    color: #999; }
+select:-moz-placeholder {
+    color: #999; }
+select:focus {
+    border-bottom: 1px solid #222; }
+select:focus::-webkit-input-placeholder {
+    color: #222; }
+select:focus::-moz-placeholder {
+    color: #222; }
+select:focus:-ms-input-placeholder {
+    color: #222; }
+select:focus:-moz-placeholder {
+    color: #222; }
+
 input[type=checkbox]:not(old) {
   width: 2em;
   margin: 0;

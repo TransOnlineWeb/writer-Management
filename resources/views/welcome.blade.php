@@ -11,7 +11,7 @@
                 <div class="display-t">
                     <div class="display-tc animate-box" data-animate-effect="fadeIn">
                         <h1>Working hard is <strong>rewarding</strong></h1>
-                        <p><a href="#" class="btn btn-primary btn-lg with-arrow">View Our Work</a></p>
+                        <p><a href="{{ route('register') }}" class="btn btn-primary btn-lg with-arrow">Get Started</a></p>
                     </div>
                 </div>
             </div>
@@ -19,7 +19,7 @@
     </div>
 </header>
 
-<div id="fh5co-services" class="fh5co-bg-section">
+{{--<div id="fh5co-services" class="fh5co-bg-section">
     <div class="container">
         <div class="row animate-box">
             <div class="col-md-8 col-md-offset-2 text-center fh5co-heading">
@@ -162,6 +162,6 @@
             </div>
         </div>
     </div>
-</div>
+</div>--}}
 
 @stop

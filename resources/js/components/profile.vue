@@ -41,7 +41,9 @@
                             <!-- /.col -->
                             <div class="col-sm-4">
                                 <div class="description-block">
-                                    <h5 class="description-header">Starter</h5>
+                                    <h5 class="description-header" v-if="this.form.level_id == 2">Junior</h5>
+                                    <h5 class="description-header" v-if="this.form.level_id == 1">Starter</h5>
+                                    <h5 class="description-header" v-if="this.form.level_id == 3">Senior</h5>
                                     <span class="description-text">Level</span>
                                 </div>
                                 <!-- /.description-block -->
@@ -56,7 +58,6 @@
                         <div class="card-header p-2">
                             <ul class="nav nav-pills">
                                 <li class="active"><a  class="nav-link active show" href="#settings" data-toggle="tab" >Settings</a></li>
-                                <li class="nav-item"><a class="nav-link" href="#timeline" data-toggle="tab" >My Ratings</a></li>
                             </ul>
                         </div><!-- /.card-header -->
                         <div class="card-body">
@@ -142,7 +143,8 @@
                     email: '',
                     phone_number: '',
                     password:'',
-                    photo:''
+                    photo:'',
+                    level_id:'',
                 })
             }
         },
