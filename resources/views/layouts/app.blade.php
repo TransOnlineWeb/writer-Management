@@ -65,14 +65,14 @@
                                 <ul>
                                    
                                     <li><a href="{{URL::to('/')}}">Home</a></li>
-<<<<<<< HEAD
+
                                     <li><a href="{{URL::to('/about')}}">About</a></li>
                                     <li class="has-dropdown">
                                         <a href="{{URL::to('/services')}}">Services</a>
                                     </li>
-=======
+
                                    {{-- <li><a href="{{URL::to('/about')}}">About</a></li>--}}
->>>>>>> 9c53ac42e6fd6088ecef8c262e2a430a578f853c
+
                                     <li><a href="{{URL::to('/contact')}}">Contact</a></li>
                                    
 
