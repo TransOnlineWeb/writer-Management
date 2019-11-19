@@ -131,6 +131,7 @@
                 </div>
             </div>
 
+
             <footer id="fh5co-footer" role="contentinfo">
                 <div class="container">
                     <div class="row row-pb-md">
@@ -141,14 +142,19 @@
                         </div>
                         <div class="col-md-2 col-sm-4 col-xs-6 col-md-push-1">
                             <ul class="fh5co-footer-links">
+                                 <li class="menu-1"><h3>PRODUCT</h3></li>
+
                                 <li><a href="#">About</a></li>
-                                <li><a href="#">Contact</a></li>
-                                <li><a href="#">Terms</a></li>
+                                <li><a href="#">Team</a></li>
+                                <li><a href="#">Blog</a></li>
                             </ul>
                         </div>
 
                         <div class="col-md-2 col-sm-4 col-xs-6 col-md-push-1">
                             <ul class="fh5co-footer-links">
+                                 <li class="menu-1"><h3>SUPPORT</h3></li>
+
+                                <li><a href="#">How it works</a></li>
                                 <li><a href="#">Privacy</a></li>
                                 <li><a href="#">Testimonials</a></li>
                             </ul>
@@ -156,6 +162,10 @@
 
                         <div class="col-md-2 col-sm-4 col-xs-6 col-md-push-1">
                             <ul class="fh5co-footer-links">
+                                  <li class="menu-1"><h3>RESOURCES</h3></li>
+
+                                <li><a href="#">Testimonials</a></li>
+
                                 <li><a href="#">Teams</a></li>
 
                             </ul>

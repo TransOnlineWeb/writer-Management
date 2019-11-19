@@ -894,7 +894,10 @@ h1, h2, h3, h4, h5, h6, figure {
 }
 
 #fh5co-started {
-  background: rgba(76, 74, 138, 0.9);
+   background-image: url(../images/back.png);
+    background-repeat: no-repeat;
+    background-size: 1500px;
+
 }
 #fh5co-started .fh5co-heading {
   margin-bottom: 2em !important;

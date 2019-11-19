@@ -11,7 +11,7 @@
                 <div class="display-t">
                     <div class="display-tc animate-box" data-animate-effect="fadeIn">
                         <h1>Working hard is <strong>rewarding</strong></h1>
-                        <p><a href="{{ route('register') }}" class="btn btn-primary btn-lg with-arrow">Get Started</a></p>
+                        <p><a href="/register" class="btn btn-primary btn-lg with-arrow">Need work?</a></p>
                     </div>
                 </div>
             </div>
@@ -23,7 +23,7 @@
     <div class="container">
         <div class="row animate-box">
             <div class="col-md-8 col-md-offset-2 text-center fh5co-heading">
-                <h2>How it Works</h2>
+                <h2>Explore</h2>
                 <p>Dignissimos asperiores vitae velit veniam totam fuga molestias accusamus alias autem provident. Odit ab aliquam dolor eius.</p>
             </div>
         </div>
@@ -113,6 +113,8 @@
     </div>
 </div>
 
+
+
 <div id="fh5co-testimonial" class="fh5co-bg-section">
     <div class="container">
         <div class="row animate-box">
@@ -162,6 +164,24 @@
             </div>
         </div>
     </div>
+</div>
+
+<div id="fh5co-started">
+                <div class="container">
+                    <div class="row animate-box">
+                        <div class="col-md-8 col-md-offset-2 text-center fh5co-heading">
+                            <h2>Your Writting Talent Pays off</h2>
+
+                            <p>We give you access to thousand of projects.Be part of us and turn your writting skills into cash</p>
+                        </div>
+                    </div>
+                    <div class="row animate-box">
+                        <div class="col-md-8 col-md-offset-2 text-center">
+                            <p><a href="#" class="btn btn-default btn-lg">Join For Free</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
 </div>--}}
 
 @stop

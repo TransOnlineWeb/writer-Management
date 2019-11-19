@@ -75,6 +75,7 @@
                                     <strong>{{ $message }}</strong>
                                 </span>
                             @enderror
+
                             </div>
 
                             <div class="form-group">
@@ -88,6 +89,7 @@
                             <div class="form-group form-button">
                                 <input type="submit" name="signup" id="signup" class="form-submit" value="Register"/>
                             </div>
+
                         </form>
                     </div>
                     <div class="signup-image">
@@ -95,7 +97,7 @@
                         <a href="/login" class="signup-image-link">I am already member</a>
 
 
-                    </div>
+                    </div> 
                 </div>
             </div>
         </section>
