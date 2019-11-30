@@ -101611,6 +101611,11 @@ function () {
     value: function isAdminOrisEditor() {
       return this.user.role === 'admin' || this.user.role === 'editor';
     }
+  }, {
+    key: "isWriterOrisEditor",
+    value: function isWriterOrisEditor() {
+      return this.user.role === 'writer' || this.user.role === 'editor';
+    }
   }]);
 
   return Gate;
@@ -101852,8 +101857,8 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 window.Pusher = __webpack_require__(/*! pusher-js */ "./node_modules/pusher-js/dist/web/pusher.js");
 window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
   broadcaster: 'pusher',
-  key: "2dd403e5b2da16c3ed2c",
-  cluster: "ap2",
+  key: "",
+  cluster: "mt1",
   encrypted: true
 });
 
@@ -103488,8 +103493,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\xampp\htdocs\Writing-Management\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\xampp\htdocs\Writing-Management\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /opt/lampp/htdocs/Transonline/writer-Management/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /opt/lampp/htdocs/Transonline/writer-Management/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
