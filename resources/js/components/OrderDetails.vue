@@ -10,7 +10,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6">
-                                <flip-countdown  :deadline="deadline"></flip-countdown>
+                                <flip-countdown  :deadline="this.deadline"></flip-countdown>
                                 <hr>
                                 <div class="box">
                                     <div class="box-header">
@@ -233,9 +233,9 @@
                                     </div>
                                     <div class="box-body">
                                         <button type="button" class="btn btn-success btn-sm" @click="verify()" v-if="details.status == 3 || details.status == 4">Verify</button>
-                                        <button type="button" class="btn btn-warning btn-sm">Revision</button>
+<!--                                        <button type="button" class="btn btn-warning btn-sm">Revision</button>-->
                                         <button type="button" class="btn btn-dark btn-sm" @click="fineModal">Fine</button>
-                                        <button type="button" class="btn btn-danger btn-sm">Reject</button>
+<!--                                        <button type="button" class="btn btn-danger btn-sm">Reject</button>-->
                                     </div>
                                 </div>
                             </div>
@@ -340,17 +340,22 @@
 
 <script>
     import FlipCountdown from 'vue2-flip-countdown';
+    import Countdown from 'vuejs-countdown'
     export default {
-        components: { FlipCountdown },
+        components: {
+            FlipCountdown,
+            Countdown
+        },
         props:{
             user: {
                 type: Object,
                 required: true
             },
-     props:['deadline']
+
         },
         data(){
             return{
+                now: moment().format('YYYY-MM-DD HH:mm:ss'),
                 rating: 0,
                 rated:'',
                 myRate: false,

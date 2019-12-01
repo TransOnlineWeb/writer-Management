@@ -88,17 +88,7 @@
                     <p><a href="#" class="btn btn-primary">Get In Touch</a></p>
                 </div>
 
-                <div class="fhco-cta-block">
-                    <h2>Subscribe</h2>
-                    <p>Dignissimos asperiores vitae velit veniam totam fuga molestias accusamus alias autem provident. Odit ab aliquam dolor eius.</p>
-                    <form action="#" id="fh5co-subscribe">
-                        <div class="form-group">
-                            <label for="email">Enter Email</label>
-                            <input type="text" class="form-control" id="email">
-                            <button class="btn btn-primary">Send</button>
-                        </div>
-                    </form>
-                </div>
+               
 
             </div>
         </div>

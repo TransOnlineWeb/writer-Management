@@ -183,7 +183,7 @@
         data() {
             return {
                 id: '',
-                level:'',
+                level: '',
                 orders: [],
                 message: '',
                 typing: '',

@@ -72,6 +72,7 @@ class WalletTransactionsController extends Controller
         $transaction->order_id = $orderId;
         $transaction->order_number = $order['order_number'];
         $transaction->amount = $order['total_amount'];
+        $transaction->balance = User::find($order['assigned_user_id'])->wallet->amount;
         $transaction->save();
 
         return response(['status' => 'success'], 200);
@@ -85,7 +86,7 @@ class WalletTransactionsController extends Controller
      */
     public function showTransactions()
     {
-        return WalletTransaction::where('user_id', auth()->user()->id)->paginate(10);
+        return WalletTransaction::where('user_id', auth()->user()->id)->latest()->paginate(10);
     }
 
     /**
@@ -99,25 +100,29 @@ class WalletTransactionsController extends Controller
     {
         //
     }
-    public function pay(Request $request){
-     $request->validate([
-            'amount'=> 'required',
+
+    public function pay(Request $request)
+    {
+        $request->validate([
+            'amount' => 'required',
             'Paymethod' => 'required',
         ]);
-     $myWallet = Wallet::WHERE('user_id',$request->id)->first();
-     $wallet = Wallet::findOrFail($myWallet['id']);
-     $wallet->amount = $myWallet['amount'] - $request->amount;
-     $wallet->save();
+        $myWallet = Wallet::WHERE('user_id', $request->id)->first();
+        $wallet = Wallet::findOrFail($myWallet['id']);
+        $wallet->amount = $myWallet['amount'] - $request->amount;
+        $wallet->save();
 
-     $transaction = new WalletTransaction();
-     $transaction -> user_id = $request->id;
-     $transaction -> Payment_method = $request->Paymethod;
-     $transaction -> amount = $request->amount;
-     $transaction -> type = 3;
-     $transaction-> save();
+        $transaction = new WalletTransaction();
+        $transaction->user_id = $request->id;
+        $transaction->Payment_method = $request->Paymethod;
+        $transaction->amount = $request->amount;
+        $transaction->type = 3;
+        $transaction->balance = User::find($request->id)->wallet->amount;
+        $transaction->save();
 
         return response(['status' => 'success'], 200);
     }
+
     public function fine(Request $request)
     {
         $request->validate([
@@ -152,6 +157,7 @@ class WalletTransactionsController extends Controller
         $transaction->order_number = $theOrder['order_number'];
         $transaction->description = $request->description;
         $transaction->amount = -$fineAmount;
+        $transaction->balance = User::find($theOrder['assigned_user_id'])->wallet->amount;
         $transaction->save();
 
         return response(['status' => 'success'], 200);

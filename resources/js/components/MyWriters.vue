@@ -225,7 +225,7 @@
 
 </style>
 <template>
-    <div class="container-fluid">
+    <div class="container-fluid" v-if="$gate.isAdmin()">
         <div class="row mt-4">
             <div class="col-md-4 " v-for="user in users" :key="user.id">
 

@@ -5,7 +5,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Writter</title>
+        <title>Smart | Writters</title>
             <meta name="viewport" content="width=device-width, initial-scale=1">
             <meta name="description" content="Free HTML5 Website Template by freehtml5.co" />
             <meta name="keywords" content="responsive" />
@@ -59,16 +59,22 @@
                     <div class="container">
                         <div class="row">
                             <div class="col-xs-2">
-                                <div id="fh5co-logo"><a href="index.html">Smart<span>.Writters</span></a></div>
+                                <div id="fh5co-logo"><a href="{{URL::to('/')}}">Smart<span>.Writters</span></a></div>
                             </div>
                             <div class="col-xs-10 text-right menu-1">
                                 <ul>
-                                    <!-- <li class="active"><a href="index.html">Home</a></li> -->
+                                   
                                     <li><a href="{{URL::to('/')}}">Home</a></li>
-                                   {{-- <li><a href="{{URL::to('/about')}}">About</a></li>--}}
-                                    <li><a href="{{URL::to('/contact')}}">Contact</a></li>
-                                    <!--<li class="btn-cta"><a href="#"><span>Login</span></a></li>-->
 
+                                    <li><a href="{{URL::to('/about')}}">About</a></li>
+                                    <li class="has-dropdown">
+                                        <a href="{{URL::to('/services')}}">Services</a>
+                                    </li>
+
+                                   {{-- <li><a href="{{URL::to('/about')}}">About</a></li>--}}
+
+                                    <li><a href="{{URL::to('/contact')}}">Contact</a></li>
+                                   
 
                         <!-- Authentication Links -->
                         @guest

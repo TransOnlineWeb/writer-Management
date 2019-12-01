@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="container" v-if="$gate.isAdmin()">
         <div class="row justify-content-center mt-5">
             <div class="col-md-12">
                 <div class="card">
@@ -54,7 +54,7 @@
                             <div class="form-group">
                                 <label for="amount">Amount</label>
                                 <input v-model="form.amount" type="text" class="form-control" name="amount" id="amount"
-                                       :class="{ 'is-invalid': form.errors.has('amount') }">
+                                       :class="{ 'is-invalid': form.errors.has('amount') }" placeholder="Amount to pay">
                                 <has-error :form="form" field="amount"></has-error>
                             </div>
                             <div class="form-group">
