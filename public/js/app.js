@@ -83911,9 +83911,9 @@ var render = function() {
               "div",
               { staticClass: "row details" },
               _vm._l(_vm.orders, function(order) {
-                return _c("div", { key: order.id, staticClass: "col-md-6" }, [
-                  order.viewers.includes(_vm.level)
-                    ? _c("div", { staticClass: "info-box" }, [
+                return order.viewers.includes(_vm.level)
+                  ? _c("div", { key: order.id, staticClass: "col-md-6" }, [
+                      _c("div", { staticClass: "info-box" }, [
                         _vm._m(0, true),
                         _vm._v(" "),
                         _c("div", { staticClass: "info-box-content" }, [
@@ -83952,8 +83952,8 @@ var render = function() {
                           ])
                         ])
                       ])
-                    : _vm._e()
-                ])
+                    ])
+                  : _vm._e()
               }),
               0
             )
