@@ -184,15 +184,15 @@
                             <!-- Body content -->
                             <tr>
                                 <td class="content-cell">
-                                    <h1>Completed Order</h1>
+                                    <h1>Awarded Bid</h1>
                                     <!-- Action -->
                                     <table class="body-action" align="center" width="100%" cellpadding="0" cellspacing="0">
                                         <tr>
                                             <td align="center">
                                                 <div>
-                                                    <h5>Dear <i>Editor</i></h5>,
-                                                    <p>Check on your account for a completed order  <b>'{{ $data['title'] }}'</b> on  <b>{{ $data['subject'] }}</b>   (<b>{{ $data['pages'] }}</b>pages)  .</p>
-                                                    <p>The order was completed at <b>'{{ $data['completed'] }}'</b>.</p>
+                                                    <h5>Dear <i>Writer</i></h5>,
+                                                    <p>Your have been awarded bid order number  <b>{{ $data['orderNo'] }}</b> Check on your account for the order  <b>'{{ $data['title'] }}'</b> on  <b>{{ $data['subject'] }}</b>   (<b>{{ $data['pages'] }}</b>pages)  .</p>
+                                                    <p>The order is to be completed by <b>'{{ $data['deadline'] }}'</b>.</p>
                                                     Thank You,
                                                     <br/>
                                                     <i>Regards smartwriters.net</i>

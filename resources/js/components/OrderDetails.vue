@@ -10,7 +10,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6">
-                                <flip-countdown  :deadline="this.deadline"></flip-countdown>
+                                <flip-countdown  :deadline="details.deadline.toString()"></flip-countdown>
                                 <hr>
                                 <div class="box">
                                     <div class="box-header">

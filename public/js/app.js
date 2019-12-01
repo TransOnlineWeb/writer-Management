@@ -3974,8 +3974,8 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue2_flip_countdown__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue2-flip-countdown */ "./node_modules/vue2-flip-countdown/dist/vue2-flip-countdown.js");
 /* harmony import */ var vue2_flip_countdown__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue2_flip_countdown__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var vuejs_countdown__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vuejs-countdown */ "./node_modules/vuejs-countdown/dist/vuejs-countdown.js");
-/* harmony import */ var vuejs_countdown__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vuejs_countdown__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var vuejs_countdown__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuejs-countdown */ "./node_modules/vuejs-countdown/dist/vuejs-countdown.js");
+/* harmony import */ var vuejs_countdown__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vuejs_countdown__WEBPACK_IMPORTED_MODULE_1__);
 //
 //
 //
@@ -4321,7 +4321,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     FlipCountdown: vue2_flip_countdown__WEBPACK_IMPORTED_MODULE_0___default.a,
-    Countdown: vuejs_countdown__WEBPACK_IMPORTED_MODULE_2___default.a
+    Countdown: vuejs_countdown__WEBPACK_IMPORTED_MODULE_1___default.a
   },
   props: {
     user: {
@@ -81753,7 +81753,9 @@ var render = function() {
                 "div",
                 { staticClass: "col-md-6" },
                 [
-                  _c("flip-countdown", { attrs: { deadline: this.deadline } }),
+                  _c("flip-countdown", {
+                    attrs: { deadline: _vm.details.deadline.toString() }
+                  }),
                   _vm._v(" "),
                   _c("hr"),
                   _vm._v(" "),
