@@ -10,7 +10,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6">
-                                <flip-countdown  :deadline="this.deadline"></flip-countdown>
+                                <flip-countdown  :deadline="deadline"></flip-countdown>
                                 <hr>
                                 <div class="box">
                                     <div class="box-header">
@@ -347,7 +347,7 @@
                 type: Object,
                 required: true
             },
-
+     props:['deadline']
         },
         data(){
             return{
@@ -483,7 +483,7 @@
                 axios.get("/api/writer/" + this.orderId).then(({ data }) => ([this.writer = data]));
             },
             getMyDeadline(){
-                axios.get("/api/deadline/" + this.orderId).then(({ data }) => ([this.deadline = data]));
+                axios.get("/api/deadline/" + this.orderId).then(({ data }) => ([this.deadline = data.deadline]));
             },
             getRating(){
                 axios.get("/api/rate/" + this.orderId).then(({data})=>([this.rated = data]));
@@ -670,6 +670,7 @@
                 this.hasRated();
                 this.getEditedFiles();
                 this.getCompletedFiles();
+                this.getMyDeadline();
             })
         }
     }

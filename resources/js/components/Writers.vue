@@ -183,7 +183,7 @@
         data() {
             return {
                 id: '',
-                level: '',
+                level:'',
                 orders: [],
                 message: '',
                 typing: '',
@@ -204,10 +204,10 @@
 
             },
             getLevel(){
-                axios.get("/api/getLevel/").then(({data}) => ([this.level = data]));
+                axios.get("api/getLevel").then(({data}) => ([this.level = data.title]));
             },
             checkBid() {
-                axios.get("/api/checkbid/" + this.orderId).then(({data}) => ([this.ifBid = data]));
+                axios.get("api/checkbid/" + this.orderId).then(({data}) => ([this.ifBid = data]));
             },
             placeBid() {
                 Swal.fire({
@@ -220,7 +220,7 @@
                     confirmButtonText: 'Yes, place it!'
                 }).then((result) => {
                     if (result.value) {
-                        axios.post("/api/makebid/" + this.orderId).then(() => {
+                        axios.post("api/makebid/" + this.orderId).then(() => {
                             Fire.$emit('entry');
                             Swal.fire(
                                 'Placed!',
@@ -242,10 +242,10 @@
             },
 
             getFilesCount(order) {
-                axios.get("/api/filescount/" + order.id).then(({data}) => ([this.filesCount = data]));
+                axios.get("api/filescount/" + order.id).then(({data}) => ([this.filesCount = data]));
             },
             download(id, path) {
-                axios.get("/api/download/" + id, {responseType: 'blob'})
+                axios.get("api/download/" + id, {responseType: 'blob'})
                     .then((response) => {
                         var fileURL = window.URL.createObjectURL(new Blob([response.data]));
                         var fileLink = document.createElement('a');
@@ -260,9 +260,9 @@
             orderDetails(order) {
                 $('#OrderDetails').modal('show');
                 this.orderId = order.id;
-                window.axios.get("/api/order/" + order.id).then(({data}) => ([this.details = data]));
-                window.axios.get("/api/getfiles/" + order.id).then(({data}) => ([this.files = data]));
-                window.axios.get("/api/filescount/" + order.id).then(({data}) => ([this.filesCount = data]));
+                window.axios.get("api/order/" + order.id).then(({data}) => ([this.details = data]));
+                window.axios.get("api/getfiles/" + order.id).then(({data}) => ([this.files = data]));
+                window.axios.get("api/filescount/" + order.id).then(({data}) => ([this.filesCount = data]));
                 this.checkBid();
 
             },

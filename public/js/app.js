@@ -4323,7 +4323,8 @@ __webpack_require__.r(__webpack_exports__);
     user: {
       type: Object,
       required: true
-    }
+    },
+    props: ['deadline']
   },
   data: function data() {
     return {
@@ -4468,7 +4469,7 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.get("/api/deadline/" + this.orderId).then(function (_ref3) {
         var data = _ref3.data;
-        return [_this6.deadline = data];
+        return [_this6.deadline = data.deadline];
       });
     },
     getRating: function getRating() {
@@ -4723,6 +4724,8 @@ __webpack_require__.r(__webpack_exports__);
       _this18.getEditedFiles();
 
       _this18.getCompletedFiles();
+
+      _this18.getMyDeadline();
     });
   }
 });
@@ -4884,6 +4887,7 @@ __webpack_require__.r(__webpack_exports__);
       editmode: false,
       users: {},
       categories: {},
+      writer: 0,
       form: new Form({
         id: '',
         name: '',
@@ -5324,15 +5328,15 @@ __webpack_require__.r(__webpack_exports__);
     getLevel: function getLevel() {
       var _this = this;
 
-      axios.get("/api/getLevel/").then(function (_ref) {
+      axios.get("api/getLevel").then(function (_ref) {
         var data = _ref.data;
-        return [_this.level = data];
+        return [_this.level = data.title];
       });
     },
     checkBid: function checkBid() {
       var _this2 = this;
 
-      axios.get("/api/checkbid/" + this.orderId).then(function (_ref2) {
+      axios.get("api/checkbid/" + this.orderId).then(function (_ref2) {
         var data = _ref2.data;
         return [_this2.ifBid = data];
       });
@@ -5350,7 +5354,7 @@ __webpack_require__.r(__webpack_exports__);
         confirmButtonText: 'Yes, place it!'
       }).then(function (result) {
         if (result.value) {
-          axios.post("/api/makebid/" + _this3.orderId).then(function () {
+          axios.post("api/makebid/" + _this3.orderId).then(function () {
             Fire.$emit('entry');
             Swal.fire('Placed!', 'Bid successfully placed!!', 'success');
             Fire.$emit('entry');
@@ -5368,13 +5372,13 @@ __webpack_require__.r(__webpack_exports__);
     getFilesCount: function getFilesCount(order) {
       var _this4 = this;
 
-      axios.get("/api/filescount/" + order.id).then(function (_ref3) {
+      axios.get("api/filescount/" + order.id).then(function (_ref3) {
         var data = _ref3.data;
         return [_this4.filesCount = data];
       });
     },
     download: function download(id, path) {
-      axios.get("/api/download/" + id, {
+      axios.get("api/download/" + id, {
         responseType: 'blob'
       }).then(function (response) {
         var fileURL = window.URL.createObjectURL(new Blob([response.data]));
@@ -5391,15 +5395,15 @@ __webpack_require__.r(__webpack_exports__);
 
       $('#OrderDetails').modal('show');
       this.orderId = order.id;
-      window.axios.get("/api/order/" + order.id).then(function (_ref4) {
+      window.axios.get("api/order/" + order.id).then(function (_ref4) {
         var data = _ref4.data;
         return [_this5.details = data];
       });
-      window.axios.get("/api/getfiles/" + order.id).then(function (_ref5) {
+      window.axios.get("api/getfiles/" + order.id).then(function (_ref5) {
         var data = _ref5.data;
         return [_this5.files = data];
       });
-      window.axios.get("/api/filescount/" + order.id).then(function (_ref6) {
+      window.axios.get("api/filescount/" + order.id).then(function (_ref6) {
         var data = _ref6.data;
         return [_this5.filesCount = data];
       });
@@ -81660,7 +81664,7 @@ var render = function() {
                 "div",
                 { staticClass: "col-md-6" },
                 [
-                  _c("flip-countdown", { attrs: { deadline: this.deadline } }),
+                  _c("flip-countdown", { attrs: { deadline: _vm.deadline } }),
                   _vm._v(" "),
                   _c("hr"),
                   _vm._v(" "),
@@ -82942,11 +82946,11 @@ var render = function() {
                       _vm._v(" "),
                       _c("td", [
                         user.level_id == 1
-                          ? _c("span", [_vm._v("Junior")])
+                          ? _c("span", [_vm._v("Starter")])
                           : _vm._e(),
                         _vm._v(" "),
                         user.level_id == 2
-                          ? _c("span", [_vm._v("Mid")])
+                          ? _c("span", [_vm._v("Junior")])
                           : _vm._e(),
                         _vm._v(" "),
                         user.level_id == 3
@@ -83253,7 +83257,7 @@ var render = function() {
                       "div",
                       { staticClass: "form-group" },
                       [
-                        _c("div"),
+                        _vm.writer == 1 ? _c("div") : _vm._e(),
                         _vm._v(" "),
                         _c(
                           "select",

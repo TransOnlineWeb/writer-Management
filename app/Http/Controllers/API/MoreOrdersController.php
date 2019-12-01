@@ -4,10 +4,13 @@ namespace App\Http\Controllers\API;
 
 use App\File;
 use App\Http\Controllers\Controller;
+use App\Mail\CompletedOrder;
+use App\Mail\NewOrder;
 use App\Order;
 use App\User;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
 
 class MoreOrdersController extends Controller
 {
@@ -21,7 +24,7 @@ class MoreOrdersController extends Controller
         return File::where('order_id', $orderId)->where('isComplete', 0)->get();
     }
     public function deadline($orderId){
-        return Order::where('id',$orderId)->value('deadline');
+        return Order::where('id',$orderId)->first();
     }
     public function getCompletedFiles($orderId)
     {
@@ -85,6 +88,15 @@ class MoreOrdersController extends Controller
             $order->status = 3;
             $order->completed_time = Carbon::now();
             $order->update();
+
+            $email = User::where('role','editor')->get()->toArray();
+            $data = array(
+                'title' => Order::where('id',$orderId)->value('title'),
+                'pages' => Order::where('id',$orderId)->value('pages'),
+                'subject'=>Order::where('id',$orderId)->value('discipline'),
+                'completed' => Order::where('id',$orderId)->value('completed_time'),
+            );
+            Mail::to($email)->send(new CompletedOrder($data));
             return response(['status' => 'success'], 200);
         }
 
