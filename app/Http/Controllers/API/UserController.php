@@ -145,6 +145,6 @@ class UserController extends Controller
     public function getLevel(){
         $levelId = auth()->user()->level_id;
 
-        return Category::where('id', $levelId)->value('title');
+        return Category::where('id', $levelId)->first();
     }
 }

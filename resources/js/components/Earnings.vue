@@ -54,7 +54,7 @@
                             <div class="form-group">
                                 <label for="amount">Amount</label>
                                 <input v-model="form.amount" type="text" class="form-control" name="amount" id="amount"
-                                       :class="{ 'is-invalid': form.errors.has('amount') }">
+                                       :class="{ 'is-invalid': form.errors.has('amount') }" placeholder="Amount to pay">
                                 <has-error :form="form" field="amount"></has-error>
                             </div>
                             <div class="form-group">

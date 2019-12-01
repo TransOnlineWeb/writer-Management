@@ -204,7 +204,7 @@
 
             },
             getLevel(){
-                axios.get("/api/getLevel/").then(({data}) => ([this.level = data]));
+                axios.get("/api/getLevel/").then(({data}) => ([this.level = data.title]));
             },
             checkBid() {
                 axios.get("/api/checkbid/" + this.orderId).then(({data}) => ([this.ifBid = data]));
