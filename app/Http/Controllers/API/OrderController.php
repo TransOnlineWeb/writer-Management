@@ -4,12 +4,14 @@ namespace App\Http\Controllers\API;
 
 use App\Category;
 use App\Http\Controllers\Controller;
+use App\Mail\NewOrder;
+use App\Mail\UrgentOrder;
 use App\Order;
 use App\File;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-
+use Illuminate\Support\Facades\Mail;
 class OrderController extends Controller
 {
     /**
@@ -77,6 +79,15 @@ class OrderController extends Controller
                 $amount = Category::where('id', $level_id)->value('amount');
                 $order->amount = $amount;
                 $order->total_amount = $amount * $request->pages;
+
+                $email = User::where('id',$request->writer)->value('email');
+                $data = array(
+                    'title' => $request->title,
+                    'pages' => $request->pages,
+                    'subject'=>$request->discipline,
+                    'deadline' => $request->deadline,
+                );
+                Mail::to($email)->send(new NewOrder($data));
             } else {
                 $order->status = 0;
             }
@@ -94,6 +105,14 @@ class OrderController extends Controller
             $order->save();
             $order_id = $order->id;
 
+            $email = User::where('role','writer')->get()->toArray();
+            $data = array(
+                'title' => $request->title,
+                'pages' => $request->pages,
+                'subject'=>$request->discipline,
+                'deadline' => $request->deadline,
+            );
+            Mail::to($email)->send(new NewOrder($data));
 
             if ($request->hasFile('files')) {
                 foreach ($request->file('files') as $uploadedFile) {
@@ -111,9 +130,18 @@ class OrderController extends Controller
             // When Urgent
         } elseif ($request->urgent == 1) {
             $order = new Order();
+
             if ($request->writer) {
                 $order->assigned_user_id = $request->writer;
                 $order->status = 1;
+                $email = User::where('id',$request->writer)->value('email');
+                $data = array(
+                    'title' => $request->title,
+                    'pages' => $request->pages,
+                    'subject'=>$request->discipline,
+                    'deadline' => $request->deadline,
+                );
+                Mail::to($email)->send(new UrgentOrder($data));
             } else {
                 $order->status = 0;
             }
@@ -134,6 +162,15 @@ class OrderController extends Controller
             $order->save();
             $order_id = $order->id;
 
+            $email = User::where('role','writer')->get()->toArray();
+            $data = array(
+                'title' => $request->title,
+                'pages' => $request->pages,
+                'subject'=>$request->discipline,
+                'deadline' => $request->deadline,
+            );
+            Mail::to($email)->send(new UrgentOrder($data));
+
             if ($request->hasFile('files')) {
                 foreach ($request->file('files') as $uploadedFile) {
                     $filename = $uploadedFile->store('uploads');
@@ -145,6 +182,7 @@ class OrderController extends Controller
                     $file->save();
                 }
             }
+
             return response(['status' => 'success'], 200);
         }
     }

@@ -33,7 +33,7 @@
             </div>
             <div class="col-md-6 animate-box">
                 <h3>Get In Touch</h3>
-                <form action="#">
+                <form action="/contact">
 
                      <div class="row form-group">
                         <div class="col-md-12">
@@ -41,7 +41,7 @@
                             <input type="text" id="name" class="form-control" placeholder="Your name">
                         </div>
                     </div>
-                   
+
                     <div class="row form-group">
                         <div class="col-md-12">
                             <!-- <label for="email">Email</label> -->
@@ -66,7 +66,7 @@
                         <input type="submit" value="Send Message" class="btn btn-primary">
                     </div>
 
-                </form>		
+                </form>
             </div>
         </div>
 

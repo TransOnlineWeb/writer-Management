@@ -5,9 +5,12 @@ namespace App\Http\Controllers\API;
 use App\Bid;
 use App\Category;
 use App\Http\Controllers\Controller;
+use App\Mail\AwardedOrder;
+use App\Mail\CompletedOrder;
 use App\Order;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class BidsController extends Controller
 {
@@ -125,6 +128,15 @@ class BidsController extends Controller
         $order->assigned_user_id = $user['id'];
         $order->update();
 
+        $email = User::where('id',$bid->user_id)->value('email');
+        $data = array(
+            'title' => Order::where('id',$orderId)->value('title'),
+            'pages' => Order::where('id',$orderId)->value('pages'),
+            'subject'=>Order::where('id',$orderId)->value('discipline'),
+            'deadline' => Order::where('id',$orderId)->value('deadline'),
+            'orderNo' =>Order::where('id',$orderId)->value('order_number'),
+        );
+        Mail::to($email)->send(new AwardedOrder($data));
 
         $others = Bid::where('order_id', $orderId)->where('status', 0)->get();
 

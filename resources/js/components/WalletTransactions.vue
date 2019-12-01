@@ -20,6 +20,7 @@
                                 <th>Type</th>
                                 <th>Percentage</th>
                                 <th>Amount</th>
+                                <th>Balance</th>
                                 <th>Reason</th>
                             </tr>
                             </thead>
@@ -38,6 +39,9 @@
                                 <td><span v-if="trans.type == 1">{{Math.trunc(trans.percentage)}}%</span></td>
                                 <td>
                                     Ksh. {{Math.trunc(trans.amount)}}
+                                </td>
+                                <td>
+                                    Ksh. {{Math.trunc(trans.balance)}}
                                 </td>
                                 <td>
                                     <button type="button" class="btn btn-warning btn-sm" v-if="trans.type == 1" @click="reasonModal(trans.description)">Reason</button>

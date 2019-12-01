@@ -8,7 +8,7 @@
   }
 </style>
 <template>
-    <div class="container">
+    <div class="container" v-if="$gate.isAdmin()">
         <div class="row mt-5">
         <div class="col-md-12">
           <div class="card">
@@ -45,8 +45,8 @@
                     <span v-if="user.status_id == 2">Suspended</span>
                   </td>
                   <td>
-                    <span v-if="user.level_id == 1">Junior</span>
-                    <span v-if="user.level_id == 2">Mid</span>
+                    <span v-if="user.level_id == 1">Starter</span>
+                    <span v-if="user.level_id == 2">Junior</span>
                     <span v-if="user.level_id == 3">Senior</span>
                   </td>
                   <td>
@@ -93,16 +93,16 @@
                 </div>
                 <div class="form-group">
                   <select v-model="form.role" class="form-control" name="role" id="role"
-                          :class="{ 'is-invalid': form.errors.has('role') }">
+                          :class="{ 'is-invalid': form.errors.has('role') }"  >
                       <option selected value="">--Select UserType--</option>
-                      <option value="writer">Writer</option>
+                      <option  value="writer">Writer</option>
                       <option value="editor">Editor</option>
-                      <option value="admin">Admin</option>
+                      <option  value="admin">Admin</option>
                   </select>
                   <has-error :form="form" field="role"></has-error>
                 </div>
                 <div class="form-group">
-                  <div v-if=""></div>
+                  <div v-if="writer == 1"></div>
                   <select v-model="form.level_id" class="form-control" name="level_id" id="level_id"
                           :class="{ 'is-invalid': form.errors.has('level_id') }">
                       <option selected value="">--Select Level--</option>
@@ -145,6 +145,7 @@
                 editmode: false,
                 users: {},
                 categories: {},
+                writer:0,
                 form: new Form ({
                   id: '',
                   name: '',
@@ -188,6 +189,7 @@
               this.form.reset();
               $('#AddNew').modal('show');
             },
+
             deleteUser(id) {
               Swal.fire({
                 title: 'Are you sure?',

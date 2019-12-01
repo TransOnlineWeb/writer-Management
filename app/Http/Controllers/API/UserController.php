@@ -6,6 +6,7 @@ use App\Category;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 // use Illuminate\Foundation\Auth\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\User;
 
@@ -145,6 +146,6 @@ class UserController extends Controller
     public function getLevel(){
         $levelId = auth()->user()->level_id;
 
-        return Category::where('id', $levelId)->value('title');
+        return Category::where('id', $levelId)->first();
     }
 }
