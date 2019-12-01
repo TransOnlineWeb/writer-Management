@@ -1,5 +1,5 @@
 <template>
-    <div class="container-fluid pl-0 pr-0 ml-0 mr-0">
+    <div class="container-fluid pl-0 pr-0 ml-0 mr-0" v-if="$gate.isAdminOrisEditor()">
         <div class="row justify-content-center pl-0 pr-0 ml-0 mr-0">
             <div class="col-md-12 mt-4 pl-0 pr-0 ml-0 mr-0">
                 <div class="card pl-0 pr-0 ml-0 mr-0">
