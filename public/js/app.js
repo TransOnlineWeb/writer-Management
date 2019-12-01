@@ -3974,8 +3974,8 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue2_flip_countdown__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue2-flip-countdown */ "./node_modules/vue2-flip-countdown/dist/vue2-flip-countdown.js");
 /* harmony import */ var vue2_flip_countdown__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue2_flip_countdown__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var vuejs_countdown__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vuejs-countdown */ "./node_modules/vuejs-countdown/dist/vuejs-countdown.js");
-/* harmony import */ var vuejs_countdown__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vuejs_countdown__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var vuejs_countdown__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuejs-countdown */ "./node_modules/vuejs-countdown/dist/vuejs-countdown.js");
+/* harmony import */ var vuejs_countdown__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vuejs_countdown__WEBPACK_IMPORTED_MODULE_1__);
 //
 //
 //
@@ -4321,7 +4321,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     FlipCountdown: vue2_flip_countdown__WEBPACK_IMPORTED_MODULE_0___default.a,
-    Countdown: vuejs_countdown__WEBPACK_IMPORTED_MODULE_2___default.a
+    Countdown: vuejs_countdown__WEBPACK_IMPORTED_MODULE_1___default.a
   },
   props: {
     user: {
@@ -83909,9 +83909,9 @@ var render = function() {
               "div",
               { staticClass: "row details" },
               _vm._l(_vm.orders, function(order) {
-                return _c("div", { key: order.id, staticClass: "col-md-6" }, [
-                  order.viewers.includes(_vm.level)
-                    ? _c("div", { staticClass: "info-box" }, [
+                return order.viewers.includes(_vm.level)
+                  ? _c("div", { key: order.id, staticClass: "col-md-6" }, [
+                      _c("div", { staticClass: "info-box" }, [
                         _vm._m(0, true),
                         _vm._v(" "),
                         _c("div", { staticClass: "info-box-content" }, [
@@ -83950,8 +83950,8 @@ var render = function() {
                           ])
                         ])
                       ])
-                    : _vm._e()
-                ])
+                    ])
+                  : _vm._e()
               }),
               0
             )
@@ -101983,8 +101983,8 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 window.Pusher = __webpack_require__(/*! pusher-js */ "./node_modules/pusher-js/dist/web/pusher.js");
 window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
   broadcaster: 'pusher',
-  key: "2dd403e5b2da16c3ed2c",
-  cluster: "ap2",
+  key: "",
+  cluster: "mt1",
   encrypted: true
 });
 
@@ -103619,8 +103619,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\xampp\htdocs\Writing-Management\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\xampp\htdocs\Writing-Management\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /opt/lampp/htdocs/Transonline/writer-Management/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /opt/lampp/htdocs/Transonline/writer-Management/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
